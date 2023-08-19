@@ -1,3 +1,4 @@
+import {userLogoutUsingPOST} from '@/services/qiApi-backend/userController';
 import {LogoutOutlined, SettingOutlined, UserOutlined} from '@ant-design/icons';
 import {useEmotionCss} from '@ant-design/use-emotion-css';
 import {history, useModel} from '@umijs/max';
@@ -7,7 +8,6 @@ import type {MenuInfo} from 'rc-menu/lib/interface';
 import React, {useCallback} from 'react';
 import {flushSync} from 'react-dom';
 import HeaderDropdown from '../HeaderDropdown';
-import {userLogoutUsingPOST} from "@/services/qiApi-backend/userController";
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;
@@ -62,12 +62,14 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children
       const {key} = event;
       if (key === 'logout') {
         flushSync(() => {
-          setInitialState((s) => ({...s, currentUser: undefined}));
+          setInitialState((s) => ({...s, loginUser: undefined}));
         });
         loginOut();
         return;
       }
-      history.push(`/account/${key}`);
+      if (key === 'settings') {
+        history.push(`/account/${key}`);
+      }
     },
     [setInitialState],
   );
@@ -116,6 +118,11 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children
       key: 'logout',
       icon: <LogoutOutlined/>,
       label: '退出登录',
+    },
+    {
+      key: 'settings',
+      icon: <SettingOutlined/>,
+      label: '个人设置',
     },
   ];
 

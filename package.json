@@ -25,7 +25,7 @@
     "record": "cross-env NODE_ENV=development REACT_APP_ENV=test max record --scene=login",
     "serve": "umi-serve",
     "start": "cross-env UMI_ENV=dev max dev",
-    "start:dev": "cross-env REACT_APP_ENV=dev MOCK=none UMI_ENV=dev max dev",
+    "start:dev": "cross-env REACT_APP_ENV=dev MOCK=none UMI_ENV=dev max dev umi",
     "start:no-mock": "cross-env MOCK=none UMI_ENV=dev max dev",
     "start:pre": "cross-env REACT_APP_ENV=pre UMI_ENV=dev max dev",
     "start:test": "cross-env REACT_APP_ENV=test MOCK=none UMI_ENV=dev max dev",
@@ -60,7 +60,8 @@
     "react": "^18.2.0",
     "react-dev-inspector": "^1.8.4",
     "react-dom": "^18.2.0",
-    "react-helmet-async": "^1.3.0"
+    "react-helmet-async": "^1.3.0",
+    "react-infinite-scroll-component": "^6.1.0"
   },
   "devDependencies": {
     "@ant-design/pro-cli": "^2.1.5",
@@ -76,6 +77,7 @@
     "@umijs/fabric": "^2.14.1",
     "@umijs/lint": "^4.0.52",
     "@umijs/max": "^4.0.52",
+    "@umijs/preset-ui": "^2.2.9",
     "cross-env": "^7.0.3",
     "eslint": "^8.34.0",
     "express": "^4.18.2",

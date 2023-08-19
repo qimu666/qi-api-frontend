@@ -3,11 +3,12 @@ import {LinkOutlined} from '@ant-design/icons';
 import {SettingDrawer} from '@ant-design/pro-components';
 import type {RunTimeLayoutConfig} from '@umijs/max';
 import {history, Link} from '@umijs/max';
-import React from 'react';
 import {AvatarDropdown, AvatarName} from './components/RightContent/AvatarDropdown';
-import {getLoginUserUsingGET} from "@/services/qiApi-backend/userController";
-import {requestConfig} from "@/requestConfig";
-import Settings from "../config/defaultSettings";
+
+import Footer from '@/components/Footer';
+import {requestConfig} from '@/requestConfig';
+import {getLoginUserUsingGET} from '@/services/qiApi-backend/userController';
+import Settings from '../config/defaultSettings';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -16,18 +17,17 @@ const loginPath = '/user/login';
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
 
-
 const stats: InitialState = {
   loginUser: undefined,
-  settings: Settings
-}
+  settings: Settings,
+};
 
 export async function getInitialState(): Promise<InitialState> {
-
   try {
     const res = await getLoginUserUsingGET();
-    stats.loginUser = res.data
-    history.push("/");
+    if (res.data && res.code === 0) {
+      stats.loginUser = res.data;
+    }
   } catch (error) {
     history.push(loginPath);
   }
@@ -37,18 +37,24 @@ export async function getInitialState(): Promise<InitialState> {
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => {
   return {
+    footerRender: () => <Footer/>,
     actionsRender: () => [<Question key="doc"/>],
     avatarProps: {
       src: initialState?.loginUser?.userAvatar,
       title: <AvatarName/>,
       render: (_, avatarChildren) => {
-        return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
+        return initialState?.loginUser?.userAvatar ? (
+          <AvatarDropdown>{avatarChildren}</AvatarDropdown>
+        ) : (
+          <AvatarDropdown>{avatarChildren}</AvatarDropdown>
+        );
       },
     },
     waterMarkProps: {
       content: initialState?.loginUser?.userName,
     },
     onPageChange: () => {
+      getInitialState();
       const {location} = history;
       // 如果没有登录，重定向到 login
       if (!initialState?.loginUser && location.pathname !== loginPath) {
@@ -85,7 +91,7 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
       : [],
     menuHeaderRender: undefined,
     // 自定义 403 页面
-    // unAccessible: <div>unAccessible</div>,
+    unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
     childrenRender: (children) => {
       // if (initialState?.loading) return <PageLoading/>;

@@ -90,9 +90,13 @@ declare namespace API {
     id?: number;
   };
 
+  type IdRequest = {
+    id?: number;
+  };
+
   type InterfaceInfo = {
     createTime?: string;
-    description?: string;
+    description: string;
     id?: number;
     isDelete?: number;
     method?: string;
@@ -101,7 +105,7 @@ declare namespace API {
     requestHeader?: string;
     requestParams?: string;
     responseHeader?: string;
-    status?: number;
+    status: number;
     updateTime?: string;
     url?: string;
     userId?: number;
@@ -142,6 +146,14 @@ declare namespace API {
     status?: number;
     url?: string;
     userId?: number;
+  };
+
+  type listInterfaceInfoBySearchTextPageUsingGETParams = {
+    current?: number;
+    pageSize?: number;
+    searchText?: string;
+    sortField?: string;
+    sortOrder?: string;
   };
 
   type listInterfaceInfoUsingGETParams = {
@@ -392,10 +404,12 @@ declare namespace API {
   };
 
   type User = {
+    accessKey?: string;
     createTime?: string;
     gender?: number;
     id?: number;
     isDelete?: number;
+    secretKey?: string;
     updateTime?: string;
     userAccount?: string;
     userAvatar?: string;
@@ -421,6 +435,7 @@ declare namespace API {
   type UserRegisterRequest = {
     checkPassword?: string;
     userAccount?: string;
+    userName?: string;
     userPassword?: string;
   };
 

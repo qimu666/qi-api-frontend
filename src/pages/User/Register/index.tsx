@@ -1,16 +1,17 @@
 import Footer from '@/components/Footer';
-import {userLoginUsingPOST} from '@/services/qiApi-backend/userController';
+import {userRegisterUsingPOST} from '@/services/qiApi-backend/userController';
 import {Link} from '@@/exports';
 import {
   AlipayCircleOutlined,
   LockOutlined,
+  RedditOutlined,
   TaobaoCircleOutlined,
   UserOutlined,
   WeiboCircleOutlined,
 } from '@ant-design/icons';
 import {LoginForm, ProFormCheckbox, ProFormText} from '@ant-design/pro-components';
 import {useEmotionCss} from '@ant-design/use-emotion-css';
-import {Helmet, history, useModel} from '@umijs/max';
+import {Helmet, history} from '@umijs/max';
 import {message, Tabs} from 'antd';
 import React, {useState} from 'react';
 import Settings from '../../../../config/defaultSettings';
@@ -37,26 +38,10 @@ const ActionIcons = () => {
     </>
   );
 };
-// const Lang = () => {
-//   useEmotionCss(({token}) => {
-//     return {
-//       width: 42,
-//       height: 42,
-//       lineHeight: '42px',
-//       position: 'fixed',
-//       right: 16,
-//       borderRadius: token.borderRadius,
-//       ':hover': {
-//         backgroundColor: token.colorBgTextHover,
-//       },
-//     };
-//   });
-//   return;
-// };
 
-const Login: React.FC = () => {
+const Register: React.FC = () => {
   const [type, setType] = useState<string>('account');
-  const {setInitialState} = useModel('@@initialState');
+
   const containerClassName = useEmotionCss(() => {
     return {
       display: 'flex',
@@ -68,19 +53,17 @@ const Login: React.FC = () => {
       backgroundSize: '100% 100%',
     };
   });
-  const handleSubmit = async (values: API.UserLoginRequest) => {
+  const handleSubmit = async (values: API.UserRegisterRequest) => {
     try {
       // 登录
-      const res = await userLoginUsingPOST({
+      const res = await userRegisterUsingPOST({
         ...values,
       });
       if (res.data && res.code === 0) {
-        message.success('登陆成功');
+        message.success('注册成功');
         setTimeout(() => {
-          const urlParams = new URL(window.location.href).searchParams;
-          history.push(urlParams.get('redirect') || '/');
+          history.push('/user/login');
         }, 100);
-        setInitialState({loginUser: res.data, settings: Settings});
       } else {
         message.error(res.message);
       }
@@ -93,7 +76,7 @@ const Login: React.FC = () => {
     <div className={containerClassName}>
       <Helmet>
         <title>
-          {'登录'}- {Settings.title}
+          {'注册账号'}- {Settings.title}
         </title>
       </Helmet>
       <div
@@ -125,12 +108,20 @@ const Login: React.FC = () => {
             items={[
               {
                 key: 'account',
-                label: '账户密码登录',
+                label: '账号注册',
               },
             ]}
           />
           {type === 'account' && (
             <>
+              <ProFormText
+                name="userName"
+                fieldProps={{
+                  size: 'large',
+                  prefix: <RedditOutlined/>,
+                }}
+                placeholder={'请输入昵称'}
+              />
               <ProFormText
                 name="userAccount"
                 fieldProps={{
@@ -159,6 +150,20 @@ const Login: React.FC = () => {
                   },
                 ]}
               />
+              <ProFormText.Password
+                name="checkPassword"
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LockOutlined/>,
+                }}
+                placeholder={'请确认密码'}
+                rules={[
+                  {
+                    required: true,
+                    message: '确认密码是必填项！',
+                  },
+                ]}
+              />
             </>
           )}
           <div
@@ -170,12 +175,12 @@ const Login: React.FC = () => {
               自动登录
             </ProFormCheckbox>
             <Link
-              to={'/user/register'}
+              to={'/user/login'}
               style={{
                 float: 'right',
               }}
             >
-              还没账号?点击前往注册
+              已有账号?点击前往登录
             </Link>
           </div>
         </LoginForm>
@@ -184,4 +189,4 @@ const Login: React.FC = () => {
     </div>
   );
 };
-export default Login;
+export default Register;
