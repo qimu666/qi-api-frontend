@@ -8,6 +8,7 @@ import type {MenuInfo} from 'rc-menu/lib/interface';
 import React, {useCallback} from 'react';
 import {flushSync} from 'react-dom';
 import HeaderDropdown from '../HeaderDropdown';
+import {valueLength} from "@/pages/User/UserInfo";
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;
@@ -17,7 +18,7 @@ export type GlobalHeaderRightProps = {
 export const AvatarName = () => {
   const {initialState} = useModel('@@initialState');
   const {loginUser} = initialState || {};
-  return <span className="anticon">{loginUser?.userName}</span>;
+  return <p className="anticon">{valueLength(loginUser?.userName) ? loginUser?.userName : undefined}</p>;
 };
 
 export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children}) => {
@@ -67,7 +68,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children
         loginOut();
         return;
       }
-      if (key === 'settings') {
+      if (key === 'center') {
         history.push(`/account/${key}`);
       }
     },
@@ -91,7 +92,6 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children
   }
 
   const {loginUser} = initialState;
-
   if (!loginUser || !loginUser.userName) {
     return loading;
   }
@@ -115,15 +115,16 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children
       ]
       : []),
     {
-      key: 'logout',
-      icon: <LogoutOutlined/>,
-      label: '退出登录',
+      key: 'center',
+      icon: <UserOutlined/>,
+      label: '个人中心',
     },
     {
-      key: 'settings',
-      icon: <SettingOutlined/>,
-      label: '个人设置',
-    },
+      key: 'logout',
+      icon: <LogoutOutlined/>,
+      danger: true,
+      label: '退出登录',
+    }
   ];
 
   return (

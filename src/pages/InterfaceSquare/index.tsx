@@ -8,7 +8,7 @@ import {Button, Card, Input} from 'antd';
 import VirtualList from 'rc-virtual-list';
 import React, {useEffect, useState} from 'react';
 
-const ContainerHeight = 850;
+const ContainerHeight = 760;
 
 const InterfaceSquare: React.FC = () => {
   const [data, setData] = useState<API.InterfaceInfo[]>([]);
@@ -71,11 +71,12 @@ const InterfaceSquare: React.FC = () => {
               onSearch();
             }}
             style={{
-              maxWidth: 640,
+              maxWidth: 670,
             }}
           />
         </div>
       </Card>
+      <br/>
       <Card>
         <VirtualList
           data={data}

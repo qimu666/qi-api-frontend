@@ -5,6 +5,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseImageVo = {
+    code?: number;
+    data?: ImageVo;
+    message?: string;
+  };
+
   type BaseResponseInterfaceInfo = {
     code?: number;
     data?: InterfaceInfo;
@@ -94,6 +100,13 @@ declare namespace API {
     id?: number;
   };
 
+  type ImageVo = {
+    name?: string;
+    status?: string;
+    uid?: string;
+    url?: string;
+  };
+
   type InterfaceInfo = {
     createTime?: string;
     description: string;
@@ -105,7 +118,7 @@ declare namespace API {
     requestHeader?: string;
     requestParams?: string;
     responseHeader?: string;
-    status: number;
+    status?: number;
     updateTime?: string;
     url?: string;
     userId?: number;
@@ -403,6 +416,10 @@ declare namespace API {
     reviewStatus?: number;
   };
 
+  type uploadFileUsingPOSTParams = {
+    biz?: string;
+  };
+
   type User = {
     accessKey?: string;
     createTime?: string;
@@ -450,9 +467,11 @@ declare namespace API {
   };
 
   type UserVO = {
+    accessKey?: string;
     createTime?: string;
     gender?: number;
     id?: number;
+    secretKey?: string;
     updateTime?: string;
     userAccount?: string;
     userAvatar?: string;

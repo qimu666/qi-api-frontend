@@ -1,5 +1,4 @@
 import Footer from '@/components/Footer';
-import {userLoginUsingPOST} from '@/services/qiApi-backend/userController';
 import {Link} from '@@/exports';
 import {
   AlipayCircleOutlined,
@@ -14,6 +13,7 @@ import {Helmet, history, useModel} from '@umijs/max';
 import {message, Tabs} from 'antd';
 import React, {useState} from 'react';
 import Settings from '../../../../config/defaultSettings';
+import {userLoginUsingPOST} from "@/services/qiApi-backend/userController";
 
 const ActionIcons = () => {
   const langClassName = useEmotionCss(({token}) => {
@@ -37,22 +37,6 @@ const ActionIcons = () => {
     </>
   );
 };
-// const Lang = () => {
-//   useEmotionCss(({token}) => {
-//     return {
-//       width: 42,
-//       height: 42,
-//       lineHeight: '42px',
-//       position: 'fixed',
-//       right: 16,
-//       borderRadius: token.borderRadius,
-//       ':hover': {
-//         backgroundColor: token.colorBgTextHover,
-//       },
-//     };
-//   });
-//   return;
-// };
 
 const Login: React.FC = () => {
   const [type, setType] = useState<string>('account');

@@ -7,8 +7,10 @@ import {AvatarDropdown, AvatarName} from './components/RightContent/AvatarDropdo
 
 import Footer from '@/components/Footer';
 import {requestConfig} from '@/requestConfig';
-import {getLoginUserUsingGET} from '@/services/qiApi-backend/userController';
 import Settings from '../config/defaultSettings';
+import {valueLength} from "@/pages/User/UserInfo";
+import NotAvatar from "@/components/Icon/NotAvatar";
+import {getLoginUserUsingGET} from "@/services/qiApi-backend/userController";
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -41,13 +43,11 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
     actionsRender: () => [<Question key="doc"/>],
     avatarProps: {
       src: initialState?.loginUser?.userAvatar,
+      icon: valueLength(initialState?.loginUser?.userAvatar) ??
+        <NotAvatar/>,
       title: <AvatarName/>,
       render: (_, avatarChildren) => {
-        return initialState?.loginUser?.userAvatar ? (
-          <AvatarDropdown>{avatarChildren}</AvatarDropdown>
-        ) : (
-          <AvatarDropdown>{avatarChildren}</AvatarDropdown>
-        );
+        return <AvatarDropdown>{avatarChildren}</AvatarDropdown>
       },
     },
     waterMarkProps: {
