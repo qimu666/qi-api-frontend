@@ -1,8 +1,7 @@
-import {Question} from '@/components/RightContent';
-import {LinkOutlined} from '@ant-design/icons';
+import {BarsOutlined, ExportOutlined, GithubOutlined, PlusOutlined, WechatOutlined} from '@ant-design/icons';
 import {SettingDrawer} from '@ant-design/pro-components';
 import type {RunTimeLayoutConfig} from '@umijs/max';
-import {history, Link} from '@umijs/max';
+import {history} from '@umijs/max';
 import {AvatarDropdown, AvatarName} from './components/RightContent/AvatarDropdown';
 
 import Footer from '@/components/Footer';
@@ -11,8 +10,12 @@ import Settings from '../config/defaultSettings';
 import {valueLength} from "@/pages/User/UserInfo";
 import NotAvatar from "@/components/Icon/NotAvatar";
 import {getLoginUserUsingGET} from "@/services/qiApi-backend/userController";
+import {FloatButton, message} from 'antd';
+import React from "react";
+import wechat from '@/../public/assets/WeChat.jpg';
+import LightColor from "@/components/Icon/LightColor";
+import {helloWord} from "@/components/RightContent";
 
-const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
 /**
@@ -21,10 +24,12 @@ const loginPath = '/user/login';
 
 const stats: InitialState = {
   loginUser: undefined,
-  settings: Settings,
+  settings: Settings
 };
 
 export async function getInitialState(): Promise<InitialState> {
+  console.log(`%c${helloWord}`, 'color:#e59de3')
+
   try {
     const res = await getLoginUserUsingGET();
     if (res.data && res.code === 0) {
@@ -38,9 +43,55 @@ export async function getInitialState(): Promise<InitialState> {
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => {
+
   return {
-    footerRender: () => <Footer/>,
-    actionsRender: () => [<Question key="doc"/>],
+    footerRender: () => <>
+      <Footer/>
+      <FloatButton.Group
+        trigger="hover"
+        style={{right: 94}}
+        icon={<BarsOutlined/>}
+      >
+        <FloatButton
+          tooltip={<img src={wechat} alt="微信 code_nav" width="120"/>}
+          icon={<WechatOutlined/>}
+        />
+        <FloatButton
+          tooltip={"发布接口"}
+          icon={<PlusOutlined/>}
+        />
+        <FloatButton
+          tooltip={"分享此网站"}
+          icon={<ExportOutlined/>}
+          onClick={() => {
+            navigator.clipboard.writeText(window.location.origin);
+            message.success("复制成功")
+          }
+          }/>
+        <FloatButton
+          tooltip={"查看本站技术及源码，欢迎 star"}
+          icon={<GithubOutlined/>}
+          onClick={() => {
+            location.href = "https://github.com/qimu666"
+          }
+          }
+        />
+        <FloatButton
+          tooltip={"切换主题"}
+          icon={<LightColor/>}
+          onClick={() => {
+            console.log(initialState?.settings)
+            if (initialState?.settings.navTheme === "light") {
+              setInitialState({loginUser: initialState?.loginUser, settings: {...Settings, navTheme: "realDark"}})
+            } else {
+              setInitialState({loginUser: initialState?.loginUser, settings: {...Settings, navTheme: "light"}})
+            }
+          }
+          }
+        />
+      </FloatButton.Group>
+    </>,
+    // actionsRender: () => [<Release key="interface"/>],
     avatarProps: {
       src: initialState?.loginUser?.userAvatar,
       icon: valueLength(initialState?.loginUser?.userAvatar) ??
@@ -54,42 +105,13 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
       content: initialState?.loginUser?.userName,
     },
     onPageChange: () => {
-      getInitialState();
+      // getInitialState();
       const {location} = history;
       // 如果没有登录，重定向到 login
       if (!initialState?.loginUser && location.pathname !== loginPath) {
         history.push(loginPath);
       }
     },
-    layoutBgImgList: [
-      {
-        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/D2LWSqNny4sAAAAAAAAAAAAAFl94AQBr',
-        left: 85,
-        bottom: 100,
-        height: '303px',
-      },
-      {
-        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/C2TWRpJpiC0AAAAAAAAAAAAAFl94AQBr',
-        bottom: -68,
-        right: -45,
-        height: '303px',
-      },
-      {
-        src: 'https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/F6vSTbj8KpYAAAAAAAAAAAAAFl94AQBr',
-        bottom: 0,
-        left: 0,
-        width: '331px',
-      },
-    ],
-    links: isDev
-      ? [
-        <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
-          <LinkOutlined/>
-          <span>OpenAPI 文档</span>
-        </Link>,
-      ]
-      : [],
-    menuHeaderRender: undefined,
     // 自定义 403 页面
     unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
@@ -112,7 +134,7 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
         </>
       );
     },
-    ...initialState?.settings,
+    ...initialState?.settings
   };
 };
 

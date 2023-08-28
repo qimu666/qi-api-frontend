@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import {request} from '@umijs/max';
+import { request } from '@umijs/max';
 
 /** errorHtml GET /api/error */
 export async function errorHtmlUsingGET(options?: { [key: string]: any }) {

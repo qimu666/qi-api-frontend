@@ -17,7 +17,7 @@ interface ResponseStructure {
  * @doc https://umijs.org/docs/max/request#配置
  */
 export const requestConfig: RequestConfig = {
-  baseURL: 'http://localhost:7529/',
+  baseURL: process.env.NODE_ENV === 'production' ? "https://api.qimuu.icu/" : 'http://localhost:7529/',
   withCredentials: true,
 
   // 请求拦截器
@@ -34,7 +34,6 @@ export const requestConfig: RequestConfig = {
     (response) => {
       // 拦截响应数据，进行个性化处理
       const {data} = response as unknown as ResponseStructure;
-      console.log(data, 'response');
       const {code} = data;
       if (data && code === 0) {
         return response;
@@ -50,7 +49,6 @@ export const requestConfig: RequestConfig = {
             break;
           }
           case 40101: {
-            history.push('/user/login');
             message.error(data.message);
             break;
           }

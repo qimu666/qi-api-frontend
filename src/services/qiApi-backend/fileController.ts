@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import {request} from '@umijs/max';
+import { request } from '@umijs/max';
 
 /** uploadFile POST /api/file/upload */
 export async function uploadFileUsingPOST(

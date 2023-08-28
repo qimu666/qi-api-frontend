@@ -1,5 +1,4 @@
 import InterfaceInfoColumns from '@/pages/Admin/InterfaceInfoList/components/InterfaceInfoColumns';
-import MYModalForm from '@/pages/Admin/InterfaceInfoList/components/MYModalForm';
 import {
   addInterfaceInfoUsingPOST,
   deleteInterfaceInfoUsingPOST,
@@ -14,6 +13,7 @@ import {PageContainer, ProTable} from '@ant-design/pro-components';
 import '@umijs/max';
 import {Button, message, Popconfirm} from 'antd';
 import React, {useRef, useState} from 'react';
+import MyModalForm from './components/MyModalForm';
 
 /**
  * @en-US Add node
@@ -61,6 +61,7 @@ const handleUpdate = async (fields: API.InterfaceInfoUpdateRequest) => {
 };
 
 const InterfaceInfoList: React.FC = () => {
+
   /**
    * @en-US Pop-up window of new window
    * @zh-CN 新建窗口的弹窗
@@ -71,6 +72,8 @@ const InterfaceInfoList: React.FC = () => {
    * @zh-CN 分布更新窗口的弹窗
    * */
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.InterfaceInfo>();
 
@@ -184,7 +187,18 @@ const InterfaceInfoList: React.FC = () => {
               handleOnline(record);
             }}
           >
-            发布
+            审核通过
+          </a>
+        ) : null,
+        record.status === 2 ? (
+          <a
+            type="text"
+            key="offline"
+            onClick={() => {
+              handleOnline(record);
+            }}
+          >
+            上线
           </a>
         ) : null,
         record.status === 1 ? (
@@ -198,6 +212,7 @@ const InterfaceInfoList: React.FC = () => {
             下线
           </a>
         ) : null,
+
 
         <Popconfirm
           key={'Delete'}
@@ -221,11 +236,12 @@ const InterfaceInfoList: React.FC = () => {
     },
   ];
   return (
-    <PageContainer>
+    <>
       <ProTable<API.InterfaceInfo, API.InterfaceInfo>
         headerTitle={'接口管理'}
         actionRef={actionRef}
         rowKey="key"
+        loading={loading}
         search={{
           labelWidth: 120,
         }}
@@ -241,8 +257,10 @@ const InterfaceInfoList: React.FC = () => {
           </Button>,
         ]}
         request={async (params) => {
+          setLoading(true)
           const res = await listInterfaceInfoByPageUsingGET({...params});
           if (res.data) {
+            setLoading(false)
             return {
               data: res.data.records || [],
               success: true,
@@ -258,8 +276,9 @@ const InterfaceInfoList: React.FC = () => {
         }}
         columns={columns}
       />
-      <MYModalForm
-        value={undefined}
+      <MyModalForm
+        title={"添加接口"}
+        value={{}}
         open={() => {
           return createModalOpen;
         }}
@@ -275,7 +294,8 @@ const InterfaceInfoList: React.FC = () => {
         }}
         onCancel={() => handleModalOpen(false)}
       />
-      <MYModalForm
+      <MyModalForm
+        title={"修改接口"}
         open={() => {
           return updateModalOpen;
         }}
@@ -292,7 +312,7 @@ const InterfaceInfoList: React.FC = () => {
         }}
         onCancel={() => handleUpdateModalOpen(false)}
       />
-    </PageContainer>
+    </>
   );
 };
 export default InterfaceInfoList;

@@ -5,13 +5,14 @@
 import * as basicErrorController from './basicErrorController';
 import * as fileController from './fileController';
 import * as interfaceInfoController from './interfaceInfoController';
-import * as postController from './postController';
+import * as payController from './payController';
+import * as productInfoController from './productInfoController';
 import * as userController from './userController';
-
 export default {
   basicErrorController,
   fileController,
   interfaceInfoController,
-  postController,
+  payController,
+  productInfoController,
   userController,
 };

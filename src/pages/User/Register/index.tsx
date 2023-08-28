@@ -64,8 +64,6 @@ const Register: React.FC = () => {
         setTimeout(() => {
           history.push('/user/login');
         }, 100);
-      } else {
-        message.error(res.message);
       }
     } catch (error) {
       const defaultLoginFailureMessage = '登录失败，请重试！';

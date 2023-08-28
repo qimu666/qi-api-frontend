@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import {request} from '@umijs/max';
+import { request } from '@umijs/max';
 
 /** addUser POST /api/user/add */
 export async function addUserUsingPOST(body: API.UserAddRequest, options?: { [key: string]: any }) {
@@ -125,12 +125,20 @@ export async function updateUserUsingPOST(
   body: API.UserUpdateRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.BaseResponseUser>('/api/user/update', {
+  return request<API.BaseResponseUserVO>('/api/user/update', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** updateVoucher POST /api/user/update/voucher */
+export async function updateVoucherUsingPOST(options?: { [key: string]: any }) {
+  return request<API.BaseResponseUserVO>('/api/user/update/voucher', {
+    method: 'POST',
     ...(options || {}),
   });
 }

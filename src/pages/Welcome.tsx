@@ -1,21 +1,22 @@
 import {PageContainer} from '@ant-design/pro-components';
 import {useModel} from '@umijs/max';
-import {Card, theme} from 'antd';
+import {Card, theme, Typography} from 'antd';
 import React from 'react';
+import {Link} from "@@/exports";
 
+const {Text, Title} = Typography;
 /**
  * 每个单独的卡片，为了复用样式抽成了组件
  * @param param0
  * @returns
  */
 const InfoCard: React.FC<{
-  title: string;
+  title: any
   index: number;
-  desc: string;
+  desc: any;
   href: string;
-}> = ({title, href, index, desc}) => {
+}> = ({title, index, desc}) => {
   const {useToken} = theme;
-
   const {token} = useToken();
 
   return (
@@ -76,9 +77,7 @@ const InfoCard: React.FC<{
       >
         {desc}
       </div>
-      <a href={href} target="_blank" rel="noreferrer">
-        了解更多 {'>'}
-      </a>
+      <br/>
     </div>
   );
 };
@@ -87,7 +86,7 @@ const Welcome: React.FC = () => {
   const {token} = theme.useToken();
   const {initialState} = useModel('@@initialState');
   return (
-    <PageContainer>
+    <>
       <Card
         style={{
           borderRadius: 8,
@@ -114,7 +113,7 @@ const Welcome: React.FC = () => {
               color: token.colorTextHeading,
             }}
           >
-            欢迎使用 柒木接口
+            <Title level={3}> 欢迎使用 柒木接口 🎉</Title>
           </div>
           <p
             style={{
@@ -123,12 +122,34 @@ const Welcome: React.FC = () => {
               lineHeight: '22px',
               marginTop: 16,
               marginBottom: 32,
-              width: '65%',
+              width: '100%',
             }}
           >
-            柒木接口 是一个提供 API 接口供开发者调用的平台。
-            管理员可以接入并发布接口，统计分析各接口调用情况；用户可以注册登录并开通接口调用权限，然后可以浏览接口及在线调试，还能使用客户端
-            SDK 轻松在代码中调用接口。
+            <Text strong>
+              <Title level={4}>柒木接口是一个为用户和开发者提供全面API接口调用服务的平台 🛠</Title>
+              <Title level={5}>
+                😀 作为用户您可以通过注册登录账户，获取接口调用权限，并根据自己的需求浏览和选择适合的接口。您可以在线进行接口调试，快速验证接口的功能和效果。
+                <br/>
+                💻 作为开发者 我们提供了
+                {/*todo 地址修改*/}
+                <a href="https://ant.design" target="_blank" rel="noreferrer">
+                  客户端SDK
+                </a>
+                ，
+                通过
+                <Link to="/account/center">
+                  开发者凭证
+                </Link>
+                即可将轻松集成接口到您的代码中，实现更高效的开发和调用。
+                <br/>
+                🤝 您可以将自己的接口接入到柒木接口平台上，并发布给其他用户使用。
+                您可以管理和各个接口，以便更好地分析和优化接口性能。
+                <br/>
+                👌 我们还提供了开发者文档和技术支持，帮助您快速接入和发布接口。
+                <br/>
+                🏁 无论您是用户还是开发者，柒木接口都致力于提供稳定、安全、高效的接口调用服务，帮助您实现更快速、便捷的开发和调用体验。
+              </Title>
+            </Text>
           </p>
           <div
             style={{
@@ -140,26 +161,43 @@ const Welcome: React.FC = () => {
             <InfoCard
               index={1}
               href="https://柒木接口js.org/docs/introduce/introduce"
-              title="了解 柒木接口"
-              desc="柒木接口 是一个提供 API 接口供开发者调用的平台。
-            管理员可以接入并发布接口，统计分析各接口调用情况；用户可以注册登录并开通接口调用权限，然后可以浏览接口及在线调试，还能使用客户端 SDK 轻松在代码中调用接口。"
+              title={<Title level={5}>多样化的接口选择</Title>}
+              desc={<Text
+                strong>平台上提供了丰富多样的接口供用户选择，涵盖了各个领域的功能和服务，满足不同用户的需求。</Text>}
             />
             <InfoCard
               index={2}
-              title="了解 ant design"
-              href="https://ant.design"
-              desc="antd 是基于 Ant Design 设计体系的 React UI 组件库，主要用于研发企业级中后台产品。"
+              href="https://柒木接口js.org/docs/introduce/introduce"
+              title={<Title level={5}>在线调试功能</Title>}
+              desc={<Text
+                strong>用户可以在平台上进行接口在线调试，快速验证接口的功能和效果，节省了开发调试的时间和工作量。</Text>}
             />
             <InfoCard
               index={3}
-              title="了解 Pro Components"
-              href="https://procomponents.ant.design"
-              desc="ProComponents 是一个基于 Ant Design 做了更高抽象的模板组件，以 一个组件就是一个页面为开发理念，为中后台开发带来更好的体验。"
+              href="https://柒木接口js.org/docs/introduce/introduce"
+              title={<Title level={5}>客户端SDK支持</Title>}
+              desc={<Text
+                strong>为了方便开发者集成接口到自己的代码中，平台提供了客户端SDK，使调用接口变得更加简单和便捷。
+              </Text>}
+            />
+            <InfoCard
+              index={4}
+              href="https://柒木接口js.org/docs/introduce/introduce"
+              title={<Title level={5}>开发者文档和技术支持</Title>}
+              desc={<Text
+                strong>平台提供了详细的开发者文档和技术支持，帮助开发者快速接入和发布接口，解决遇到的问题和困难。</Text>}
+            />
+            <InfoCard
+              index={5}
+              href="https://柒木接口js.org/docs/introduce/introduce"
+              title={<Title level={5}>稳定和安全</Title>}
+              desc={<Text
+                strong>平台致力于提供稳定和安全的接口调用服务，采用了安全措施和技术手段，保障用户数据的安全性和隐私保护。</Text>}
             />
           </div>
         </div>
       </Card>
-    </PageContainer>
+    </>
   );
 };
 

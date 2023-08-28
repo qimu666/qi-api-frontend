@@ -3,7 +3,6 @@ import {
   updateInterfaceInfoUsingPOST,
 } from '@/services/qiApi-backend/interfaceInfoController';
 import {useParams} from '@@/exports';
-import {PageContainer} from '@ant-design/pro-components';
 import {Badge, Card, Descriptions, DescriptionsProps, Divider, Input, message, Spin, Tag,} from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import React, {useEffect, useState} from 'react';
@@ -16,8 +15,9 @@ const methodColorMap: any = {
 };
 
 const statusEnum: any = {
-  0: '已下线',
+  0: '审核中',
   1: '已上线',
+  2: '已下线'
 };
 export const handleUpdate = async (fields: API.InterfaceInfoUpdateRequest) => {
   const hide = message.loading('Configuring');
@@ -40,6 +40,7 @@ const InterfaceInfo: React.FC = () => {
   const [responseLoading, setResponseLoading] = useState(false);
 
   const id = params.id;
+
   const loadedData = async () => {
     if (!params.id) {
       message.error('参数不存在');
@@ -47,14 +48,15 @@ const InterfaceInfo: React.FC = () => {
     }
     setLoading(true);
     try {
-      const res = await getInterfaceInfoByIdUsingGET({id: Number(id)});
+      // @ts-ignore
+      const res = await getInterfaceInfoByIdUsingGET({id: id});
       if (res.data && res.code === 0) {
         setDate(res.data || {});
       }
+      setLoading(false);
     } catch (e: any) {
       message.error(e.message);
     }
-    setLoading(false);
   };
   const copyable = (value: any) => {
     return value && value.length > 0;
@@ -91,11 +93,14 @@ const InterfaceInfo: React.FC = () => {
       label: '接口状态',
       children: (
         <p>
+          {data && data.status === 0 ? (
+            <Badge status="default" text={statusEnum[data.status]}/>
+          ) : null}
           {data && data.status === 1 ? (
             <Badge status="processing" text={statusEnum[data.status]}/>
           ) : null}
-          {data && data.status === 0 ? (
-            <Badge status="processing" text={statusEnum[data.status]}/>
+          {data && data.status === 2 ? (
+            <Badge status="error" text={statusEnum[data.status]}/>
           ) : null}
         </p>
       ),
@@ -152,7 +157,7 @@ const InterfaceInfo: React.FC = () => {
     loadedData();
   }, []);
   return (
-    <PageContainer loading={loading}>
+    <Spin spinning={loading}>
       <Card title={'我的打卡信息'} hoverable={true}>
         {data ? (
           <Descriptions column={{xxl: 2, xl: 2, lg: 2, md: 1, sm: 1, xs: 1}} items={items}/>
@@ -190,7 +195,7 @@ const InterfaceInfo: React.FC = () => {
           </Spin>
         </div>
       </Card>
-    </PageContainer>
+    </Spin>
   );
 };
 

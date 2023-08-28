@@ -1,46 +1,64 @@
-import {useModel} from '@umijs/max';
-import {Button, Descriptions, message, Modal, Upload, UploadFile, UploadProps} from 'antd';
+import {history, useModel} from '@umijs/max';
+import {Button, Descriptions, message, Modal, Spin, Upload, UploadFile, UploadProps} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {RcFile} from "antd/es/upload";
 import {EditOutlined, PlusOutlined, VerticalAlignBottomOutlined} from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
-import {updateUserUsingPOST} from "@/services/qiApi-backend/userController";
+import {
+  getLoginUserUsingGET,
+  updateUserUsingPOST,
+  updateVoucherUsingPOST
+} from "@/services/qiApi-backend/userController";
 import Settings from '../../../../config/defaultSettings';
 import Paragraph from "antd/lib/typography/Paragraph";
 import ProCard from "@ant-design/pro-card";
-import {PageContainer} from "@ant-design/pro-components";
+import {requestConfig} from "@/requestConfig";
 
 export const valueLength = (val: any) => {
-  return val && val.length > 0
+  return val && val.trim().length > 0
 }
 const UserInfo: React.FC = () => {
   const unloadFileTypeList = ["jpeg", "jpg", "svg", "png", "webp"]
   const {initialState, setInitialState} = useModel('@@initialState');
   const {loginUser} = initialState || {}
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [voucherLoading, setVoucherLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const handleCancel = () => setPreviewOpen(false);
-  const [user, setUser] = useState<API.UserVO>();
+  const [userName, setUserName] = useState<string | undefined>('');
+
+  const loadData = async () => {
+    setLoading(true)
+    const res = await getLoginUserUsingGET();
+    if (res.data && res.code === 0) {
+      setInitialState({loginUser: res.data, settings: Settings})
+      const updatedFileList = [...fileList];
+      if (loginUser && loginUser.userAvatar) {
+        updatedFileList[0] = {
+          // @ts-ignore
+          uid: loginUser?.userAccount,
+          // @ts-ignore
+          name: loginUser?.userAvatar?.substring(loginUser?.userAvatar!.lastIndexOf('-') + 1),
+          status: "success",
+          percent: 100,
+          url: loginUser?.userAvatar
+        }
+        setFileList(updatedFileList);
+      }
+      setUserName(loginUser?.userName)
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
-      setLoading(true)
-      const updatedFileList = [...fileList];
-      updatedFileList[0] = {
-        // @ts-ignore
-        uid: loginUser?.userAccount,
-        // @ts-ignore
-        name: loginUser?.userAvatar?.substring(loginUser?.userAvatar!.lastIndexOf('-') + 1),
-        status: "success",
-        percent: 100,
-        url: loginUser?.userAvatar
-      }
-      setFileList(updatedFileList);
-      setLoading(false)
+      loadData()
+
     },
     [])
+
 
   const getBase64 = (file: RcFile): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -80,10 +98,24 @@ const UserInfo: React.FC = () => {
     return isJpgOrPng && isLt2M;
   };
 
+  const updateVoucher = async () => {
+    setVoucherLoading(true)
+    const res = await updateVoucherUsingPOST();
+    if (res.data && res.code === 0) {
+      setInitialState({loginUser: res.data, settings: Settings})
+      setTimeout(() => {
+        message.success(`凭证更新成功`);
+        setVoucherLoading(false)
+      }, 800);
+    }
+  }
+
   const updateUserInfo = async () => {
     const res = await updateUserUsingPOST({
       // @ts-ignore
-      userAvatar: fileList[0].url
+      userAvatar: fileList[0].url,
+      id: loginUser?.id,
+      userName: userName
     })
     if (res.data && res.code === 0) {
       setInitialState({loginUser: res.data, settings: Settings})
@@ -93,16 +125,28 @@ const UserInfo: React.FC = () => {
 
   const props: UploadProps = {
     name: 'file',
-    action: 'http://localhost:7529/api/file/upload?biz=user_avatar',
+    withCredentials: true,
+    action: `${requestConfig.baseURL}api/file/upload?biz=user_avatar`,
     onChange: async function ({file, fileList: newFileList}) {
       const {response} = file;
       if (file.response && response.data) {
         const {data: {status, url}} = response
-        if (status === 'error') {
+        const updatedFileList = [...fileList];
+        if (response.code !== 0 || status === 'error') {
           message.error(`头像更新失败`);
+          file.status = "error"
+          updatedFileList[0] = {
+            // @ts-ignore
+            uid: loginUser?.userAccount,
+            // @ts-ignore
+            name: loginUser?.userAvatar?.substring(loginUser?.userAvatar!.lastIndexOf('-') + 1),
+            status: "error",
+            percent: 100
+          }
+          setFileList(updatedFileList);
+          return
         }
         file.status = status
-        const updatedFileList = [...fileList];
         updatedFileList[0] = {
           // @ts-ignore
           uid: loginUser?.userAccount,
@@ -132,9 +176,8 @@ const UserInfo: React.FC = () => {
     },
   };
 
-
   return (
-    <PageContainer loading={loading}>
+    <Spin spinning={loading}>
       <ProCard
         type="inner"
         bordered
@@ -143,77 +186,104 @@ const UserInfo: React.FC = () => {
         <ProCard
           extra={<Button size={"large"} onClick={updateUserInfo}>提交修改</Button>
           }
-          title={"个人信息设置"}
+          title={<strong>个人信息设置</strong>}
           type="inner"
           bordered
         >
+          <Descriptions.Item>
+            <ImgCrop
+              rotationSlider
+              quality={1}
+              aspectSlider
+              maxZoom={4}
+              cropShape={"round"}
+              zoomSlider
+              showReset
+            >
+              <Upload {...props}>
+                {fileList.length >= 1 ? undefined : uploadButton()}
+              </Upload>
+            </ImgCrop>
+            <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+              <img alt="example" style={{width: '100%'}} src={previewImage}/>
+            </Modal>
+          </Descriptions.Item>
           <Descriptions column={1}>
-            <Descriptions.Item label="昵称">
+            <div>
+              <h4>昵称：</h4>
               <Paragraph
                 editable={
                   {
                     icon: <EditOutlined/>,
                     tooltip: '编辑',
                     onChange: (value) => {
-                      setUser({userName: value})
+                      setUserName(value)
                     }
                   }
                 }
               >
-                {user?.userName}
+                {userName}
               </Paragraph>
-            </Descriptions.Item>
-            <Descriptions.Item label="头像">
-              <ImgCrop
-                rotationSlider
-                quality={1}
-                aspectSlider
-                maxZoom={4}
-                cropShape={"round"}
-                zoomSlider
-                showReset
+            </div>
+            <div>
+              <h4>我的id：</h4>
+              <Paragraph
+                copyable={valueLength(loginUser?.id)}
               >
-                <Upload {...props}>
-                  {fileList.length >= 1 ? undefined : uploadButton()}
-                </Upload>
-              </ImgCrop>
-              <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
-                <img alt="example" style={{width: '100%'}} src={previewImage}/>
-              </Modal>
-            </Descriptions.Item>
+                {loginUser?.id}
+              </Paragraph>
+            </div>
           </Descriptions>
         </ProCard>
         <br/>
-
+        <ProCard type={"inner"} bordered tooltip={"用于平台接口调用"} title={<strong>我的钱包</strong>}
+                 extra={<Button onClick={() => {
+                   history.push("/recharge")
+                 }}>充值余额</Button>}>
+          <strong>坤币 💰: </strong> <span
+          style={{color: "red", fontSize: 18}}>{loginUser?.balance}</span>
+        </ProCard>
+        <br/>
         <ProCard
           bordered
           type="inner"
           title={"开发者凭证（调用接口的凭证）"}
-          extra={<Button>更换凭证</Button>}
+          extra={
+            <Button
+              loading={voucherLoading}
+              onClick={updateVoucher}>{(loginUser?.accessKey && loginUser?.secretKey) ? "更新" : "生成"}凭证</Button>
+          }
         >
-          <Descriptions column={1}>
-            <Descriptions.Item label="AccessKey">
-              <Paragraph copyable={valueLength(loginUser?.accessKey)}>
-                {loginUser?.accessKey}
-              </Paragraph>
-            </Descriptions.Item>
-            <Descriptions.Item label="SecretKey">
-              <Paragraph copyable={valueLength(loginUser?.secretKey)}>
-                {loginUser?.secretKey}
-              </Paragraph>
-            </Descriptions.Item>
-          </Descriptions>
+          {
+            (loginUser?.accessKey && loginUser?.secretKey) ? (
+              <Descriptions column={1}>
+                <Descriptions.Item label="AccessKey">
+                  <Paragraph copyable={valueLength(loginUser?.accessKey)}>
+                    {loginUser?.accessKey}
+                  </Paragraph>
+                </Descriptions.Item>
+                <Descriptions.Item label="SecretKey">
+                  <Paragraph copyable={valueLength(loginUser?.secretKey)}>
+                    {loginUser?.secretKey}
+                  </Paragraph>
+                </Descriptions.Item>
+              </Descriptions>) : "暂无凭证,请先生成凭证"
+          }
         </ProCard>
         <br/>
         <ProCard
           type="inner"
-          title={"开发者 SDK（快速接入API接口）"}
+          title={<strong>开发者 SDK（快速接入API接口）</strong>}
           bordered
         >
-          <Button size={"large"}><VerticalAlignBottomOutlined/> Java SDK</Button>
+          <Button size={"large"}>
+            {/*todo 更改地址*/}
+            <a target={"_blank"} href={"https://github.com/qimu666"}
+               rel="noreferrer"><VerticalAlignBottomOutlined/> Java SDK</a>
+          </Button>
         </ProCard>
       </ProCard>
-    </PageContainer>
+    </Spin>
   );
 };
 

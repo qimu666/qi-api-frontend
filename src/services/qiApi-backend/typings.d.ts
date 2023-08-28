@@ -23,9 +23,9 @@ declare namespace API {
     message?: string;
   };
 
-  type BaseResponseListPost = {
+  type BaseResponseListProductInfo = {
     code?: number;
-    data?: Post[];
+    data?: ProductInfo[];
     message?: string;
   };
 
@@ -47,9 +47,9 @@ declare namespace API {
     message?: string;
   };
 
-  type BaseResponsePagePost = {
+  type BaseResponsePageProductInfo = {
     code?: number;
-    data?: PagePost;
+    data?: PageProductInfo;
     message?: string;
   };
 
@@ -59,9 +59,15 @@ declare namespace API {
     message?: string;
   };
 
-  type BaseResponsePost = {
+  type BaseResponseProductInfo = {
     code?: number;
-    data?: Post;
+    data?: ProductInfo;
+    message?: string;
+  };
+
+  type BaseResponseProductOrderVo = {
+    code?: number;
+    data?: ProductOrderVo;
     message?: string;
   };
 
@@ -86,7 +92,7 @@ declare namespace API {
     id?: number;
   };
 
-  type getPostByIdUsingGETParams = {
+  type getProductInfoByIdUsingGETParams = {
     /** id */
     id?: number;
   };
@@ -109,7 +115,7 @@ declare namespace API {
 
   type InterfaceInfo = {
     createTime?: string;
-    description: string;
+    description?: string;
     id?: number;
     isDelete?: number;
     method?: string;
@@ -119,9 +125,11 @@ declare namespace API {
     requestParams?: string;
     responseHeader?: string;
     status?: number;
+    total?: number;
     updateTime?: string;
     url?: string;
     userId?: number;
+    userVO?: UserVO;
   };
 
   type InterfaceInfoAddRequest = {
@@ -132,6 +140,7 @@ declare namespace API {
     requestHeader?: string;
     requestParams?: string;
     responseHeader?: string;
+    total?: number;
     url?: string;
   };
 
@@ -145,6 +154,7 @@ declare namespace API {
     requestParams?: string;
     responseHeader?: string;
     status?: number;
+    total?: number;
     url?: string;
   };
 
@@ -182,37 +192,37 @@ declare namespace API {
     userId?: number;
   };
 
-  type listPostByPageUsingGETParams = {
-    age?: number;
-    contact?: string;
-    content?: string;
+  type listProductInfoByPageUsingGETParams = {
     current?: number;
-    education?: string;
-    gender?: number;
-    job?: string;
-    loveExp?: string;
+    description?: string;
+    expirationTime?: string;
+    name?: string;
     pageSize?: number;
-    place?: string;
-    reviewStatus?: number;
+    productType?: string;
     sortField?: string;
     sortOrder?: string;
+    total?: number;
     userId?: number;
   };
 
-  type listPostUsingGETParams = {
-    age?: number;
-    contact?: string;
-    content?: string;
+  type listProductInfoBySearchTextPageUsingGETParams = {
     current?: number;
-    education?: string;
-    gender?: number;
-    job?: string;
-    loveExp?: string;
     pageSize?: number;
-    place?: string;
-    reviewStatus?: number;
+    searchText?: string;
     sortField?: string;
     sortOrder?: string;
+  };
+
+  type listProductInfoUsingGETParams = {
+    current?: number;
+    description?: string;
+    expirationTime?: string;
+    name?: string;
+    pageSize?: number;
+    productType?: string;
+    sortField?: string;
+    sortOrder?: string;
+    total?: number;
     userId?: number;
   };
 
@@ -342,14 +352,14 @@ declare namespace API {
     total?: number;
   };
 
-  type PagePost = {
+  type PageProductInfo = {
     countId?: string;
     current?: number;
     maxLimit?: number;
     optimizeCountSql?: boolean;
     orders?: OrderItem[];
     pages?: number;
-    records?: Post[];
+    records?: ProductInfo[];
     searchCount?: boolean;
     size?: number;
     total?: number;
@@ -368,52 +378,59 @@ declare namespace API {
     total?: number;
   };
 
-  type Post = {
-    age?: number;
-    contact?: string;
-    content?: string;
+  type PayCreateRequest = {
+    payType?: string;
+    productId?: string;
+  };
+
+  type ProductInfo = {
+    addPoints?: number;
     createTime?: string;
-    education?: string;
-    gender?: number;
+    description?: string;
+    expirationTime?: string;
     id?: number;
     isDelete?: number;
-    job?: string;
-    loveExp?: string;
-    photo?: string;
-    place?: string;
-    reviewMessage?: string;
-    reviewStatus?: number;
-    thumbNum?: number;
+    name?: string;
+    productType?: string;
+    total?: number;
     updateTime?: string;
     userId?: number;
-    viewNum?: number;
   };
 
-  type PostAddRequest = {
-    age?: number;
-    contact?: string;
-    content?: string;
-    education?: string;
-    gender?: number;
-    job?: string;
-    loveExp?: string;
-    photo?: string;
-    place?: string;
+  type ProductInfoAddRequest = {
+    description?: string;
+    expirationTime?: string;
+    name?: string;
+    productType?: string;
+    total?: number;
   };
 
-  type PostUpdateRequest = {
-    age?: number;
-    contact?: string;
-    content?: string;
-    education?: string;
-    gender?: number;
+  type ProductInfoUpdateRequest = {
+    description?: string;
+    expirationTime?: string;
     id?: number;
-    job?: string;
-    loveExp?: string;
-    photo?: string;
-    place?: string;
-    reviewMessage?: string;
-    reviewStatus?: number;
+    name?: string;
+    productType?: string;
+    total?: number;
+  };
+
+  type ProductOrderQueryRequest = {
+    orderNo?: string;
+  };
+
+  type ProductOrderVo = {
+    addPoints?: number;
+    codeUrl?: string;
+    expirationTime?: string;
+    formData?: string;
+    id?: number;
+    orderName?: string;
+    orderNo?: string;
+    payType?: string;
+    productId?: number;
+    productInfo?: ProductInfo;
+    status?: string;
+    total?: number;
   };
 
   type uploadFileUsingPOSTParams = {
@@ -422,6 +439,7 @@ declare namespace API {
 
   type User = {
     accessKey?: string;
+    balance?: number;
     createTime?: string;
     gender?: number;
     id?: number;
@@ -468,6 +486,7 @@ declare namespace API {
 
   type UserVO = {
     accessKey?: string;
+    balance?: number;
     createTime?: string;
     gender?: number;
     id?: number;

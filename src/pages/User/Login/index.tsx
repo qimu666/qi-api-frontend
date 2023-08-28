@@ -65,8 +65,6 @@ const Login: React.FC = () => {
           history.push(urlParams.get('redirect') || '/');
         }, 100);
         setInitialState({loginUser: res.data, settings: Settings});
-      } else {
-        message.error(res.message);
       }
     } catch (error) {
       const defaultLoginFailureMessage = '登录失败，请重试！';

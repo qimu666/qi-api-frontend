@@ -3,10 +3,13 @@ import {
   listInterfaceInfoBySearchTextPageUsingGET,
 } from '@/services/qiApi-backend/interfaceInfoController';
 import {Link} from '@@/exports';
-import {PageContainer} from '@ant-design/pro-components';
+import {history} from '@umijs/max';
+
 import {Button, Card, Input} from 'antd';
 import VirtualList from 'rc-virtual-list';
 import React, {useEffect, useState} from 'react';
+import {valueLength} from "@/pages/User/UserInfo";
+import ProCard from "@ant-design/pro-card";
 
 const ContainerHeight = 760;
 
@@ -14,6 +17,8 @@ const InterfaceSquare: React.FC = () => {
   const [data, setData] = useState<API.InterfaceInfo[]>([]);
   const [current, setCurrent] = useState<number>(1);
   const [searchText, setSearchText] = useState<string>('');
+  const [loading, setLoading] = useState(false);
+
 
   const appendData = async () => {
     const res = await listInterfaceInfoByPageUsingGET({
@@ -47,7 +52,7 @@ const InterfaceSquare: React.FC = () => {
     }
   };
   return (
-    <PageContainer>
+    <>
       <Card>
         <div style={{display: 'flex', justifyContent: 'center', justifyItems: 'center'}}>
           <Input.Search
@@ -77,36 +82,39 @@ const InterfaceSquare: React.FC = () => {
         </div>
       </Card>
       <br/>
-      <Card>
-        <VirtualList
-          data={data}
-          height={ContainerHeight}
-          itemHeight={1000}
-          itemKey="email"
-          onScroll={onScroll}
-        >
-          {(item: API.InterfaceInfo) => (
-            <Card
-              key={item.id}
-              title={
-                <Link key={item.id} to={`/interface_info/${item.id}`}>
-                  {item.name}
-                </Link>
-              }
-              bordered
-              hoverable
-              extra={<Button type={'primary'}>获取</Button>}
-            >
-              {item?.description.trim().length <= 0
-                ? '暂无描述信息'
-                : item?.description.length > 50
-                  ? item.description?.slice(0, 50) + '...'
-                  : item.description}
-            </Card>
-          )}
-        </VirtualList>
-      </Card>
-    </PageContainer>
+      <ProCard>{
+        data && data.length > 0 ?
+          <VirtualList
+            data={data}
+            height={ContainerHeight}
+            itemHeight={1000}
+            itemKey="email"
+            onScroll={onScroll}
+          >
+            {(item: API.InterfaceInfo) => (
+              <ProCard
+                type={"inner"}
+                key={item.id}
+                title={
+                  <Link key={item.id} to={`/interface_info/${item.id}`}>
+                    {item.name}
+                  </Link>
+                }
+                bordered
+                extra={<Button type={'primary'} onClick={() => {
+                  history.push(`/pay`)
+                }}>获取</Button>}
+              >
+                {valueLength(item?.description) <= 0
+                  ? '暂无描述信息'
+                  : valueLength(item?.description).length > 50
+                    ? item.description?.slice(0, 50) + '...'
+                    : item.description}
+              </ProCard>
+            )}
+          </VirtualList> : <p>未找到该接口</p>}
+      </ProCard>
+    </>
   );
 };
 

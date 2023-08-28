@@ -6,14 +6,15 @@ import React, {useEffect, useRef} from 'react';
 
 export type Props = {
   value?: API.InterfaceInfo;
+  title: string
   open: () => boolean;
   onOpenChange: React.Dispatch<React.SetStateAction<boolean>>;
   onCancel: () => void;
   onSubmit: (values: API.InterfaceInfo) => Promise<void>;
 };
-const MYModalForm: React.FC<Props> = (props) => {
+const MyModalForm: React.FC<Props> = (props) => {
   const formRef = useRef<ProFormInstance>();
-  const {open, onOpenChange, value, onSubmit} = props;
+  const {open, onOpenChange, title, value, onSubmit} = props;
   useEffect(() => {
     if (formRef) {
       formRef.current?.setFieldsValue(value);
@@ -22,7 +23,7 @@ const MYModalForm: React.FC<Props> = (props) => {
   return (
     <ModalForm
       formRef={formRef}
-      title={'添加接口'}
+      title={title}
       width="740px"
       open={open()}
       autoFocusFirstInput
@@ -110,4 +111,4 @@ const MYModalForm: React.FC<Props> = (props) => {
   );
 };
 
-export default MYModalForm;
+export default MyModalForm;
