@@ -84,6 +84,12 @@ const Register: React.FC = () => {
         }}
       >
         <LoginForm
+          submitter={
+            {
+              searchConfig: {
+                submitText: "注册"
+              }
+            }}
           contentStyle={{
             minWidth: 280,
             maxWidth: '75vw',

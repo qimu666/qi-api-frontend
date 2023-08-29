@@ -2,10 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {Button, Card, message, Spin, Tooltip} from "antd";
 import ProCard, {CheckCard} from "@ant-design/pro-card";
 import KunCoin from "@/components/Icon/KunCoin";
-import {useModel} from "@umijs/max";
+import {history, useModel} from "@umijs/max";
 import {listProductInfoByPageUsingGET} from "@/services/qiApi-backend/productInfoController";
 import wechat from "../../../public/assets/WeChat.jpg";
-import {history} from '@umijs/max';
 
 const PayOrder: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -71,14 +70,26 @@ const PayOrder: React.FC = () => {
                       setProductId(item.id)
                     }}
                     description={item.description}
-                    extra={<h3
-                      // @ts-ignore
-                      style={{color: "red", fontSize: 18, fontWeight: "bold"}}>￥ {(item?.total) / 100}</h3>}
+                    extra={
+                      <>
+                        <h3
+                          // @ts-ignore
+                          style={{
+                            color: "red",
+                            fontSize: item.productType === "EXPERIENCE" ? 16 : 18,
+                            fontWeight: "bold"
+                          }
+                          }>￥
+                          {item.productType === "EXPERIENCE" ? "体验 " : null}
+                          {/*// @ts-ignore*/}
+                          {(item?.total) / 100}
+                        </h3>
+                      </>
+                    }
                     // @ts-ignore
                     actions={<><KunCoin></KunCoin></>}
                     style={{width: 220, height: 330}}
                     title={<strong>💰 {item.addPoints} 坤币</strong>} value={item.total}/>
-
                 ))}
               </CheckCard.Group>
             </ProCard>
@@ -106,10 +117,10 @@ const PayOrder: React.FC = () => {
                   message.error("请先选择积分规格哦")
                   return
                 }
-                message.loading("正在前往收银台,请稍后.....",0.8)
-                setTimeout(()=>{
+                message.loading("正在前往收银台,请稍后.....", 0.8)
+                setTimeout(() => {
                   history.push(`/pay/${productId}`)
-                },1000)
+                }, 1000)
               }} size={"large"} type={"primary"}>立即购买</Button>
             </div>
           </ProCard>

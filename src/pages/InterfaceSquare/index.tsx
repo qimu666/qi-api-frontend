@@ -5,7 +5,7 @@ import {
 import {Link} from '@@/exports';
 import {history} from '@umijs/max';
 
-import {Button, Card, Input} from 'antd';
+import {Button, Card, Empty, Input} from 'antd';
 import VirtualList from 'rc-virtual-list';
 import React, {useEffect, useState} from 'react';
 import {valueLength} from "@/pages/User/UserInfo";
@@ -112,7 +112,7 @@ const InterfaceSquare: React.FC = () => {
                     : item.description}
               </ProCard>
             )}
-          </VirtualList> : <p>未找到该接口</p>}
+          </VirtualList> : <Empty/>}
       </ProCard>
     </>
   );

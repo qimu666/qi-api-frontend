@@ -9,7 +9,7 @@ const Settings: ProLayoutProps & {
   colorPrimary: "#1677FF",
   layout: 'top',
   contentWidth: 'Fluid',
-  fixedHeader: false,
+  fixedHeader: true,
   fixSiderbar: true,
   colorWeak: false,
   splitMenus: false,

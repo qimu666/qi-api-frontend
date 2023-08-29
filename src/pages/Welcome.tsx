@@ -1,4 +1,3 @@
-import {PageContainer} from '@ant-design/pro-components';
 import {useModel} from '@umijs/max';
 import {Card, theme, Typography} from 'antd';
 import React from 'react';
