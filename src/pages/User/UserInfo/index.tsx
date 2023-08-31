@@ -1,5 +1,5 @@
 import {history, useModel} from '@umijs/max';
-import {Button, Descriptions, message, Modal, Spin, Upload, UploadFile, UploadProps} from 'antd';
+import {Button, Descriptions, message, Modal, Spin, Tooltip, Upload, UploadFile, UploadProps} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {RcFile} from "antd/es/upload";
 import {EditOutlined, PlusOutlined, VerticalAlignBottomOutlined} from "@ant-design/icons";
@@ -13,6 +13,7 @@ import Settings from '../../../../config/defaultSettings';
 import Paragraph from "antd/lib/typography/Paragraph";
 import ProCard from "@ant-design/pro-card";
 import {requestConfig} from "@/requestConfig";
+import {doDailyCheckInUsingPOST} from "@/services/qiApi-backend/dailyCheckInController";
 
 export const valueLength = (val: any) => {
   return val && val.trim().length > 0
@@ -23,6 +24,7 @@ const UserInfo: React.FC = () => {
   const {loginUser} = initialState || {}
   const [previewOpen, setPreviewOpen] = useState(false);
   const [voucherLoading, setVoucherLoading] = useState<boolean>(false);
+  const [dailyCheckInLoading, setDailyCheckInLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
@@ -237,9 +239,37 @@ const UserInfo: React.FC = () => {
         </ProCard>
         <br/>
         <ProCard type={"inner"} bordered tooltip={"用于平台接口调用"} title={<strong>我的钱包</strong>}
-                 extra={<Button onClick={() => {
-                   history.push("/recharge")
-                 }}>充值余额</Button>}>
+                 extra={
+                   <>
+                     <Button loading={dailyCheckInLoading}
+                             style={{marginRight: 10}} type={"primary"} onClick={async () => {
+                       setDailyCheckInLoading(true)
+                       const res = await doDailyCheckInUsingPOST()
+                       if (res.data && res.code === 0) {
+                         const res = await getLoginUserUsingGET();
+                         if (res.data && res.code === 0) {
+                           setInitialState({loginUser: res.data, settings: Settings})
+                         }
+                         message.success("签到成功")
+                       }
+                       setTimeout(() => {
+                         setDailyCheckInLoading(false)
+                       }, 2000)
+                     }}>
+                       <Tooltip title={<>
+                         <p>每日签到可获取10积分</p>
+                         {/*<p>普通用户上限100</p>*/}
+                         {/*<p>VPI会员上限1000</p>*/}
+                       </>}>
+                         每日签到
+                       </Tooltip>
+                     </Button>
+                     <Button onClick={() => {
+                       history.push("/recharge")
+                     }}>充值余额</Button>
+                   </>
+                 }
+        >
           <strong>坤币 💰: </strong> <span
           style={{color: "red", fontSize: 18}}>{loginUser?.balance}</span>
         </ProCard>
@@ -277,8 +307,7 @@ const UserInfo: React.FC = () => {
           bordered
         >
           <Button size={"large"}>
-            {/*todo 更改地址*/}
-            <a target={"_blank"} href={"https://github.com/qimu666"}
+            <a target={"_blank"} href={"https://github.com/qimu666/api-frontend"}
                rel="noreferrer"><VerticalAlignBottomOutlined/> Java SDK</a>
           </Button>
         </ProCard>

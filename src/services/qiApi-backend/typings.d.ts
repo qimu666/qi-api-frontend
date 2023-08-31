@@ -398,6 +398,7 @@ declare namespace API {
   };
 
   type ProductInfoAddRequest = {
+    addPoints?: number;
     description?: string;
     expirationTime?: string;
     name?: string;
@@ -406,6 +407,7 @@ declare namespace API {
   };
 
   type ProductInfoUpdateRequest = {
+    addPoints?: number;
     description?: string;
     expirationTime?: string;
     id?: number;

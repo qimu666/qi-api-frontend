@@ -36,9 +36,15 @@ export default [
     routes: [
       {
         name: '接口管理',
-        icon: 'table',
+        icon: 'ApiOutlined',
         path: '/admin/interface/list',
         component: './Admin/InterfaceInfoList',
+      },
+      {
+        name: '商品管理',
+        icon: 'table',
+        path: '/admin/productInfo/list',
+        component: './Admin/ProductInfo',
       },
     ],
   },

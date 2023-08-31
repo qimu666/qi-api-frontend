@@ -3,9 +3,8 @@ import {
   listInterfaceInfoBySearchTextPageUsingGET,
 } from '@/services/qiApi-backend/interfaceInfoController';
 import {Link} from '@@/exports';
-import {history} from '@umijs/max';
 
-import {Button, Card, Empty, Input} from 'antd';
+import {Button, Card, Empty, Input, message} from 'antd';
 import VirtualList from 'rc-virtual-list';
 import React, {useEffect, useState} from 'react';
 import {valueLength} from "@/pages/User/UserInfo";
@@ -17,8 +16,6 @@ const InterfaceSquare: React.FC = () => {
   const [data, setData] = useState<API.InterfaceInfo[]>([]);
   const [current, setCurrent] = useState<number>(1);
   const [searchText, setSearchText] = useState<string>('');
-  const [loading, setLoading] = useState(false);
-
 
   const appendData = async () => {
     const res = await listInterfaceInfoByPageUsingGET({
@@ -102,7 +99,9 @@ const InterfaceSquare: React.FC = () => {
                 }
                 bordered
                 extra={<Button type={'primary'} onClick={() => {
-                  history.push(`/pay`)
+                  // history.push(`/pay`)
+                  // todo 接口调用
+                  message.loading("开发中..")
                 }}>获取</Button>}
               >
                 {valueLength(item?.description) <= 0

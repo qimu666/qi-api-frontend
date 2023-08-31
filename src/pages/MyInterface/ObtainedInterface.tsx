@@ -1,6 +1,5 @@
 import React, {useRef, useState} from "react";
-import {Button, message, Popconfirm} from "antd";
-import {PlusOutlined} from "@ant-design/icons";
+import {message, Popconfirm} from "antd";
 import {
   addInterfaceInfoUsingPOST,
   deleteInterfaceInfoUsingPOST,
@@ -8,8 +7,8 @@ import {
   updateInterfaceInfoUsingPOST
 } from "@/services/qiApi-backend/interfaceInfoController";
 import {ActionType, ProColumns, ProTable} from "@ant-design/pro-components";
-import InterfaceInfoColumns from "@/pages/Admin/InterfaceInfoList/components/InterfaceInfoColumns";
-import MyModalForm from "@/pages/Admin/InterfaceInfoList/components/MyModalForm";
+import InterfaceInfoColumns from "@/pages/Admin/components/InterfaceInfoColumns";
+import MyInterfaceModalForm from "@/pages/Admin/components/MyInterfaceModalForm";
 
 const ObtainedInterface: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -163,7 +162,7 @@ const ObtainedInterface: React.FC = () => {
       }}
       columns={columns}
     />
-    <MyModalForm
+    <MyInterfaceModalForm
       title={"添加接口"}
       value={{}}
       open={() => {
@@ -181,7 +180,7 @@ const ObtainedInterface: React.FC = () => {
       }}
       onCancel={() => handleModalOpen(false)}
     />
-    <MyModalForm
+    <MyInterfaceModalForm
       title={"修改接口"}
       open={() => {
         return updateModalOpen;

@@ -45,6 +45,9 @@ export async function getInitialState(): Promise<InitialState> {
 export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => {
 
   return {
+    waterMarkProps: {
+      content: initialState?.loginUser?.userName,
+    },
     footerRender: () => <>
       <Footer/>
       <FloatButton.Group
@@ -91,7 +94,6 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
         />
       </FloatButton.Group>
     </>,
-    // actionsRender: () => [<Release key="interface"/>],
     avatarProps: {
       src: initialState?.loginUser?.userAvatar,
       icon: valueLength(initialState?.loginUser?.userAvatar) ??
@@ -101,9 +103,7 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>
       },
     },
-    waterMarkProps: {
-      content: initialState?.loginUser?.userName,
-    },
+
     onPageChange: () => {
       // getInitialState();
       const {location} = history;

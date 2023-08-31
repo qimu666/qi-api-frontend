@@ -12,11 +12,16 @@ export type Props = {
   onCancel: () => void;
   onSubmit: (values: API.InterfaceInfo) => Promise<void>;
 };
-const MyModalForm: React.FC<Props> = (props) => {
+const MyInterfaceModalForm: React.FC<Props> = (props) => {
   const formRef = useRef<ProFormInstance>();
   const {open, onOpenChange, title, value, onSubmit} = props;
   useEffect(() => {
-    if (formRef) {
+    // 添加的时候id不存在,可以根据id清空表单
+    const isAdd = !value?.id
+    if (isAdd) {
+      formRef.current?.resetFields()
+    }
+    if (formRef && !isAdd) {
       formRef.current?.setFieldsValue(value);
     }
   }, [value]);
@@ -111,4 +116,4 @@ const MyModalForm: React.FC<Props> = (props) => {
   );
 };
 
-export default MyModalForm;
+export default MyInterfaceModalForm;

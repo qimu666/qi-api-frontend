@@ -4,6 +4,7 @@ import React, {useState} from 'react';
 import ObtainedInterface from "@/pages/MyInterface/ObtainedInterface";
 import UploadInterface from "@/pages/MyInterface/UploadInterface";
 
+// todo 重新修改
 const MyInterface: React.FC = () => {
   const [tabKey, setTabKey] = useState<string>('1');
 

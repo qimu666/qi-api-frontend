@@ -4,7 +4,6 @@ import '@umijs/max';
 import React from 'react';
 import {Tooltip} from "antd";
 import wechat from '@/../public/assets/WeChat.jpg';
-import LightColor from "@/components/Icon/LightColor";
 
 const Footer: React.FC = () => {
   const defaultMessage = '柒木工作室出品';
@@ -34,7 +33,7 @@ const Footer: React.FC = () => {
               <GithubOutlined/> 支持项目
             </Tooltip>
           ),
-          href: 'https://github.com/qimu666',
+          href: 'https://github.com/qimu666/api-frontend',
           blankTarget: true,
         },
         {
@@ -44,7 +43,7 @@ const Footer: React.FC = () => {
               <WechatOutlined/> 联系作者
             </Tooltip>
           ),
-          href: 'https://github.com/qimu666',
+          href: 'https://img.qimuu.icu/typory/WeChat.jpg',
           blankTarget: true,
         },
         {
