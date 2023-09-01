@@ -41,6 +41,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseobject = {
+    code?: number;
+    data?: Record<string, any>;
+    message?: string;
+  };
+
   type BaseResponsePageInterfaceInfo = {
     code?: number;
     data?: PageInterfaceInfo;
@@ -102,6 +108,11 @@ declare namespace API {
     id?: number;
   };
 
+  type getUserByInvitationCodeUsingPOSTParams = {
+    /** invitationCode */
+    invitationCode?: string;
+  };
+
   type IdRequest = {
     id?: number;
   };
@@ -156,6 +167,11 @@ declare namespace API {
     status?: number;
     total?: number;
     url?: string;
+  };
+
+  type InvokeRequest = {
+    id?: number;
+    userRequestParams?: string;
   };
 
   type listInterfaceInfoByPageUsingGETParams = {
@@ -445,6 +461,7 @@ declare namespace API {
     createTime?: string;
     gender?: number;
     id?: number;
+    invitationCode?: string;
     isDelete?: number;
     secretKey?: string;
     updateTime?: string;
@@ -470,7 +487,9 @@ declare namespace API {
   };
 
   type UserRegisterRequest = {
+    agreeToAnAgreement?: string;
     checkPassword?: string;
+    invitationCode?: string;
     userAccount?: string;
     userName?: string;
     userPassword?: string;
@@ -492,6 +511,7 @@ declare namespace API {
     createTime?: string;
     gender?: number;
     id?: number;
+    invitationCode?: string;
     secretKey?: string;
     updateTime?: string;
     userAccount?: string;

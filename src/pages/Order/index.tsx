@@ -7,8 +7,8 @@ import WxPay from "@/components/Icon/WxPay";
 import ProCard from "@ant-design/pro-card";
 import Alipay from "@/components/Icon/Alipay";
 import {valueLength} from "@/pages/User/UserInfo";
-import {createOrderUsingPOST, queryOrderStatusUsingPOST} from "@/services/qiApi-backend/payController";
 import {useParams} from "@@/exports";
+import {createOrderUsingPOST, queryOrderStatusUsingPOST} from "@/services/qiApi-backend/orderController";
 
 const PayOrder: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);

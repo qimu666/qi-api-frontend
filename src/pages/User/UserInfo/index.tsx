@@ -14,6 +14,7 @@ import Paragraph from "antd/lib/typography/Paragraph";
 import ProCard from "@ant-design/pro-card";
 import {requestConfig} from "@/requestConfig";
 import {doDailyCheckInUsingPOST} from "@/services/qiApi-backend/dailyCheckInController";
+import SendGiftModal from "@/components/Gift/SendGift";
 
 export const valueLength = (val: any) => {
   return val && val.trim().length > 0
@@ -31,6 +32,7 @@ const UserInfo: React.FC = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const handleCancel = () => setPreviewOpen(false);
   const [userName, setUserName] = useState<string | undefined>('');
+  const [open, setOpen] = useState(false);
 
   const loadData = async () => {
     setLoading(true)
@@ -60,7 +62,6 @@ const UserInfo: React.FC = () => {
 
     },
     [])
-
 
   const getBase64 = (file: RcFile): Promise<string> =>
     new Promise((resolve, reject) => {
@@ -235,12 +236,25 @@ const UserInfo: React.FC = () => {
                 {loginUser?.id}
               </Paragraph>
             </div>
+            <div>
+              <Tooltip title={"邀请好友注册双方都可获得100积分"}>
+                <h4>我的邀请码：</h4>
+              </Tooltip>
+              <Paragraph
+                copyable={valueLength(loginUser?.invitationCode)}
+              >
+                {loginUser?.invitationCode}
+              </Paragraph>
+            </div>
           </Descriptions>
         </ProCard>
         <br/>
         <ProCard type={"inner"} bordered tooltip={"用于平台接口调用"} title={<strong>我的钱包</strong>}
                  extra={
                    <>
+                     <Button style={{marginRight: 10}} type={"primary"} onClick={() => {
+                       setOpen(true)
+                     }}>邀请好友</Button>
                      <Button loading={dailyCheckInLoading}
                              style={{marginRight: 10}} type={"primary"} onClick={async () => {
                        setDailyCheckInLoading(true)
@@ -254,7 +268,7 @@ const UserInfo: React.FC = () => {
                        }
                        setTimeout(() => {
                          setDailyCheckInLoading(false)
-                       }, 2000)
+                       }, 1000)
                      }}>
                        <Tooltip title={<>
                          <p>每日签到可获取10积分</p>
@@ -312,6 +326,9 @@ const UserInfo: React.FC = () => {
           </Button>
         </ProCard>
       </ProCard>
+      <SendGiftModal invitationCode={loginUser?.invitationCode} onCancel={() => {
+        setOpen(false)
+      }} open={open}/>
     </Spin>
   );
 };

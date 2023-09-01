@@ -10,11 +10,18 @@ export default [
         path: '/user/register',
         component: './User/Register',
       },
+      {
+        name: '注册账号',
+        path: '/user/register/:id',
+        component: './User/Register',
+      },
     ],
   },
+  {path: '/:id', name: '欢迎', icon: 'smile', component: './Welcome'},
   {path: '/', name: '欢迎', icon: 'smile', component: './Welcome'},
+
   {path: '/interface', name: '接口广场', icon: 'RedditOutlined', component: './InterfaceSquare'},
-  {path: '/pay/:id', icon: "PayCircleOutlined", name: '支付', component: './Pay',hideInMenu: true,},
+  {path: '/order/pay/:id', icon: "PayCircleOutlined", name: '支付', component: './Order', hideInMenu: true,},
   {path: '/recharge', icon: "PayCircleOutlined", name: '购买积分', component: './Recharge'},
   {
     path: '/account/center', name: '个人信息', icon: 'UserOutlined', component: './User/UserInfo', hideInMenu: true,

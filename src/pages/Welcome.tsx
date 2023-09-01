@@ -1,7 +1,10 @@
 import {useModel} from '@umijs/max';
 import {Card, theme, Typography} from 'antd';
-import React from 'react';
-import {Link} from "@@/exports";
+import React, {useEffect, useState} from 'react';
+import {Link, useParams} from "@@/exports";
+import GetGiftModal from "@/components/Gift/GetGift";
+import {getUserByInvitationCodeUsingPOST} from "@/services/qiApi-backend/userController";
+
 
 const {Text, Title} = Typography;
 /**
@@ -17,7 +20,6 @@ const InfoCard: React.FC<{
 }> = ({title, index, desc}) => {
   const {useToken} = theme;
   const {token} = useToken();
-
   return (
     <div
       style={{
@@ -81,9 +83,25 @@ const InfoCard: React.FC<{
   );
 };
 
+
 const Welcome: React.FC = () => {
   const {token} = theme.useToken();
   const {initialState} = useModel('@@initialState');
+  const [open, setOpen] = useState(false);
+  const [data, setData] = useState<API.UserVO>()
+  const params = useParams()
+  const getUserByInvitationCode = async () => {
+    const res = await getUserByInvitationCodeUsingPOST({invitationCode: params.id})
+    if (res.code === 0 && res.data) {
+      setOpen(true)
+      setData(res.data)
+    }
+  }
+  useEffect(() => {
+    if (params.id) {
+      getUserByInvitationCode()
+    }
+  }, [])
   return (
     <>
       <Card
@@ -114,7 +132,7 @@ const Welcome: React.FC = () => {
           >
             <Title level={3}> 欢迎使用 柒木接口 🎉</Title>
           </div>
-          <p
+          <div
             style={{
               fontSize: '14px',
               color: token.colorTextSecondary,
@@ -131,7 +149,7 @@ const Welcome: React.FC = () => {
                 <br/>
                 💻 作为开发者 我们提供了
                 {/*todo 地址修改*/}
-                <a href="https://ant.design" target="_blank" rel="noreferrer">
+                <a href="https://github.com/qimu666/api-frontend" target="_blank" rel="noreferrer">
                   客户端SDK
                 </a>
                 ，
@@ -149,7 +167,7 @@ const Welcome: React.FC = () => {
                 🏁 无论您是用户还是开发者，柒木接口都致力于提供稳定、安全、高效的接口调用服务，帮助您实现更快速、便捷的开发和调用体验。
               </Title>
             </Text>
-          </p>
+          </div>
           <div
             style={{
               display: 'flex',
@@ -195,6 +213,7 @@ const Welcome: React.FC = () => {
             />
           </div>
         </div>
+        <GetGiftModal data={data} onCancel={() => setOpen(false)} open={open}/>
       </Card>
     </>
   );

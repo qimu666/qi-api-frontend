@@ -10,10 +10,8 @@ const PayOrder: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [product, setProduct] = useState<API.ProductInfo[]>();
   const [loginUser, setLoginUser] = useState<API.UserVO>();
-  const [messageApi, contextHolder] = message.useMessage();
   const [total, setTotal] = useState<any>("0.00");
   const [productId, setProductId] = useState<any>("");
-  const key = 'updatable';
 
   const {initialState} = useModel("@@initialState");
 
@@ -119,7 +117,7 @@ const PayOrder: React.FC = () => {
                 }
                 message.loading("正在前往收银台,请稍后.....", 0.8)
                 setTimeout(() => {
-                  history.push(`/pay/${productId}`)
+                  history.push(`/order/pay/${productId}`)
                 }, 1000)
               }} size={"large"} type={"primary"}>立即购买</Button>
             </div>

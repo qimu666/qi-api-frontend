@@ -6,7 +6,7 @@ import * as basicErrorController from './basicErrorController';
 import * as dailyCheckInController from './dailyCheckInController';
 import * as fileController from './fileController';
 import * as interfaceInfoController from './interfaceInfoController';
-import * as payController from './payController';
+import * as orderController from './orderController';
 import * as productInfoController from './productInfoController';
 import * as userController from './userController';
 
@@ -15,7 +15,7 @@ export default {
   dailyCheckInController,
   fileController,
   interfaceInfoController,
-  payController,
+  orderController,
   productInfoController,
   userController,
 };

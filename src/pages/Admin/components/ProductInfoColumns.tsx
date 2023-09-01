@@ -1,10 +1,6 @@
 import {ProColumns, ProFormColumnsType} from '@ant-design/pro-components';
 import {Tag} from "antd";
-
-export const methodColorMap: any = {
-  VIP: 'red',
-  RECHARGE: 'blue',
-};
+import {productTypeColorEnum} from "@/enum/commonEnum";
 
 export const ProductInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, "text">[] = [
   {
@@ -103,13 +99,13 @@ export const ProductInfoColumns: ProColumns<API.ProductInfo>[] = [
     key: 'name',
   },
   {
-    title: '商品金额',
+    title: '商品金额 (分)',
     dataIndex: 'total',
-    valueType: 'money',
+    valueType: 'text',
     key: 'total',
   },
   {
-    title: '增加积分数(个)',
+    title: '增加积分数 (个)',
     dataIndex: 'addPoints',
     valueType: 'text',
     key: 'total',
@@ -130,7 +126,7 @@ export const ProductInfoColumns: ProColumns<API.ProductInfo>[] = [
     valueType: 'text',
     key: 'productType',
     render: (_, record) => (
-      <Tag color={methodColorMap[record.productType ?? 'default']}>{record?.productType}</Tag>
+      <Tag color={productTypeColorEnum[record.productType ?? 'default']}>{record?.productType}</Tag>
     ),
     valueEnum: {
       VIP: {

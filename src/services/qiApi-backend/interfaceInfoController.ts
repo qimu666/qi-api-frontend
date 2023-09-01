@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from '@umijs/max';
+import {request} from '@umijs/max';
 
 /** addInterfaceInfo POST /api/interfaceInfo/add */
 export async function addInterfaceInfoUsingPOST(
@@ -58,6 +58,21 @@ export async function listInterfaceInfoBySearchTextPageUsingGET(
     params: {
       ...params,
     },
+    ...(options || {}),
+  });
+}
+
+/** invokeInterface POST /api/interfaceInfo/invoke */
+export async function invokeInterfaceUsingPOST(
+  body: API.InvokeRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseobject>('/api/interfaceInfo/invoke', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }

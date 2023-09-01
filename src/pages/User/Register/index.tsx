@@ -1,8 +1,9 @@
 import Footer from '@/components/Footer';
 import {userRegisterUsingPOST} from '@/services/qiApi-backend/userController';
-import {Link} from '@@/exports';
+import {Link, useParams} from '@@/exports';
 import {
   AlipayCircleOutlined,
+  LinkOutlined,
   LockOutlined,
   RedditOutlined,
   TaobaoCircleOutlined,
@@ -12,8 +13,8 @@ import {
 import {LoginForm, ProFormCheckbox, ProFormText} from '@ant-design/pro-components';
 import {useEmotionCss} from '@ant-design/use-emotion-css';
 import {Helmet, history} from '@umijs/max';
-import {message, Tabs} from 'antd';
-import React, {useState} from 'react';
+import {Form, message, Tabs} from 'antd';
+import React, {useEffect, useState} from 'react';
 import Settings from '../../../../config/defaultSettings';
 
 const ActionIcons = () => {
@@ -41,7 +42,20 @@ const ActionIcons = () => {
 
 const Register: React.FC = () => {
   const [type, setType] = useState<string>('account');
+  const [invitationCode, setInvitationCode] = useState<string>('');
+  const [form] = Form.useForm();
+  const params = useParams()
 
+  useEffect(() => {
+    if (params.id) {
+      setInvitationCode(params.id);
+      form.setFieldsValue(invitationCode)
+    }
+  }, [params.id]);
+
+  useEffect(() => {
+    form.setFieldsValue({invitationCode});
+  }, [invitationCode]);
   const containerClassName = useEmotionCss(() => {
     return {
       display: 'flex',
@@ -84,6 +98,7 @@ const Register: React.FC = () => {
         }}
       >
         <LoginForm
+          form={form}
           submitter={
             {
               searchConfig: {
@@ -98,11 +113,11 @@ const Register: React.FC = () => {
           title="Ant Design"
           subTitle={'Ant Design 是西湖区最具影响力的 Web 设计规范'}
           initialValues={{
-            autoLogin: true,
+            invitationCode: invitationCode
           }}
           actions={['其他登录方式 :', <ActionIcons key="icons"/>]}
           onFinish={async (values) => {
-            await handleSubmit(values as API.UserLoginRequest);
+            await handleSubmit(values as API.UserRegisterRequest);
           }}
         >
           <Tabs
@@ -168,16 +183,43 @@ const Register: React.FC = () => {
                   },
                 ]}
               />
+              <ProFormText
+                name="invitationCode"
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LinkOutlined/>,
+                }}
+                placeholder={'请输入邀请码,没有可不填'}
+              />
             </>
           )}
+          <ProFormCheckbox
+            initialValue={true}
+            name="agreeToAnAgreement"
+            rules={[
+              () => ({
+                validator(_, value) {
+                  if (!value) {
+                    return Promise.reject(new Error("同意协议后才可以注册"));
+                  }
+                  return Promise.resolve();
+                },
+                required: true,
+              })]}
+          >
+            同意并接受《<a
+            target={"_blank"}
+            href={"https://gitee.com/qimu6/statement/blob/master/%E9%9A%90%E7%A7%81%E5%8D%8F%E8%AE%AE.md#%E6%9F%92%E6%9C%A8%E6%8E%A5%E5%8F%A3-%E9%9A%90%E7%A7%81%E6%9D%A1%E6%AC%BE"}
+            rel="noreferrer">隐私协议</a>》《<a
+            target={"_blank"}
+            href={"https://gitee.com/qimu6/statement/blob/master/%E6%9F%92%E6%9C%A8%E6%8E%A5%E5%8F%A3%E7%94%A8%E6%88%B7%E5%8D%8F%E8%AE%AE.md#%E6%9F%92%E6%9C%A8%E6%8E%A5%E5%8F%A3%E7%94%A8%E6%88%B7%E5%8D%8F%E8%AE%AE"}
+            rel="noreferrer">用户协议</a>》
+          </ProFormCheckbox>
           <div
             style={{
-              marginBottom: 24,
+              marginTop: -18,
             }}
           >
-            <ProFormCheckbox noStyle name="autoLogin">
-              自动登录
-            </ProFormCheckbox>
             <Link
               to={'/user/login'}
               style={{

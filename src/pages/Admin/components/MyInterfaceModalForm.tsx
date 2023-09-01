@@ -4,6 +4,7 @@ import '@umijs/max';
 import {Button} from 'antd';
 import React, {useEffect, useRef} from 'react';
 
+// todo 优化清空
 export type Props = {
   value?: API.InterfaceInfo;
   title: string

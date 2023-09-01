@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from '@umijs/max';
+import {request} from '@umijs/max';
 
 /** addUser POST /api/user/add */
 export async function addUserUsingPOST(body: API.UserAddRequest, options?: { [key: string]: any }) {
@@ -37,6 +37,21 @@ export async function getUserByIdUsingGET(
 ) {
   return request<API.BaseResponseUserVO>('/api/user/get', {
     method: 'GET',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
+/** getUserByInvitationCode POST /api/user/get/invitationCode */
+export async function getUserByInvitationCodeUsingPOST(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getUserByInvitationCodeUsingPOSTParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseUserVO>('/api/user/get/invitationCode', {
+    method: 'POST',
     params: {
       ...params,
     },

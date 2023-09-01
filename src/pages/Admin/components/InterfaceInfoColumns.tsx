@@ -1,13 +1,8 @@
 import {Link} from '@@/exports';
 import {ProColumns, ProFormColumnsType} from '@ant-design/pro-components';
 import {Tag} from 'antd';
+import {InterfaceRequestMethodEnum} from "@/enum/commonEnum";
 
-const methodColorMap: any = {
-  GET: 'blue',
-  POST: 'red',
-  PUT: 'green',
-  DELETE: 'orange',
-};
 
 export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, "text">[] = [
   {
@@ -222,7 +217,7 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     valueType: 'text',
     key: 'method',
     render: (_, record) => (
-      <Tag color={methodColorMap[record.method ?? 'default']}>{record.method}</Tag>
+      <Tag color={InterfaceRequestMethodEnum[record.method ?? 'default']}>{record.method}</Tag>
     ),
     valueEnum: {
       GET: {

@@ -8,32 +8,31 @@ import Footer from '@/components/Footer';
 import {requestConfig} from '@/requestConfig';
 import Settings from '../config/defaultSettings';
 import {valueLength} from "@/pages/User/UserInfo";
-import NotAvatar from "@/components/Icon/NotAvatar";
 import {getLoginUserUsingGET} from "@/services/qiApi-backend/userController";
 import {FloatButton, message} from 'antd';
 import React from "react";
 import wechat from '@/../public/assets/WeChat.jpg';
 import LightColor from "@/components/Icon/LightColor";
 import {helloWord} from "@/components/RightContent";
+import SendGift from "@/components/Gift/SendGift";
 
 const loginPath = '/user/login';
-
-/**
- * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
- * */
+const whiteList = [loginPath, "/"]
 
 const stats: InitialState = {
   loginUser: undefined,
-  settings: Settings
+  settings: Settings,
+  open: false
 };
 
 export async function getInitialState(): Promise<InitialState> {
   console.log(`%c${helloWord}`, 'color:#e59de3')
-
   try {
-    const res = await getLoginUserUsingGET();
-    if (res.data && res.code === 0) {
-      stats.loginUser = res.data;
+    if (!/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/') {
+      const res = await getLoginUserUsingGET();
+      if (res.data && res.code === 0) {
+        stats.loginUser = res.data;
+      }
     }
   } catch (error) {
     history.push(loginPath);
@@ -43,7 +42,6 @@ export async function getInitialState(): Promise<InitialState> {
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => {
-
   return {
     waterMarkProps: {
       content: initialState?.loginUser?.userName,
@@ -67,15 +65,19 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
           tooltip={"分享此网站"}
           icon={<ExportOutlined/>}
           onClick={() => {
-            navigator.clipboard.writeText(window.location.origin);
-            message.success("复制成功")
+            if (!initialState?.loginUser && location.pathname !== loginPath) {
+              message.error("请先登录")
+              history.push(loginPath);
+              return
+            }
+            setInitialState({loginUser: initialState?.loginUser, settings: Settings, open: true})
           }
           }/>
         <FloatButton
           tooltip={"查看本站技术及源码，欢迎 star"}
           icon={<GithubOutlined/>}
           onClick={() => {
-            location.href = "https://github.com/qimu666"
+            location.href = "https://github.com/qimu666/api-frontend"
           }
           }
         />
@@ -93,11 +95,17 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
           }
         />
       </FloatButton.Group>
+      <SendGift
+        invitationCode={initialState?.loginUser?.invitationCode}
+        open={initialState?.open}
+        onCancel={() => setInitialState({loginUser: initialState?.loginUser, settings: Settings, open: false})
+        }></SendGift>
     </>,
     avatarProps: {
-      src: initialState?.loginUser?.userAvatar,
-      icon: valueLength(initialState?.loginUser?.userAvatar) ??
-        <NotAvatar/>,
+      src: valueLength(initialState?.loginUser?.userAvatar) ? initialState?.loginUser?.userAvatar :
+        "https://img.qimuu.icu/typory/notLogin.png",
+      icon: valueLength(initialState?.loginUser?.userAvatar) ? initialState?.loginUser?.userAvatar :
+        "https://img.qimuu.icu/typory/notLogin.png",
       title: <AvatarName/>,
       render: (_, avatarChildren) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>
@@ -108,7 +116,7 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
       // getInitialState();
       const {location} = history;
       // 如果没有登录，重定向到 login
-      if (!initialState?.loginUser && location.pathname !== loginPath) {
+      if (!initialState?.loginUser && !/^\/\w+\/?$/.test(location.pathname) && !whiteList.includes(location.pathname)) {
         history.push(loginPath);
       }
     },
