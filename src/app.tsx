@@ -28,11 +28,11 @@ const stats: InitialState = {
 export async function getInitialState(): Promise<InitialState> {
   console.log(`%c${helloWord}`, 'color:#e59de3')
   try {
-    if (!/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/') {
+    // if (!/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/') {
       const res = await getLoginUserUsingGET();
       if (res.data && res.code === 0) {
         stats.loginUser = res.data;
-      }
+        // }
     }
   } catch (error) {
     history.push(loginPath);
@@ -115,8 +115,9 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
     onPageChange: () => {
       // getInitialState();
       const {location} = history;
+      console.log(1)
       // 如果没有登录，重定向到 login
-      if (!initialState?.loginUser && !/^\/\w+\/?$/.test(location.pathname) && !whiteList.includes(location.pathname)) {
+      if (!initialState?.loginUser && !/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/') {
         history.push(loginPath);
       }
     },

@@ -44,8 +44,10 @@ export const requestConfig: RequestConfig = {
             break;
           }
           case 40100: {
-            message.error(data.message);
-            history.push('/user/login');
+            if (!/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/') {
+              message.error(data.message);
+              history.push('/user/login');
+            }
             break;
           }
           case 40101: {

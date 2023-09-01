@@ -4,11 +4,12 @@ import {
 } from '@/services/qiApi-backend/interfaceInfoController';
 import {Link} from '@@/exports';
 
-import {Button, Card, Empty, Input, message} from 'antd';
+import {Button, Card, Empty, Input, message, Watermark} from 'antd';
 import VirtualList from 'rc-virtual-list';
 import React, {useEffect, useState} from 'react';
 import {valueLength} from "@/pages/User/UserInfo";
 import ProCard from "@ant-design/pro-card";
+import {useModel} from "@umijs/max";
 
 const ContainerHeight = 760;
 
@@ -16,6 +17,7 @@ const InterfaceSquare: React.FC = () => {
   const [data, setData] = useState<API.InterfaceInfo[]>([]);
   const [current, setCurrent] = useState<number>(1);
   const [searchText, setSearchText] = useState<string>('');
+  const {initialState} = useModel("@@initialState");
 
   const appendData = async () => {
     const res = await listInterfaceInfoByPageUsingGET({
@@ -50,69 +52,72 @@ const InterfaceSquare: React.FC = () => {
   };
   return (
     <>
-      <Card>
-        <div style={{display: 'flex', justifyContent: 'center', justifyItems: 'center'}}>
-          <Input.Search
-            allowClear
-            placeholder="没找到心仪的接口 ？搜索一下吧"
-            value={searchText}
-            size="large"
-            maxLength={40}
-            enterButton="搜 索"
-            onChange={(e) => {
-              setSearchText(e.target.value);
-            }}
-            addonAfter
-            bordered
-            onPressEnter={() => {
-              setCurrent(2);
-              onSearch();
-            }}
-            onSearch={() => {
-              setCurrent(2);
-              onSearch();
-            }}
-            style={{
-              maxWidth: 670,
-            }}
-          />
-        </div>
-      </Card>
-      <br/>
-      <ProCard>{
-        data && data.length > 0 ?
-          <VirtualList
-            data={data}
-            height={ContainerHeight}
-            itemHeight={1000}
-            itemKey="email"
-            onScroll={onScroll}
-          >
-            {(item: API.InterfaceInfo) => (
-              <ProCard
-                type={"inner"}
-                key={item.id}
-                title={
-                  <Link key={item.id} to={`/interface_info/${item.id}`}>
-                    {item.name}
-                  </Link>
-                }
-                bordered
-                extra={<Button type={'primary'} onClick={() => {
-                  // history.push(`/pay`)
-                  // todo 接口调用
-                  message.loading("开发中..")
-                }}>获取</Button>}
-              >
-                {valueLength(item?.description) <= 0
-                  ? '暂无描述信息'
-                  : valueLength(item?.description).length > 50
-                    ? item.description?.slice(0, 50) + '...'
-                    : item.description}
-              </ProCard>
-            )}
-          </VirtualList> : <Empty/>}
-      </ProCard>
+      {/*// @ts-ignore*/}
+      <Watermark content={['柒木接口', initialState?.loginUser?.userAccount ?? '']}>
+        <Card>
+          <div style={{display: 'flex', justifyContent: 'center', justifyItems: 'center'}}>
+            <Input.Search
+              allowClear
+              placeholder="没找到心仪的接口 ？搜索一下吧"
+              value={searchText}
+              size="large"
+              maxLength={40}
+              enterButton="搜 索"
+              onChange={(e) => {
+                setSearchText(e.target.value);
+              }}
+              addonAfter
+              bordered
+              onPressEnter={() => {
+                setCurrent(2);
+                onSearch();
+              }}
+              onSearch={() => {
+                setCurrent(2);
+                onSearch();
+              }}
+              style={{
+                maxWidth: 670,
+              }}
+            />
+          </div>
+        </Card>
+        <br/>
+        <ProCard>{
+          data && data.length > 0 ?
+            <VirtualList
+              data={data}
+              height={ContainerHeight}
+              itemHeight={1000}
+              itemKey="email"
+              onScroll={onScroll}
+            >
+              {(item: API.InterfaceInfo) => (
+                <ProCard
+                  type={"inner"}
+                  key={item.id}
+                  title={
+                    <Link key={item.id} to={`/interface_info/${item.id}`}>
+                      {item.name}
+                    </Link>
+                  }
+                  bordered
+                  extra={<Button type={'primary'} onClick={() => {
+                    // history.push(`/pay`)
+                    // todo 接口调用
+                    message.loading("开发中..")
+                  }}>获取</Button>}
+                >
+                  {valueLength(item?.description) <= 0
+                    ? '暂无描述信息'
+                    : valueLength(item?.description).length > 50
+                      ? item.description?.slice(0, 50) + '...'
+                      : item.description}
+                </ProCard>
+              )}
+            </VirtualList> : <Empty/>}
+        </ProCard>
+      </Watermark>
     </>
   );
 };

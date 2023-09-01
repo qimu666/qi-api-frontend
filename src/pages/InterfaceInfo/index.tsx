@@ -3,8 +3,8 @@ import {
   invokeInterfaceUsingPOST,
   updateInterfaceInfoUsingPOST,
 } from '@/services/qiApi-backend/interfaceInfoController';
-import {useParams} from '@@/exports';
-import {Badge, Card, Descriptions, DescriptionsProps, Input, message, Spin, Tag,} from 'antd';
+import {useModel, useParams} from '@@/exports';
+import {Badge, Card, Descriptions, DescriptionsProps, Input, message, Spin, Tag, Watermark,} from 'antd';
 import Paragraph from 'antd/lib/typography/Paragraph';
 import React, {useEffect, useRef, useState} from 'react';
 import ProCard from "@ant-design/pro-card";
@@ -40,7 +40,7 @@ const InterfaceInfo: React.FC = () => {
   const params = useParams();
   const [data, setDate] = useState<API.InterfaceInfo>();
   const [requestUrl, setRequestUrl] = useState<string>();
-
+  const {initialState} = useModel("@@initialState");
   const [loading, setLoading] = useState(false);
   const [responseLoading, setResponseLoading] = useState(false);
 
@@ -48,7 +48,7 @@ const InterfaceInfo: React.FC = () => {
 
   const jsonArrayRef = useRef<any>({});
 
-  const handleJsonChange = (json) => {
+  const handleJsonChange = (json: any) => {
     // 删除空值的属性
     for (const key in json) {
       if (json.hasOwnProperty(key) && json[key] === '') {
@@ -191,51 +191,54 @@ const InterfaceInfo: React.FC = () => {
 
   return (
     <Spin spinning={loading}>
-      <Card title={'我的打卡信息'} hoverable>
-        {data ? (
-          <Descriptions column={{xxl: 2, xl: 2, lg: 2, md: 1, sm: 1, xs: 1}} items={items}/>
-        ) : (
-          <p>暂无信息</p>
-        )}
-      </Card>
-      <br/>
-      <ProCard hoverable bordered headerBordered wrap title={'在线调用'}><>
-        <Input.Search
-          allowClear
-          defaultValue={data?.url || ""}
-          placeholder="请输入请求参数"
-          addonBefore={data?.method}
-          value={requestUrl}
-          enterButton="调 用"
-          onChange={(e) => {
-            setRequestUrl(e.target.value)
-          }
-          }
-          addonAfter
-          size={'large'}
-          bordered
-          onPressEnter={() => {
-            invokeInterface()
+      {/*// @ts-ignore*/}
+      <Watermark content={['柒木接口', initialState?.loginUser?.userAccount]}>
+        <Card title={'我的打卡信息'} hoverable>
+          {data ? (
+            <Descriptions column={{xxl: 2, xl: 2, lg: 2, md: 1, sm: 1, xs: 1}} items={items}/>
+          ) : (
+            <p>暂无信息</p>
+          )}
+        </Card>
+        <br/>
+        <ProCard hoverable bordered headerBordered wrap title={'在线调用'}><>
+          <Input.Search
+            allowClear
+            defaultValue={data?.url || ""}
+            placeholder="请输入请求参数"
+            addonBefore={data?.method}
+            value={requestUrl}
+            enterButton="调 用"
+            onChange={(e) => {
+              setRequestUrl(e.target.value)
+            }
+            }
+            addonAfter
+            size={'large'}
+            bordered
+            onPressEnter={() => {
+              invokeInterface()
 
-          }}
-          onSearch={() => {
-            invokeInterface()
-          }}
-          // style={{maxWidth: '600px'}}
-        />
+            }}
+            onSearch={() => {
+              invokeInterface()
+            }}
+            // style={{maxWidth: '600px'}}
+          />
+          <br/>
+          <br/>
+          <ReactJSONEditor json={jsonArrayRef.current} name="properties" onJsonChange={handleJsonChange} mode="code"/>
+        </>
+        </ProCard>
         <br/>
-        <br/>
-        <ReactJSONEditor json={jsonArrayRef.current} name="properties" onJsonChange={handleJsonChange} mode="code"/>
-      </>
-      </ProCard>
-      <br/>
-      <Card hoverable title={'响应结果'}>
-        <div style={{marginTop: 10, marginLeft: 20, minHeight: 80}}>
-          <Spin tip={'加载中'} spinning={responseLoading} size="large">
-            <Paragraph copyable={copyable(resp)}>{resp}</Paragraph>
-          </Spin>
-        </div>
-      </Card>
+        <Card hoverable title={'响应结果'}>
+          <div style={{marginTop: 10, marginLeft: 20, minHeight: 80}}>
+            <Spin tip={'加载中'} spinning={responseLoading} size="large">
+              <Paragraph copyable={copyable(resp)}>{resp}</Paragraph>
+            </Spin>
+          </div>
+        </Card>
+      </Watermark>
     </Spin>
   );
 };

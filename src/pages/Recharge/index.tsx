@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, message, Spin, Tooltip} from "antd";
+import {Button, Card, message, Spin, Tooltip, Watermark} from "antd";
 import ProCard, {CheckCard} from "@ant-design/pro-card";
 import KunCoin from "@/components/Icon/KunCoin";
 import {history, useModel} from "@umijs/max";
@@ -41,58 +41,60 @@ const PayOrder: React.FC = () => {
 
   return (
     <>
-      <Spin spinning={loading}>
-        <Card style={{minWidth: 360}}>
-          <ProCard type={"inner"} headerBordered bordered tooltip={"用于平台接口调用"}
-                   title={<strong>我的钱包</strong>}>
-            <strong>坤币 : </strong><span
-            style={{color: "red", fontSize: 18}}>{loginUser?.balance}</span>
-          </ProCard>
-          <br/>
-          <Card type={"inner"} title={<strong>积分商城 💰️</strong>}>
-            <ProCard wrap>
-              <CheckCard.Group
-                onChange={(checkedValue) => {
-                  if (!checkedValue) {
-                    setTotal("0.00")
-                    return
-                  }
-                  setTotal(checkedValue)
-                }}
-              >
-                {product && product.map((item) => (
-                  <CheckCard
-                    key={item.id}
-                    onClick={() => {
-                      setTotal(item.total)
-                      setProductId(item.id)
-                    }}
-                    description={item.description}
-                    extra={
-                      <>
-                        <h3
-                          // @ts-ignore
-                          style={{
-                            color: "red",
-                            fontSize: item.productType === "EXPERIENCE" ? 16 : 18,
-                            fontWeight: "bold"
-                          }
-                          }>￥
-                          {item.productType === "EXPERIENCE" ? "体验 " : null}
-                          {/*// @ts-ignore*/}
-                          {(item?.total) / 100}
-                        </h3>
-                      </>
-                    }
-                    // @ts-ignore
-                    actions={<><KunCoin></KunCoin></>}
-                    style={{width: 220, height: 330}}
-                    title={<strong>💰 {item.addPoints} 坤币</strong>} value={item.total}/>
-                ))}
-              </CheckCard.Group>
+      {/*// @ts-ignore*/}
+      <Watermark content={['柒木接口', initialState?.loginUser?.userAccount]}>
+        <Spin spinning={loading}>
+          <Card style={{minWidth: 360}}>
+            <ProCard type={"inner"} headerBordered bordered tooltip={"用于平台接口调用"}
+                     title={<strong>我的钱包</strong>}>
+              <strong>坤币 : </strong><span
+              style={{color: "red", fontSize: 18}}>{loginUser?.balance}</span>
             </ProCard>
             <br/>
-            <ProCard style={{marginTop: -20}} layout={"center"}>
+            <Card type={"inner"} title={<strong>积分商城 💰️</strong>}>
+              <ProCard wrap>
+                <CheckCard.Group
+                  onChange={(checkedValue) => {
+                    if (!checkedValue) {
+                      setTotal("0.00")
+                      return
+                    }
+                    setTotal(checkedValue)
+                  }}
+                >
+                  {product && product.map((item) => (
+                    <CheckCard
+                      key={item.id}
+                      onClick={() => {
+                        setTotal(item.total)
+                        setProductId(item.id)
+                      }}
+                      description={item.description}
+                      extra={
+                        <>
+                          <h3
+                            // @ts-ignore
+                            style={{
+                              color: "red",
+                              fontSize: item.productType === "EXPERIENCE" ? 16 : 18,
+                              fontWeight: "bold"
+                            }
+                            }>￥
+                            {item.productType === "EXPERIENCE" ? "体验 " : null}
+                            {/*// @ts-ignore*/}
+                            {(item?.total) / 100}
+                          </h3>
+                        </>
+                      }
+                      // @ts-ignore
+                      actions={<><KunCoin></KunCoin></>}
+                      style={{width: 220, height: 330}}
+                      title={<strong>💰 {item.addPoints} 坤币</strong>} value={item.total}/>
+                  ))}
+                </CheckCard.Group>
+              </ProCard>
+              <br/>
+              <ProCard style={{marginTop: -20}} layout={"center"}>
               <span>本商品为虚拟内容,用于平台接口调用,购买后不支持<strong
                 style={{color: "red"}}>退换</strong>。确认支付表示您已阅读并接受<a
                 target={"_blank"}
@@ -103,27 +105,29 @@ const PayOrder: React.FC = () => {
                <a>aqimu66</a>
              </Tooltip>
             </span>
+              </ProCard>
+            </Card>
+            <br/>
+            <ProCard bordered headerBordered>
+              <div style={{display: "flex", justifyContent: "flex-end", alignItems: "center", alignContent: "center"}}>
+                <div style={{marginRight: "12px", fontWeight: "bold", fontSize: 18}}>实付</div>
+                <div style={{marginRight: "20px", fontWeight: "bold", fontSize: 18, color: "red"}}>￥ {total / 100}元
+                </div>
+                <Button style={{width: 100, padding: 5}} onClick={() => {
+                  if (!productId) {
+                    message.error("请先选择积分规格哦")
+                    return
+                  }
+                  message.loading("正在前往收银台,请稍后.....", 0.8)
+                  setTimeout(() => {
+                    history.push(`/order/pay/${productId}`)
+                  }, 1000)
+                }} size={"large"} type={"primary"}>立即购买</Button>
+              </div>
             </ProCard>
           </Card>
-          <br/>
-          <ProCard bordered headerBordered>
-            <div style={{display: "flex", justifyContent: "flex-end", alignItems: "center", alignContent: "center"}}>
-              <div style={{marginRight: "12px", fontWeight: "bold", fontSize: 18}}>实付</div>
-              <div style={{marginRight: "20px", fontWeight: "bold", fontSize: 18, color: "red"}}>￥ {total / 100}元</div>
-              <Button style={{width: 100, padding: 5}} onClick={() => {
-                if (!productId) {
-                  message.error("请先选择积分规格哦")
-                  return
-                }
-                message.loading("正在前往收银台,请稍后.....", 0.8)
-                setTimeout(() => {
-                  history.push(`/order/pay/${productId}`)
-                }, 1000)
-              }} size={"large"} type={"primary"}>立即购买</Button>
-            </div>
-          </ProCard>
-        </Card>
-      </Spin>
+        </Spin>
+      </Watermark>
     </>
   )
 }

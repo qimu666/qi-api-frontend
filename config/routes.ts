@@ -14,10 +14,11 @@ export default [
         name: '注册账号',
         path: '/user/register/:id',
         component: './User/Register',
+        hideInMenu: true,
       },
     ],
   },
-  {path: '/:id', name: '欢迎', icon: 'smile', component: './Welcome'},
+  {path: '/:id', name: '欢迎', icon: 'smile', component: './Welcome', hideInMenu: true,},
   {path: '/', name: '欢迎', icon: 'smile', component: './Welcome'},
 
   {path: '/interface', name: '接口广场', icon: 'RedditOutlined', component: './InterfaceSquare'},
