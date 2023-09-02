@@ -12,9 +12,7 @@ const PayOrder: React.FC = () => {
   const [loginUser, setLoginUser] = useState<API.UserVO>();
   const [total, setTotal] = useState<any>("0.00");
   const [productId, setProductId] = useState<any>("");
-
   const {initialState} = useModel("@@initialState");
-
   useEffect(() => {
     setLoginUser(initialState?.loginUser)
   }, [initialState])

@@ -15,6 +15,7 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     title: '接口名称',
     dataIndex: 'name',
     tooltip: "接口名称",
+    key: 'name',
     formItemProps: {
       rules: [
         {
@@ -36,12 +37,14 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
         },
       ],
     },
+    key: "url",
     width: 'lg',
   }, {
     title: '请求方法',
     dataIndex: 'method',
     tooltip: "请求方法",
     valueType: "radio",
+    key: "method",
     valueEnum: {
       GET: {
         text: 'GET',
@@ -74,6 +77,7 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     dataIndex: 'requestParams',
     tooltip: "请求参数",
     width: 'lg',
+    key: "requestParams",
     valueType: "jsonCode",
     colProps: {
       span: 12,
@@ -84,6 +88,7 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     dataIndex: 'responseHeader',
     tooltip: "响应头",
     width: 'lg',
+    key: "responseHeader",
     valueType: "jsonCode"
   },
   {
@@ -91,6 +96,7 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     dataIndex: 'requestHeader',
     tooltip: "请求头",
     width: 'lg',
+    key: "requestHeader",
     valueType: "jsonCode"
   },
   {
@@ -98,10 +104,12 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     dataIndex: 'requestExample',
     tooltip: "请求示例",
     width: 'lg',
+    key: "requestExample",
     valueType: "jsonCode"
   },
   {
     title: '接口描述',
+    key: "description",
     dataIndex: 'description',
     tooltip: "接口描述",
     width: 'lg',

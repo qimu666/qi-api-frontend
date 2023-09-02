@@ -255,15 +255,16 @@ const UserInfo: React.FC = () => {
                    extra={
                      <>
                        <Button onClick={() => {
-                         history.push("/recharge")
+                         history.push("/recharge/list")
                        }}>充值余额</Button>
                      </>
                    }
           >
             <strong>坤币 💰: </strong> <span
             style={{color: "red", fontSize: 18}}>{loginUser?.balance}</span>
-            <br/> <br/>
+            <br/>
             <strong>获取更多：</strong>
+            <br/>
             <Button style={{marginRight: 10, marginBottom: 10}} type={"primary"} onClick={() => {
               setOpen(true)
             }}>邀请好友</Button>

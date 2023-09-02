@@ -1,5 +1,5 @@
 import {userLogoutUsingPOST} from '@/services/qiApi-backend/userController';
-import {LogoutOutlined, SettingOutlined, UserOutlined} from '@ant-design/icons';
+import {LogoutOutlined, UserOutlined} from '@ant-design/icons';
 import {history, useModel} from '@umijs/max';
 import {stringify} from 'querystring';
 import type {MenuInfo} from 'rc-menu/lib/interface';
@@ -16,11 +16,12 @@ export type GlobalHeaderRightProps = {
 export const AvatarName = () => {
   const {initialState} = useModel('@@initialState');
   const {loginUser} = initialState || {};
-  console.log(valueLength(loginUser?.userName) ? loginUser?.userName : '游客');
   return <p className="anticon">{valueLength(loginUser?.userName) ? loginUser?.userName : '游客'}</p>;
 };
 
-export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children}) => {
+export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({children}) => {
+  const {initialState} = useModel('@@initialState');
+  const {loginUser} = initialState || {};
   /**
    * 退出登录，并且将当前的 url 保存
    */
@@ -48,7 +49,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children
       const {key} = event;
       if (key === 'logout') {
         flushSync(() => {
-          setInitialState((s) => ({...s, loginUser: undefined}));
+          setInitialState((s: any) => ({...s, loginUser: undefined}));
         });
         loginOut();
         return;
@@ -61,23 +62,6 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children
   );
 
   const menuItems = [
-    ...(menu
-      ? [
-        {
-          key: 'center',
-          icon: <UserOutlined/>,
-          label: '个人中心',
-        },
-        {
-          key: 'settings',
-          icon: <SettingOutlined/>,
-          label: '个人设置',
-        },
-        {
-          type: 'divider' as const,
-        },
-      ]
-      : []),
     {
       key: 'center',
       icon: <UserOutlined/>,
@@ -92,7 +76,7 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children
   ];
 
   return (
-    <HeaderDropdown
+    loginUser ? <HeaderDropdown
       menu={{
         selectedKeys: [],
         onClick: onMenuClick,
@@ -100,6 +84,8 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({menu, children
       }}
     >
       {children}
+    </HeaderDropdown> : <HeaderDropdown disabled>
+      {children}
     </HeaderDropdown>
-  );
+  )
 };

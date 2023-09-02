@@ -84,7 +84,7 @@ const SendGiftModal: React.FC<Props> = (props) => {
       </ProCard>
       <ProCard layout={"center"}>
         <Input.TextArea
-          style={{resize: 'none', backgroundColor: "rgba(0,254,224,0.06)", marginTop: -15}}
+          style={{resize: 'none', height: 60, backgroundColor: "rgba(0,254,224,0.06)", marginTop: -15}}
           value={giftValue + window.location.origin + '/' + invitationCode}></Input.TextArea>
       </ProCard>
       <ProCard layout={"center"}>

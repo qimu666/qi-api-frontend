@@ -17,7 +17,7 @@ import {helloWord} from "@/components/RightContent";
 import SendGift from "@/components/Gift/SendGift";
 
 const loginPath = '/user/login';
-const whiteList = [loginPath, "/"]
+const whiteList = [loginPath, "/", "/account/center"]
 
 const stats: InitialState = {
   loginUser: undefined,
@@ -85,7 +85,6 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
           tooltip={"切换主题"}
           icon={<LightColor/>}
           onClick={() => {
-            console.log(initialState?.settings)
             if (initialState?.settings.navTheme === "light") {
               setInitialState({loginUser: initialState?.loginUser, settings: {...Settings, navTheme: "realDark"}})
             } else {
@@ -113,9 +112,10 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
     },
 
     onPageChange: () => {
-      // getInitialState();
       const {location} = history;
-      console.log(1)
+      if (!whiteList.includes(location.pathname)) {
+        getInitialState();
+      }
       // 如果没有登录，重定向到 login
       if (!initialState?.loginUser && !/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/') {
         history.push(loginPath);

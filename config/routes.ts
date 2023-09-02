@@ -21,14 +21,14 @@ export default [
   {path: '/:id', name: '欢迎', icon: 'smile', component: './Welcome', hideInMenu: true,},
   {path: '/', name: '欢迎', icon: 'smile', component: './Welcome'},
 
-  {path: '/interface', name: '接口广场', icon: 'RedditOutlined', component: './InterfaceSquare'},
+  {path: '/interface/list', name: '接口广场', icon: 'RedditOutlined', component: './InterfaceSquare'},
   {path: '/order/pay/:id', icon: "PayCircleOutlined", name: '支付', component: './Order', hideInMenu: true,},
-  {path: '/recharge', icon: "PayCircleOutlined", name: '购买积分', component: './Recharge'},
+  {path: '/recharge/list', icon: "PayCircleOutlined", name: '购买积分', component: './Recharge'},
   {
     path: '/account/center', name: '个人信息', icon: 'UserOutlined', component: './User/UserInfo', hideInMenu: true,
   },
   {
-    path: '/my_interface', name: '我的接口', icon: 'ApiOutlined', component: './MyInterface'
+    path: '/my/interface_info', name: '我的接口', icon: 'ApiOutlined', component: './MyInterface'
   },
   {
     path: '/interface_info/:id',

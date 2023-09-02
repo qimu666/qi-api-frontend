@@ -7,11 +7,13 @@ export const ProductInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, "t
     title: 'id',
     valueType: 'index',
     hideInTable: true,
+    key: "id"
   },
   {
     title: '商品名称',
     dataIndex: 'name',
     tooltip: "商品名称",
+    key: "name",
     formItemProps: {
       rules: [
         {
@@ -29,6 +31,7 @@ export const ProductInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, "t
     tooltip: "本商品购买后增加的积分数",
     title: '增加积分数 (单位：个)',
     dataIndex: 'addPoints',
+    key: "addPoints",
     formItemProps: {
       rules: [
         () => ({
@@ -52,6 +55,7 @@ export const ProductInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, "t
     tooltip: "本商品的售卖金额,1元等于100分",
     title: '售卖金额 (单位：分)',
     dataIndex: 'total',
+    key: "total",
     formItemProps: {
       rules: [
         () => ({
@@ -75,6 +79,7 @@ export const ProductInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, "t
   {
     tooltip: "商品的描述信息",
     title: '商品描述信息',
+    key: "description",
     dataIndex: 'description',
     width: 'lg',
     colProps: {

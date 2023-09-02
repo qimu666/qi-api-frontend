@@ -7,7 +7,7 @@ import WxPay from "@/components/Icon/WxPay";
 import ProCard from "@ant-design/pro-card";
 import Alipay from "@/components/Icon/Alipay";
 import {valueLength} from "@/pages/User/UserInfo";
-import {useParams} from "@@/exports";
+import {useModel, useParams} from "@@/exports";
 import {createOrderUsingPOST, queryOrderStatusUsingPOST} from "@/services/qiApi-backend/orderController";
 
 const PayOrder: React.FC = () => {
@@ -16,6 +16,8 @@ const PayOrder: React.FC = () => {
   const [total, setTotal] = useState<any>("0.00");
   const [status, setStatus] = useState<string>('active');
   const [payType, setPayType] = useState<string>('WX');
+  const {initialState} = useModel("@@initialState");
+
   const params = useParams()
 
   const createOrder = async () => {
