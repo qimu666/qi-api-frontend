@@ -6,6 +6,7 @@ export const ProductInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, "t
   {
     title: 'id',
     valueType: 'index',
+    dataIndex: 'id',
     hideInTable: true,
     key: "id"
   },

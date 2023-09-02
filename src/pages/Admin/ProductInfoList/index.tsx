@@ -14,50 +14,6 @@ import {
 } from "@/services/qiApi-backend/productInfoController";
 import {useModel} from "@umijs/max";
 
-/**
- * @en-US Add node
- * @zh-CN 添加节点
- * @param fields
- */
-const handleAdd = async (fields: API.ProductInfoAddRequest) => {
-  const hide = message.loading('正在添加');
-  try {
-    const res = await addProductInfoUsingPOST({
-      ...fields,
-    });
-    if (res.data && res.code === 0) {
-      hide();
-      message.success('添加成功');
-      return true;
-    }
-  } catch (error: any) {
-    hide();
-    message.error('添加失败! ' + error.message);
-    return false;
-  }
-};
-
-/**
- * @en-US Update node
- * @zh-CN 更新节点
- *
- * @param fields
- */
-const handleUpdate = async (fields: API.ProductInfoUpdateRequest) => {
-  const hide = message.loading('修改中');
-  try {
-    const res = await updateProductInfoUsingPOST({...fields});
-    if (res.data && res.code === 0) {
-      hide();
-      message.success('修改成功');
-      return true;
-    }
-  } catch (error: any) {
-    hide();
-    message.error('修改失败' + error.message);
-    return false;
-  }
-};
 
 const ProductInfoList: React.FC = () => {
 
@@ -74,7 +30,52 @@ const ProductInfoList: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const {initialState} = useModel("@@initialState");
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.InterfaceInfo>();
+  const [currentRow, setCurrentRow] = useState<API.ProductInfo>();
+
+  /**
+   * @en-US Add node
+   * @zh-CN 添加节点
+   * @param fields
+   */
+  const handleAdd = async (fields: API.ProductInfoAddRequest) => {
+    const hide = message.loading('正在添加');
+    try {
+      const res = await addProductInfoUsingPOST({
+        ...fields,
+      });
+      if (res.data && res.code === 0) {
+        hide();
+        message.success('添加成功');
+        return true;
+      }
+    } catch (error: any) {
+      hide();
+      message.error('添加失败! ' + error.message);
+      return false;
+    }
+  };
+
+  /**
+   * @en-US Update node
+   * @zh-CN 更新节点
+   *
+   * @param fields
+   */
+  const handleUpdate = async (fields: API.ProductInfoUpdateRequest) => {
+    const hide = message.loading('修改中');
+    try {
+      const res = await updateProductInfoUsingPOST({id: currentRow?.id, ...fields});
+      if (res.data && res.code === 0) {
+        hide();
+        message.success('修改成功');
+        return true;
+      }
+    } catch (error: any) {
+      hide();
+      message.error('修改失败' + error.message);
+      return false;
+    }
+  };
 
   /**
    *  Delete node
@@ -82,7 +83,7 @@ const ProductInfoList: React.FC = () => {
    *
    * @param record
    */
-  const handleRemove = async (record: API.InterfaceInfo) => {
+  const handleRemove = async (record: API.ProductInfo) => {
     const hide = message.loading('正在删除');
     if (!record) return true;
     try {
@@ -103,14 +104,14 @@ const ProductInfoList: React.FC = () => {
   };
 
   const confirm = async () => {
-    await handleRemove(currentRow as API.InterfaceInfo);
+    await handleRemove(currentRow as API.ProductInfo);
   };
 
   const cancel = () => {
     message.success('取消成功');
   };
 
-  const columns: ProColumns<API.InterfaceInfo>[] = [
+  const columns: ProColumns<API.ProductInfo>[] = [
     ...ProductInfoColumns,
     {
       title: '操作',
@@ -150,7 +151,7 @@ const ProductInfoList: React.FC = () => {
     <Card>
       {/*// @ts-ignore*/}
       <Watermark content={['柒木接口', initialState?.loginUser?.userAccount]}>
-        <ProTable<API.InterfaceInfo>
+        <ProTable<API.ProductInfo>
           headerTitle={'商品管理'}
           actionRef={actionRef}
           rowKey="key"
@@ -198,7 +199,7 @@ const ProductInfoList: React.FC = () => {
           }}
           onOpenChange={handleModalOpen}
           onSubmit={async (value) => {
-            const success = await handleAdd(value as API.InterfaceInfo);
+            const success = await handleAdd(value as API.ProductInfo);
             if (success) {
               handleModalOpen(false);
               if (actionRef.current) {
@@ -218,7 +219,7 @@ const ProductInfoList: React.FC = () => {
           value={currentRow}
           onOpenChange={handleUpdateModalOpen}
           onSubmit={async (value) => {
-            const success = await handleUpdate(value as API.InterfaceInfo);
+            const success = await handleUpdate(value as API.ProductInfo);
             if (success) {
               handleUpdateModalOpen(false);
               if (actionRef.current) {

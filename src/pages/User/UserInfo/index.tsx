@@ -114,9 +114,14 @@ const UserInfo: React.FC = () => {
   }
 
   const updateUserInfo = async () => {
+    let avatarUrl = ''
+    if (fileList && fileList[0] && valueLength(fileList[0].url)) {
+      // @ts-ignore
+      avatarUrl = fileList[0].url
+    }
     const res = await updateUserUsingPOST({
       // @ts-ignore
-      userAvatar: fileList[0].url,
+      userAvatar: avatarUrl,
       id: loginUser?.id,
       userName: userName
     })
@@ -275,9 +280,9 @@ const UserInfo: React.FC = () => {
               if (res.data && res.code === 0) {
                 const res = await getLoginUserUsingGET();
                 if (res.data && res.code === 0) {
+                  message.success("签到成功")
                   setInitialState({loginUser: res.data, settings: Settings})
                 }
-                message.success("签到成功")
               }
               setTimeout(() => {
                 setDailyCheckInLoading(false)

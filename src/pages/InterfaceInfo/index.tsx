@@ -77,7 +77,12 @@ const InterfaceInfo: React.FC = () => {
       if (res.data && res.code === 0) {
         setDate(res.data || {});
         setRequestUrl(res.data.url)
-        const requestHeader = res.data.responseHeader ?? JSON.parse(res.data.responseHeader || '{}');
+        let requestHeader;
+        try {
+          requestHeader = res.data.responseHeader ? JSON.parse(res.data.responseHeader) : {};
+        } catch (error) {
+          requestHeader = {};
+        }
         if (requestHeader['Content-Type'] === 'application/json' && res.data.requestExample) {
           jsonArrayRef.current = JSON.parse(res.data.requestExample);
         } else {
@@ -87,6 +92,7 @@ const InterfaceInfo: React.FC = () => {
       setLoading(false);
     } catch (e: any) {
       message.error(e.message);
+      setLoading(false);
     }
   };
   const copyable = (value: any) => {

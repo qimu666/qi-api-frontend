@@ -1,12 +1,3 @@
-import InterfaceInfoColumns, {InterfaceInfoModalFormColumns} from '@/pages/Admin/components/InterfaceInfoColumns';
-import {
-  addInterfaceInfoUsingPOST,
-  deleteInterfaceInfoUsingPOST,
-  listInterfaceInfoByPageUsingGET,
-  offlineInterfaceInfoUsingPOST,
-  onlineInterfaceInfoUsingPOST,
-  updateInterfaceInfoUsingPOST,
-} from '@/services/qiApi-backend/interfaceInfoController';
 import {PlusOutlined} from '@ant-design/icons';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {ProTable} from '@ant-design/pro-components';
@@ -15,8 +6,16 @@ import {Button, Card, message, Popconfirm, Watermark} from 'antd';
 import React, {useRef, useState} from 'react';
 import ModalForm from "@/pages/Admin/components/ModalForm";
 import {useModel} from "@umijs/max";
+import {
+  addUserUsingPOST,
+  deleteUserUsingPOST,
+  listUserByPageUsingGET,
+  updateUserUsingPOST
+} from "@/services/qiApi-backend/userController";
+import UserColumns, {UserAddModalFormColumns, UserUpdateModalFormColumns} from "@/pages/Admin/components/UserColumns";
 
-const InterfaceInfoList: React.FC = () => {
+
+const UserList: React.FC = () => {
 
   /**
    * @en-US Pop-up window of new window
@@ -31,17 +30,17 @@ const InterfaceInfoList: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const {initialState} = useModel("@@initialState");
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.InterfaceInfo>();
+  const [currentRow, setCurrentRow] = useState<API.UserVO>();
 
   /**
    * @en-US Add node
    * @zh-CN 添加节点
    * @param fields
    */
-  const handleAdd = async (fields: API.InterfaceInfoAddRequest) => {
+  const handleAdd = async (fields: API.UserAddRequest) => {
     const hide = message.loading('正在添加');
     try {
-      const res = await addInterfaceInfoUsingPOST({
+      const res = await addUserUsingPOST({
         ...fields,
       });
       if (res.data && res.code === 0) {
@@ -62,10 +61,11 @@ const InterfaceInfoList: React.FC = () => {
    *
    * @param fields
    */
-  const handleUpdate = async (fields: API.InterfaceInfoUpdateRequest) => {
+  const handleUpdate = async (fields: API.UserUpdateRequest) => {
     const hide = message.loading('修改中');
     try {
-      const res = await updateInterfaceInfoUsingPOST({id: currentRow?.id, ...fields});
+      console.log(fields)
+      const res = await updateUserUsingPOST({id: currentRow?.id, ...fields});
       if (res.data && res.code === 0) {
         hide();
         message.success('修改成功');
@@ -77,70 +77,17 @@ const InterfaceInfoList: React.FC = () => {
       return false;
     }
   };
-
-  /**
-   * @en-US Update node
-   * @zh-CN 发布
-   *
-   * @param record
-   */
-  const handleOnline = async (record: API.IdRequest) => {
-    const hide = message.loading('发布中');
-    if (!record) return true;
-    try {
-      const res = await onlineInterfaceInfoUsingPOST({
-        id: record.id,
-      });
-      hide();
-      if (res.data) {
-        message.success('发布成功');
-        actionRef.current?.reload();
-      }
-      return true;
-    } catch (error: any) {
-      hide();
-      message.error(error.message);
-      return false;
-    }
-  };
-
-  /**
-   * @en-US Update node
-   * @zh-CN 下线
-   *
-   * @param record
-   */
-  const handleOffline = async (record: API.IdRequest) => {
-    const hide = message.loading('下线中');
-    if (!record) return true;
-    try {
-      const res = await offlineInterfaceInfoUsingPOST({
-        id: record.id,
-      });
-      hide();
-      if (res.data) {
-        message.success('下线成功');
-        actionRef.current?.reload();
-      }
-      return true;
-    } catch (error: any) {
-      hide();
-      message.error(error.message);
-      return false;
-    }
-  };
-
   /**
    *  Delete node
    * @zh-CN 删除节点
    *
    * @param record
    */
-  const handleRemove = async (record: API.InterfaceInfo) => {
+  const handleRemove = async (record: API.UserVO) => {
     const hide = message.loading('正在删除');
     if (!record) return true;
     try {
-      const res = await deleteInterfaceInfoUsingPOST({
+      const res = await deleteUserUsingPOST({
         id: record.id,
       });
       hide();
@@ -157,15 +104,15 @@ const InterfaceInfoList: React.FC = () => {
   };
 
   const confirm = async () => {
-    await handleRemove(currentRow as API.InterfaceInfo);
+    await handleRemove(currentRow as API.UserVO);
   };
 
   const cancel = () => {
     message.success('取消成功');
   };
 
-  const columns: ProColumns<API.InterfaceInfo>[] = [
-    ...InterfaceInfoColumns,
+  const columns: ProColumns<API.UserVO>[] = [
+    ...UserColumns,
     {
       title: '操作',
       dataIndex: 'option',
@@ -180,43 +127,9 @@ const InterfaceInfoList: React.FC = () => {
         >
           修改
         </a>,
-        record.status === 0 ? (
-          <a
-            type="text"
-            key="online"
-            onClick={() => {
-              handleOnline(record);
-            }}
-          >
-            审核通过
-          </a>
-        ) : null,
-        record.status === 2 ? (
-          <a
-            type="text"
-            key="offline"
-            onClick={() => {
-              handleOnline(record);
-            }}
-          >
-            上线
-          </a>
-        ) : null,
-        record.status === 1 ? (
-          <a
-            type="text"
-            key="offline"
-            onClick={() => {
-              handleOffline(record);
-            }}
-          >
-            下线
-          </a>
-        ) : null,
         <Popconfirm
           key={'Delete'}
-          title="请确认是否删除该接口!"
-          // description="请勿误删接口"
+          title="请确认是否删除该用户!"
           onConfirm={confirm}
           onCancel={cancel}
           okText="Yes"
@@ -238,10 +151,10 @@ const InterfaceInfoList: React.FC = () => {
     <Card>
       {/*// @ts-ignore*/}
       <Watermark content={['柒木接口', initialState?.loginUser?.userAccount]}>
-        <ProTable<API.InterfaceInfo>
-          headerTitle={'接口管理'}
+        <ProTable<API.UserVO>
+          headerTitle={'用户管理'}
           actionRef={actionRef}
-          rowKey="key"
+          rowKey="user"
           loading={loading}
           search={{
             labelWidth: 120,
@@ -260,7 +173,7 @@ const InterfaceInfoList: React.FC = () => {
           pagination={{defaultPageSize: 10}}
           request={async (params) => {
             setLoading(true)
-            const res = await listInterfaceInfoByPageUsingGET({...params});
+            const res = await listUserByPageUsingGET({...params});
             if (res.data) {
               setLoading(false)
               return {
@@ -279,14 +192,14 @@ const InterfaceInfoList: React.FC = () => {
           columns={columns}
         />
         <ModalForm
-          title={"添加接口"}
+          title={"添加用户"}
           value={{}}
           open={() => {
             return createModalOpen;
           }}
           onOpenChange={handleModalOpen}
           onSubmit={async (value) => {
-            const success = await handleAdd(value as API.InterfaceInfo);
+            const success = await handleAdd(value as API.UserVO);
             if (success) {
               handleModalOpen(false);
               if (actionRef.current) {
@@ -295,18 +208,18 @@ const InterfaceInfoList: React.FC = () => {
             }
           }}
           onCancel={() => handleModalOpen(false)}
-          columns={InterfaceInfoModalFormColumns} width={"840px"}
+          columns={UserAddModalFormColumns} width={"480px"}
+          size={"large"}
         />
         <ModalForm
-          title={"修改接口"}
+          title={"修改用户信息"}
           open={() => {
             return updateModalOpen;
           }}
-
           value={currentRow}
           onOpenChange={handleUpdateModalOpen}
           onSubmit={async (value) => {
-            const success = await handleUpdate(value as API.InterfaceInfo);
+            const success = await handleUpdate(value as API.UserVO);
             if (success) {
               handleUpdateModalOpen(false);
               if (actionRef.current) {
@@ -315,10 +228,11 @@ const InterfaceInfoList: React.FC = () => {
             }
           }}
           onCancel={() => handleUpdateModalOpen(false)}
-          columns={InterfaceInfoModalFormColumns} width={"840px"}
+          columns={UserUpdateModalFormColumns} width={"480px"}
+          size={"large"}
         />
       </Watermark>
     </Card>
   );
 };
-export default InterfaceInfoList;
+export default UserList;

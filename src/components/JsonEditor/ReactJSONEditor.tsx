@@ -1,4 +1,5 @@
 import * as React from "react";
+// @ts-ignore
 import JSONEditor, {JSONEditorOptions} from "jsoneditor";
 import "jsoneditor/dist/jsoneditor.min.css";
 import "./ReactJSONEditor.css";
@@ -27,6 +28,7 @@ class ReactJSONEditor extends React.Component<ReactJSONEditorProps> {
     }
   }
 
+  // eslint-disable-next-line react/no-deprecated
   public componentWillReceiveProps(nextProps: ReactJSONEditorProps) {
     if (nextProps.json) {
       if (this.editor) {

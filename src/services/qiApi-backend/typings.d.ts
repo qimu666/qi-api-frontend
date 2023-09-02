@@ -245,7 +245,7 @@ declare namespace API {
   type listUserByPageUsingGETParams = {
     createTime?: string;
     current?: number;
-    gender?: number;
+    gender?: string;
     id?: number;
     pageSize?: number;
     sortField?: string;
@@ -260,7 +260,7 @@ declare namespace API {
   type listUserUsingGETParams = {
     createTime?: string;
     current?: number;
-    gender?: number;
+    gender?: string;
     id?: number;
     pageSize?: number;
     sortField?: string;
@@ -459,7 +459,7 @@ declare namespace API {
     accessKey?: string;
     balance?: number;
     createTime?: string;
-    gender?: number;
+    gender?: string;
     id?: number;
     invitationCode?: string;
     isDelete?: number;
@@ -473,7 +473,8 @@ declare namespace API {
   };
 
   type UserAddRequest = {
-    gender?: number;
+    balance?: number;
+    gender?: string;
     userAccount?: string;
     userAvatar?: string;
     userName?: string;
@@ -496,7 +497,8 @@ declare namespace API {
   };
 
   type UserUpdateRequest = {
-    gender?: number;
+    balance?: number;
+    gender?: string;
     id?: number;
     userAccount?: string;
     userAvatar?: string;
@@ -509,7 +511,7 @@ declare namespace API {
     accessKey?: string;
     balance?: number;
     createTime?: string;
-    gender?: number;
+    gender?: string;
     id?: number;
     invitationCode?: string;
     secretKey?: string;

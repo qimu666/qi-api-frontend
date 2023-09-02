@@ -4,12 +4,13 @@ import {
 } from '@/services/qiApi-backend/interfaceInfoController';
 import {Link} from '@@/exports';
 
-import {Button, Card, Empty, Input, message, Watermark} from 'antd';
+import {Badge, Button, Card, Empty, Input, Watermark} from 'antd';
 import VirtualList from 'rc-virtual-list';
 import React, {useEffect, useState} from 'react';
 import {valueLength} from "@/pages/User/UserInfo";
 import ProCard from "@ant-design/pro-card";
-import {useModel} from "@umijs/max";
+import {history, useModel} from "@umijs/max";
+import {InterfaceStatusEnum} from "@/enum/commonEnum";
 
 const ContainerHeight = 760;
 
@@ -50,6 +51,7 @@ const InterfaceSquare: React.FC = () => {
       setData(res?.data?.records || []);
     }
   };
+
   return (
     <>
       {/*// @ts-ignore*/}
@@ -102,11 +104,13 @@ const InterfaceSquare: React.FC = () => {
                     </Link>
                   }
                   bordered
-                  extra={<Button type={'primary'} onClick={() => {
-                    // history.push(`/pay`)
-                    // todo 接口调用
-                    message.loading("开发中..")
-                  }}>获取</Button>}
+                  extra={<>
+                    {/*@ts-ignore*/}
+                    <Badge style={{marginRight: 20}} status={InterfaceStatusEnum[item.status].status}
+                           text={InterfaceStatusEnum[item.status].text}/>
+                    <Button type={'primary'} onClick={() => {
+                      history.push(`/interface_info/${item.id}`)
+                    }}>获取</Button></>}
                 >
                   {valueLength(item?.description) <= 0
                     ? '暂无描述信息'

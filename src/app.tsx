@@ -15,6 +15,7 @@ import wechat from '@/../public/assets/WeChat.jpg';
 import LightColor from "@/components/Icon/LightColor";
 import {helloWord} from "@/components/RightContent";
 import SendGift from "@/components/Gift/SendGift";
+import NoFoundPage from "@/pages/404";
 
 const loginPath = '/user/login';
 const whiteList = [loginPath, "/", "/account/center"]
@@ -29,10 +30,10 @@ export async function getInitialState(): Promise<InitialState> {
   console.log(`%c${helloWord}`, 'color:#e59de3')
   try {
     // if (!/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/') {
-      const res = await getLoginUserUsingGET();
-      if (res.data && res.code === 0) {
-        stats.loginUser = res.data;
-        // }
+    const res = await getLoginUserUsingGET();
+    if (res.data && res.code === 0) {
+      stats.loginUser = res.data;
+      // }
     }
   } catch (error) {
     history.push(loginPath);
@@ -105,7 +106,7 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
         "https://img.qimuu.icu/typory/notLogin.png",
       icon: valueLength(initialState?.loginUser?.userAvatar) ? initialState?.loginUser?.userAvatar :
         "https://img.qimuu.icu/typory/notLogin.png",
-      title: <AvatarName/>,
+      title: initialState?.loginUser ? <AvatarName/> : "游客",
       render: (_, avatarChildren) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>
       },
@@ -122,7 +123,7 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
       }
     },
     // 自定义 403 页面
-    unAccessible: <div>unAccessible</div>,
+    unAccessible: <NoFoundPage/>,
     // 增加一个 loading 的状态
     childrenRender: (children) => {
       // if (initialState?.loading) return <PageLoading/>;

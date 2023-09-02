@@ -21,11 +21,11 @@ const ModalForm: React.FC<Props> = (props) => {
   const {width, open, onOpenChange, title, value, onSubmit, columns, size} = props;
   useEffect(() => {
     // 添加的时候id不存在,可以根据id清空表单
-    const isAdd = !value?.id
-    if (isAdd) {
+    const isAdd = value?.id
+    if (!isAdd) {
       formRef.current?.resetFields()
     }
-    if (formRef && !isAdd) {
+    if (formRef && isAdd) {
       formRef.current?.setFieldsValue(value);
     }
   }, [value]);

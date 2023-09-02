@@ -1,5 +1,5 @@
 import {userLogoutUsingPOST} from '@/services/qiApi-backend/userController';
-import {LogoutOutlined, UserOutlined} from '@ant-design/icons';
+import {LoginOutlined, LogoutOutlined, UserOutlined} from '@ant-design/icons';
 import {history, useModel} from '@umijs/max';
 import {stringify} from 'querystring';
 import type {MenuInfo} from 'rc-menu/lib/interface';
@@ -16,7 +16,7 @@ export type GlobalHeaderRightProps = {
 export const AvatarName = () => {
   const {initialState} = useModel('@@initialState');
   const {loginUser} = initialState || {};
-  return <p className="anticon">{valueLength(loginUser?.userName) ? loginUser?.userName : '游客'}</p>;
+  return <p className="anticon">{valueLength(loginUser?.userName) ? loginUser?.userName : '无名氏'}</p>;
 };
 
 export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({children}) => {
@@ -56,6 +56,11 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({children}) => 
       }
       if (key === 'center') {
         history.push(`/account/${key}`);
+        return;
+      }
+      if (key === 'login') {
+        history.push(`/user/login`);
+        return;
       }
     },
     [setInitialState],
@@ -84,7 +89,15 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({children}) => 
       }}
     >
       {children}
-    </HeaderDropdown> : <HeaderDropdown disabled>
+    </HeaderDropdown> : <HeaderDropdown menu={{
+      selectedKeys: [],
+      onClick: onMenuClick,
+      items: [{
+        key: 'login',
+        icon: <LoginOutlined/>,
+        label: '登录账号',
+      }],
+    }}>
       {children}
     </HeaderDropdown>
   )

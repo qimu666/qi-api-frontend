@@ -126,7 +126,7 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     dataIndex: 'id',
     valueType: 'index',
     hideInTable: true,
-    key: 'name',
+    key: 'id',
   },
   {
     title: '接口名称',

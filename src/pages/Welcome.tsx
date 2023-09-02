@@ -93,8 +93,14 @@ const Welcome: React.FC = () => {
   const getUserByInvitationCode = async () => {
     const res = await getUserByInvitationCodeUsingPOST({invitationCode: params.id})
     if (res.code === 0 && res.data) {
-      setOpen(true)
-      setData(res.data)
+      if (initialState?.loginUser && initialState?.loginUser.invitationCode === params.id) {
+        // message.error("不能邀请自己")
+        return
+      }
+      if (!initialState?.loginUser) {
+        setOpen(true)
+        setData(res.data)
+      }
     }
   }
   useEffect(() => {
