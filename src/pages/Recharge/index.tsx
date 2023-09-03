@@ -109,7 +109,7 @@ const PayOrder: React.FC = () => {
             <ProCard bordered headerBordered>
               <div style={{display: "flex", justifyContent: "flex-end", alignItems: "center", alignContent: "center"}}>
                 <div style={{marginRight: "12px", fontWeight: "bold", fontSize: 18}}>实付</div>
-                <div style={{marginRight: "20px", fontWeight: "bold", fontSize: 18, color: "red"}}>￥ {total / 100}元
+                <div style={{marginRight: "20px", fontWeight: "bold", fontSize: 18, color: "red"}}>￥ {total / 100} 元
                 </div>
                 <Button style={{width: 100, padding: 5}} onClick={() => {
                   if (!productId) {

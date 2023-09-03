@@ -6,13 +6,14 @@ import {Button, Card, message, Popconfirm, Watermark} from 'antd';
 import React, {useRef, useState} from 'react';
 import ModalForm from "@/pages/Admin/components/ModalForm";
 import {useModel} from "@umijs/max";
+
+import UserColumns, {UserAddModalFormColumns, UserUpdateModalFormColumns} from "@/pages/Admin/components/UserColumns";
 import {
   addUserUsingPOST,
   deleteUserUsingPOST,
   listUserByPageUsingGET,
   updateUserUsingPOST
 } from "@/services/qiApi-backend/userController";
-import UserColumns, {UserAddModalFormColumns, UserUpdateModalFormColumns} from "@/pages/Admin/components/UserColumns";
 
 
 const UserList: React.FC = () => {

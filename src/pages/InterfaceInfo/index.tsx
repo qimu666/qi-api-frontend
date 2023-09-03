@@ -42,7 +42,7 @@ const InterfaceInfo: React.FC = () => {
   const [requestUrl, setRequestUrl] = useState<string>();
   const {initialState} = useModel("@@initialState");
   const [loading, setLoading] = useState(false);
-  const [responseLoading, setResponseLoading] = useState(false);
+  const [responseLoading] = useState(false);
 
   const id = params.id;
 

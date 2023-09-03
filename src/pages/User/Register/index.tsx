@@ -1,10 +1,15 @@
 import Footer from '@/components/Footer';
-import {userRegisterUsingPOST} from '@/services/qiApi-backend/userController';
+import {
+  getCaptchaUsingGET,
+  userEmailRegisterUsingPOST,
+  userRegisterUsingPOST
+} from '@/services/qiApi-backend/userController';
 import {Link, useParams} from '@@/exports';
 import {
   AlipayCircleOutlined,
   LinkOutlined,
   LockOutlined,
+  MailOutlined,
   RedditOutlined,
   TaobaoCircleOutlined,
   UserOutlined,
@@ -16,6 +21,7 @@ import {Helmet, history} from '@umijs/max';
 import {Form, message, Tabs} from 'antd';
 import React, {useEffect, useState} from 'react';
 import Settings from '../../../../config/defaultSettings';
+import {ProFormCaptcha} from "@ant-design/pro-form";
 
 const ActionIcons = () => {
   const langClassName = useEmotionCss(({token}) => {
@@ -41,7 +47,7 @@ const ActionIcons = () => {
 };
 
 const Register: React.FC = () => {
-  const [type, setType] = useState<string>('account');
+  const [type, setType] = useState<string>('email');
   const [invitationCode, setInvitationCode] = useState<string>('');
   const [form] = Form.useForm();
   const params = useParams()
@@ -67,23 +73,42 @@ const Register: React.FC = () => {
       backgroundSize: '100% 100%',
     };
   });
+
+  const doRegister = (res: any) => {
+    if (res.data && res.code === 0) {
+      message.success('注册成功');
+      setTimeout(() => {
+        history.push('/user/login');
+      }, 100);
+    }
+  }
+
   const handleSubmit = async (values: API.UserRegisterRequest) => {
     try {
       // 登录
       const res = await userRegisterUsingPOST({
         ...values,
       });
-      if (res.data && res.code === 0) {
-        message.success('注册成功');
-        setTimeout(() => {
-          history.push('/user/login');
-        }, 100);
-      }
+      doRegister(res)
     } catch (error) {
-      const defaultLoginFailureMessage = '登录失败，请重试！';
+      const defaultLoginFailureMessage = '注册失败，请重试！';
       message.error(defaultLoginFailureMessage);
     }
   };
+
+  const handleEmailSubmit = async (values: API.UserEmailRegisterRequest) => {
+    try {
+      // 登录
+      const res = await userEmailRegisterUsingPOST({
+        ...values,
+      });
+      doRegister(res)
+    } catch (error) {
+      const defaultLoginFailureMessage = '注册失败，请重试！';
+      message.error(defaultLoginFailureMessage);
+    }
+  };
+
   return (
     <div className={containerClassName}>
       <Helmet>
@@ -117,7 +142,11 @@ const Register: React.FC = () => {
           }}
           actions={['其他登录方式 :', <ActionIcons key="icons"/>]}
           onFinish={async (values) => {
-            await handleSubmit(values as API.UserRegisterRequest);
+            if (type === "account") {
+              await handleSubmit(values as API.UserRegisterRequest);
+            } else {
+              await handleEmailSubmit(values as API.UserEmailRegisterRequest);
+            }
           }}
         >
           <Tabs
@@ -126,8 +155,12 @@ const Register: React.FC = () => {
             centered
             items={[
               {
+                key: 'email',
+                label: '邮箱账号注册',
+              },
+              {
                 key: 'account',
-                label: '账号注册',
+                label: '平台账号注册',
               },
             ]}
           />
@@ -190,6 +223,77 @@ const Register: React.FC = () => {
                   prefix: <LinkOutlined/>,
                 }}
                 placeholder={'请输入邀请码,没有可不填'}
+              />
+            </>
+          )}
+          {type === 'email' && (
+            <>
+              <ProFormText
+                name="userName"
+                fieldProps={{
+                  size: 'large',
+                  prefix: <RedditOutlined/>,
+                }}
+                placeholder={'请输入昵称'}
+              />
+              <ProFormText
+                fieldProps={{
+                  size: 'large',
+                  prefix: <MailOutlined/>,
+                }}
+                name="emailAccount"
+                placeholder={'请输入邮箱账号！'}
+                rules={[
+                  {
+                    required: true,
+                    message: '邮箱账号是必填项！',
+                  },
+                  {
+                    pattern: /^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$/,
+                    message: '不合法的邮箱账号！',
+                  },
+                ]}
+              />
+              <ProFormText
+                name="invitationCode"
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LinkOutlined/>,
+                }}
+                placeholder={'请输入邀请码,没有可不填'}
+              />
+              <ProFormCaptcha
+                fieldProps={{
+                  size: 'large',
+                  prefix: <LockOutlined/>,
+                }}
+                captchaProps={{
+                  size: 'large',
+                }}
+                placeholder={'请输入验证码！'}
+                captchaTextRender={(timing, count) => {
+                  if (timing) {
+                    return `${count} ${'秒后重新获取'}`;
+                  }
+                  return '获取验证码';
+                }}
+                phoneName={"emailAccount"}
+                name="captcha"
+                rules={[
+                  {
+                    required: true,
+                    message: '验证码是必填项！',
+                  },
+                ]}
+                onGetCaptcha={async (emailAccount) => {
+                  const res = await getCaptchaUsingGET({emailAccount})
+                  if (res.data && res.code === 0) {
+                    message.success("验证码发送成功")
+                    return
+                  }
+                  message.success("验证码发送失败")
+                  return
+                }}
               />
             </>
           )}

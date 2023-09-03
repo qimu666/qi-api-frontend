@@ -29,11 +29,9 @@ const stats: InitialState = {
 export async function getInitialState(): Promise<InitialState> {
   console.log(`%c${helloWord}`, 'color:#e59de3')
   try {
-    // if (!/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/') {
     const res = await getLoginUserUsingGET();
     if (res.data && res.code === 0) {
       stats.loginUser = res.data;
-      // }
     }
   } catch (error) {
     history.push(loginPath);

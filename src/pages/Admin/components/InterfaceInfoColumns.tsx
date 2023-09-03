@@ -84,17 +84,17 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     },
   },
   {
-    title: '响应头',
+    title: '响应头,需包含 {"Content-Type":"application/json"}',
     dataIndex: 'responseHeader',
-    tooltip: "响应头",
+    tooltip: '响应头,需包含 {"Content-Type":"application/json"}',
     width: 'lg',
     key: "responseHeader",
     valueType: "jsonCode"
   },
   {
-    title: '请求头',
+    title: '请求头,需包含 {"Content-Type":"application/json"}',
     dataIndex: 'requestHeader',
-    tooltip: "请求头",
+    tooltip: '请求头,需包含 {"Content-Type":"application/json"}',
     width: 'lg',
     key: "requestHeader",
     valueType: "jsonCode"

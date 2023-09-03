@@ -77,12 +77,6 @@ declare namespace API {
     message?: string;
   };
 
-  type BaseResponseUser = {
-    code?: number;
-    data?: User;
-    message?: string;
-  };
-
   type BaseResponseUserVO = {
     code?: number;
     data?: UserVO;
@@ -91,6 +85,11 @@ declare namespace API {
 
   type DeleteRequest = {
     id?: number;
+  };
+
+  type getCaptchaUsingGETParams = {
+    /** emailAccount */
+    emailAccount?: string;
   };
 
   type getInterfaceInfoByIdUsingGETParams = {
@@ -455,23 +454,6 @@ declare namespace API {
     biz?: string;
   };
 
-  type User = {
-    accessKey?: string;
-    balance?: number;
-    createTime?: string;
-    gender?: string;
-    id?: number;
-    invitationCode?: string;
-    isDelete?: number;
-    secretKey?: string;
-    updateTime?: string;
-    userAccount?: string;
-    userAvatar?: string;
-    userName?: string;
-    userPassword?: string;
-    userRole?: string;
-  };
-
   type UserAddRequest = {
     balance?: number;
     gender?: string;
@@ -480,6 +462,19 @@ declare namespace API {
     userName?: string;
     userPassword?: string;
     userRole?: string;
+  };
+
+  type UserEmailLoginRequest = {
+    captcha?: string;
+    emailAccount?: string;
+  };
+
+  type UserEmailRegisterRequest = {
+    agreeToAnAgreement?: string;
+    captcha?: string;
+    emailAccount?: string;
+    invitationCode?: string;
+    userName?: string;
   };
 
   type UserLoginRequest = {

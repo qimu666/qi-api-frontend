@@ -54,8 +54,12 @@ export const requestConfig: RequestConfig = {
             message.error(data.message);
             break;
           }
-          default: {
+          case 50001: {
             message.error(data.message);
+            break;
+          }
+          default: {
+            break
           }
         }
       }

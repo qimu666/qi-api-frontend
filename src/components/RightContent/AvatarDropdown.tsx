@@ -1,4 +1,3 @@
-import {userLogoutUsingPOST} from '@/services/qiApi-backend/userController';
 import {LoginOutlined, LogoutOutlined, UserOutlined} from '@ant-design/icons';
 import {history, useModel} from '@umijs/max';
 import {stringify} from 'querystring';
@@ -7,6 +6,7 @@ import React, {useCallback} from 'react';
 import {flushSync} from 'react-dom';
 import HeaderDropdown from '../HeaderDropdown';
 import {valueLength} from "@/pages/User/UserInfo";
+import {userLogoutUsingPOST} from "@/services/qiApi-backend/userController";
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;

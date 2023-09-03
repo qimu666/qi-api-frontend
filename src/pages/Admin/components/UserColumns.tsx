@@ -1,6 +1,6 @@
 import {ProColumns, ProFormColumnsType} from '@ant-design/pro-components';
 
-export const UserAddModalFormColumns: ProFormColumnsType<API.User, "text">[] = [
+export const UserAddModalFormColumns: ProFormColumnsType<API.UserVO, "text">[] = [
   {
     title: 'id',
     dataIndex: 'id',
@@ -73,6 +73,19 @@ export const UserAddModalFormColumns: ProFormColumnsType<API.User, "text">[] = [
     colProps: {
       span: 24,
     },
+  }, {
+    title: '角色/权限',
+    dataIndex: 'userRole',
+    valueType: "radio",
+    key: 'userRole',
+    valueEnum: {
+      "admin": {
+        text: '管理员',
+      },
+      "user": {
+        text: '普通用户',
+      }
+    }
   },
   {
     title: '余额',
@@ -95,7 +108,7 @@ export const UserAddModalFormColumns: ProFormColumnsType<API.User, "text">[] = [
     },
   },
 ];
-export const UserUpdateModalFormColumns: ProFormColumnsType<API.User, "text">[] = [
+export const UserUpdateModalFormColumns: ProFormColumnsType<API.UserVO, "text">[] = [
   {
     title: 'id',
     dataIndex: 'id',
@@ -129,6 +142,19 @@ export const UserUpdateModalFormColumns: ProFormColumnsType<API.User, "text">[] 
     colProps: {
       span: 24,
     },
+  }, {
+    title: '角色/权限',
+    dataIndex: 'userRole',
+    valueType: "radio",
+    key: 'userRole',
+    valueEnum: {
+      "admin": {
+        text: '管理员',
+      },
+      "user": {
+        text: '普通用户',
+      }
+    }
   },
   {
     title: '余额',
@@ -206,7 +232,7 @@ export const UserColumns: ProColumns<API.UserVO>[] = [
     key: 'invitationCode',
   },
   {
-    title: 'secretKey',
+    title: 'SecretKey',
     dataIndex: 'secretKey',
     valueType: 'textarea',
     copyable: true,
@@ -214,12 +240,29 @@ export const UserColumns: ProColumns<API.UserVO>[] = [
     key: 'secretKey',
   },
   {
-    title: 'accessKey',
+    title: 'AccessKey',
     dataIndex: 'accessKey',
     valueType: 'textarea',
     copyable: true,
     ellipsis: true,
     key: 'accessKey',
+  },
+  {
+    title: '角色/权限',
+    dataIndex: 'userRole',
+    key: 'userRole',
+    filters: true,
+    onFilter: true,
+    valueEnum: {
+      "admin": {
+        text: '管理员',
+        status: 'success'
+      },
+      "user": {
+        text: '普通用户',
+        status: 'default'
+      }
+    }
   },
   {
     title: '性别',
