@@ -220,8 +220,6 @@ const Login: React.FC = () => {
                     message.success("验证码发送成功")
                     return
                   }
-                  message.success("验证码发送失败")
-                  return
                 }}
               />
             </>

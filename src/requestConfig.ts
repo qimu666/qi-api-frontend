@@ -39,28 +39,15 @@ export const requestConfig: RequestConfig = {
         return response;
       } else {
         switch (code) {
-          case 40000: {
-            message.error(data.message);
-            break;
-          }
-          case 40100: {
+          case 40100:
             if (!/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/') {
               message.error(data.message);
               history.push('/user/login');
             }
             break;
-          }
-          case 40101: {
+          default:
             message.error(data.message);
             break;
-          }
-          case 50001: {
-            message.error(data.message);
-            break;
-          }
-          default: {
-            break
-          }
         }
       }
       return response;

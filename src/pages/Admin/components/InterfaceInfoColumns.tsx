@@ -39,7 +39,8 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     },
     key: "url",
     width: 'lg',
-  }, {
+  },
+  {
     title: '请求方法',
     dataIndex: 'method',
     tooltip: "请求方法",
@@ -69,7 +70,17 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     },
     width: 'lg',
     colProps: {
-      span: 24,
+      span: 12,
+    },
+  },
+  {
+    title: '扣除积分个数',
+    dataIndex: 'reduceScore',
+    tooltip: "扣除积分个数",
+    width: 'lg',
+    key: "reduceScore",
+    colProps: {
+      span: 12,
     },
   },
   {
@@ -151,6 +162,12 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     key: 'url',
   },
   {
+    title: '扣除积分个数',
+    dataIndex: 'reduceScore',
+    valueType: 'text',
+    key: "reduceScore",
+  },
+  {
     title: '描述',
     dataIndex: 'description',
     valueType: 'textarea',
@@ -164,6 +181,7 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     key: 'requestExample',
     valueType: 'text',
     width: 120,
+    search: false,
     copyable: true,
     ellipsis: true,
   },
@@ -171,6 +189,7 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     title: '请求头',
     dataIndex: 'requestHeader',
     valueType: 'text',
+    search: false,
     width: 120,
     ellipsis: true,
     copyable: true,
@@ -180,6 +199,7 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     title: '请求参数',
     dataIndex: 'requestParams',
     valueType: 'text',
+    search: false,
     width: 120,
     ellipsis: true,
     copyable: true,
@@ -189,6 +209,7 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     title: '响应头',
     dataIndex: 'responseHeader',
     valueType: 'text',
+    search: false,
     width: 120,
     copyable: true,
     ellipsis: true,
@@ -253,6 +274,7 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     dataIndex: 'createTime',
     valueType: 'dateTime',
     key: 'createTime',
+    search: false,
   },
 ];
 

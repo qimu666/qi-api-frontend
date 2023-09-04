@@ -1,6 +1,4 @@
 import {ProColumns, ProFormColumnsType} from '@ant-design/pro-components';
-import {Tag} from "antd";
-import {productTypeColorEnum} from "@/enum/commonEnum";
 
 export const ProductInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, "text">[] = [
   {
@@ -114,7 +112,7 @@ export const ProductInfoColumns: ProColumns<API.ProductInfo>[] = [
     title: '增加积分数 (个)',
     dataIndex: 'addPoints',
     valueType: 'text',
-    key: 'total',
+    key: 'addPoints',
   },
   {
     title: '商品描述',
@@ -131,9 +129,6 @@ export const ProductInfoColumns: ProColumns<API.ProductInfo>[] = [
     onFilter: true,
     valueType: 'text',
     key: 'productType',
-    render: (_, record) => (
-      <Tag color={productTypeColorEnum[record.productType ?? 'default']}>{record?.productType}</Tag>
-    ),
     valueEnum: {
       VIP: {
         text: 'VIP会员',
@@ -150,12 +145,14 @@ export const ProductInfoColumns: ProColumns<API.ProductInfo>[] = [
     title: '更新时间',
     dataIndex: 'updateTime',
     valueType: 'dateTime',
+    search: false,
     key: 'updateTime',
   },
   {
     title: '创建时间',
     dataIndex: 'createTime',
     valueType: 'dateTime',
+    search: false,
     key: 'createTime',
   },
 ];

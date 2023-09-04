@@ -130,12 +130,12 @@ declare namespace API {
     isDelete?: number;
     method?: string;
     name?: string;
+    reduceScore?: number;
     requestExample?: string;
     requestHeader?: string;
     requestParams?: string;
     responseHeader?: string;
     status?: number;
-    total?: number;
     updateTime?: string;
     url?: string;
     userId?: number;
@@ -146,11 +146,11 @@ declare namespace API {
     description?: string;
     method?: string;
     name?: string;
+    reduceScore?: number;
     requestExample?: string;
     requestHeader?: string;
     requestParams?: string;
     responseHeader?: string;
-    total?: number;
     url?: string;
   };
 
@@ -159,12 +159,12 @@ declare namespace API {
     id?: number;
     method?: string;
     name?: string;
+    reduceScore?: number;
     requestExample?: string;
     requestHeader?: string;
     requestParams?: string;
     responseHeader?: string;
     status?: number;
-    total?: number;
     url?: string;
   };
 
@@ -179,6 +179,7 @@ declare namespace API {
     method?: string;
     name?: string;
     pageSize?: number;
+    reduceScore?: number;
     sortField?: string;
     sortOrder?: string;
     status?: number;
@@ -200,6 +201,7 @@ declare namespace API {
     method?: string;
     name?: string;
     pageSize?: number;
+    reduceScore?: number;
     sortField?: string;
     sortOrder?: string;
     status?: number;

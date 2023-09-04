@@ -223,6 +223,7 @@ export const UserColumns: ProColumns<API.UserVO>[] = [
     dataIndex: 'userAvatar',
     valueType: 'image',
     key: 'userAvatar',
+    search: false
   },
   {
     title: '邀请码',
@@ -230,6 +231,7 @@ export const UserColumns: ProColumns<API.UserVO>[] = [
     valueType: 'text',
     copyable: true,
     key: 'invitationCode',
+    search: false
   },
   {
     title: 'SecretKey',
@@ -238,6 +240,7 @@ export const UserColumns: ProColumns<API.UserVO>[] = [
     copyable: true,
     ellipsis: true,
     key: 'secretKey',
+    search: false
   },
   {
     title: 'AccessKey',
@@ -246,6 +249,7 @@ export const UserColumns: ProColumns<API.UserVO>[] = [
     copyable: true,
     ellipsis: true,
     key: 'accessKey',
+    search: false
   },
   {
     title: '角色/权限',
@@ -284,12 +288,14 @@ export const UserColumns: ProColumns<API.UserVO>[] = [
     dataIndex: 'updateTime',
     valueType: 'dateTime',
     key: 'updateTime',
+    search: false
   },
   {
     title: '创建时间',
     dataIndex: 'createTime',
     valueType: 'dateTime',
     key: 'createTime',
+    search: false
   },
 ];
 
