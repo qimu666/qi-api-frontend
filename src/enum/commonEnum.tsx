@@ -20,6 +20,11 @@ export const InterfaceStatusEnum: any = {
   },
 }
 
+export const statusEnum: any = {
+  0: '审核中',
+  1: '已上线',
+  2: '已下线'
+};
 
 export const productTypeColorEnum: any = {
   VIP: 'red',

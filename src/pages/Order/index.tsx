@@ -16,7 +16,6 @@ const PayOrder: React.FC = () => {
   const [total, setTotal] = useState<any>("0.00");
   const [status, setStatus] = useState<string>('active');
   const [payType, setPayType] = useState<string>('WX');
-  const {initialState} = useModel("@@initialState");
 
   const params = useParams()
 
@@ -103,8 +102,7 @@ const PayOrder: React.FC = () => {
 
   return (
     <>
-      {/*// @ts-ignore*/}
-      <Watermark content={['柒木接口', initialState?.loginUser?.userAccount]}>
+
         <Card style={{minWidth: 385}}>
           <Spin spinning={loading}>
             <Card title={<strong>商品信息</strong>}>
@@ -215,7 +213,7 @@ const PayOrder: React.FC = () => {
             </Card>
           </Spin>
         </Card>
-      </Watermark>
+
     </>
   )
 }

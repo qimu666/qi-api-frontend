@@ -87,6 +87,11 @@ declare namespace API {
     id?: number;
   };
 
+  type Field = {
+    fieldName?: string;
+    value?: string;
+  };
+
   type getCaptchaUsingGETParams = {
     /** emailAccount */
     emailAccount?: string;
@@ -136,10 +141,10 @@ declare namespace API {
     requestParams?: string;
     responseHeader?: string;
     status?: number;
+    totalInvokes?: number;
     updateTime?: string;
     url?: string;
     userId?: number;
-    userVO?: UserVO;
   };
 
   type InterfaceInfoAddRequest = {
@@ -169,6 +174,7 @@ declare namespace API {
   };
 
   type InvokeRequest = {
+    fieldList?: Field[];
     id?: number;
     userRequestParams?: string;
   };
@@ -210,16 +216,15 @@ declare namespace API {
   };
 
   type listProductInfoByPageUsingGETParams = {
+    addPoints?: number;
     current?: number;
     description?: string;
-    expirationTime?: string;
     name?: string;
     pageSize?: number;
     productType?: string;
     sortField?: string;
     sortOrder?: string;
     total?: number;
-    userId?: number;
   };
 
   type listProductInfoBySearchTextPageUsingGETParams = {
@@ -231,44 +236,37 @@ declare namespace API {
   };
 
   type listProductInfoUsingGETParams = {
+    addPoints?: number;
     current?: number;
     description?: string;
-    expirationTime?: string;
     name?: string;
     pageSize?: number;
     productType?: string;
     sortField?: string;
     sortOrder?: string;
     total?: number;
-    userId?: number;
   };
 
   type listUserByPageUsingGETParams = {
-    createTime?: string;
     current?: number;
     gender?: string;
     id?: number;
     pageSize?: number;
     sortField?: string;
     sortOrder?: string;
-    updateTime?: string;
     userAccount?: string;
-    userAvatar?: string;
     userName?: string;
     userRole?: string;
   };
 
   type listUserUsingGETParams = {
-    createTime?: string;
     current?: number;
     gender?: string;
     id?: number;
     pageSize?: number;
     sortField?: string;
     sortOrder?: string;
-    updateTime?: string;
     userAccount?: string;
-    userAvatar?: string;
     userName?: string;
     userRole?: string;
   };
@@ -497,6 +495,7 @@ declare namespace API {
     balance?: number;
     gender?: string;
     id?: number;
+    status?: number;
     userAccount?: string;
     userAvatar?: string;
     userName?: string;
@@ -512,6 +511,7 @@ declare namespace API {
     id?: number;
     invitationCode?: string;
     secretKey?: string;
+    status?: number;
     updateTime?: string;
     userAccount?: string;
     userAvatar?: string;

@@ -168,6 +168,13 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     key: "reduceScore",
   },
   {
+    title: '总调用次数',
+    dataIndex: 'totalInvokes',
+    valueType: 'text',
+    search:false,
+    key: "totalInvokes",
+  },
+  {
     title: '描述',
     dataIndex: 'description',
     valueType: 'textarea',

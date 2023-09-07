@@ -2,10 +2,9 @@ import {PlusOutlined} from '@ant-design/icons';
 import type {ActionType, ProColumns} from '@ant-design/pro-components';
 import {ProTable} from '@ant-design/pro-components';
 import '@umijs/max';
-import {Button, Card, message, Popconfirm, Watermark} from 'antd';
+import {Button, Card, message, Popconfirm} from 'antd';
 import React, {useRef, useState} from 'react';
 import ModalForm from "@/pages/Admin/components/ModalForm";
-import {useModel} from "@umijs/max";
 
 import UserColumns, {UserAddModalFormColumns, UserUpdateModalFormColumns} from "@/pages/Admin/components/UserColumns";
 import {
@@ -29,7 +28,6 @@ const UserList: React.FC = () => {
    * */
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const {initialState} = useModel("@@initialState");
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.UserVO>();
 
@@ -150,89 +148,88 @@ const UserList: React.FC = () => {
   ];
   return (
     <Card>
-      {/*// @ts-ignore*/}
-      <Watermark content={['柒木接口', initialState?.loginUser?.userAccount]}>
-        <ProTable<API.UserVO>
-          headerTitle={'用户管理'}
-          actionRef={actionRef}
-          rowKey="user"
-          loading={loading}
-          search={{
-            labelWidth: 120,
-          }}
-          toolBarRender={() => [
-            <Button
-              type="primary"
-              key="primary"
-              onClick={() => {
-                handleModalOpen(true);
-              }}
-            >
-              <PlusOutlined/> 新建
-            </Button>,
-          ]}
-          pagination={{defaultPageSize: 10}}
-          request={async (params) => {
-            setLoading(true)
-            const res = await listUserByPageUsingGET({...params});
-            if (res.data) {
-              setLoading(false)
-              return {
-                data: res.data.records || [],
-                success: true,
-                total: res.data.total,
-              };
-            } else {
-              return {
-                data: [],
-                success: false,
-                total: 0,
-              };
+
+      <ProTable<API.UserVO>
+        headerTitle={'用户管理'}
+        actionRef={actionRef}
+        rowKey="user"
+        loading={loading}
+        search={{
+          labelWidth: 120,
+        }}
+        toolBarRender={() => [
+          <Button
+            type="primary"
+            key="primary"
+            onClick={() => {
+              handleModalOpen(true);
+            }}
+          >
+            <PlusOutlined/> 新建
+          </Button>,
+        ]}
+        pagination={{defaultPageSize: 10}}
+        request={async (params) => {
+          setLoading(true)
+          const res = await listUserByPageUsingGET({...params});
+          if (res.data) {
+            setLoading(false)
+            return {
+              data: res.data.records || [],
+              success: true,
+              total: res.data.total,
+            };
+          } else {
+            return {
+              data: [],
+              success: false,
+              total: 0,
+            };
+          }
+        }}
+        columns={columns}
+      />
+      <ModalForm
+        title={"添加用户"}
+        value={{}}
+        open={() => {
+          return createModalOpen;
+        }}
+        onOpenChange={handleModalOpen}
+        onSubmit={async (value) => {
+          const success = await handleAdd(value as API.UserVO);
+          if (success) {
+            handleModalOpen(false);
+            if (actionRef.current) {
+              actionRef.current.reload();
             }
-          }}
-          columns={columns}
-        />
-        <ModalForm
-          title={"添加用户"}
-          value={{}}
-          open={() => {
-            return createModalOpen;
-          }}
-          onOpenChange={handleModalOpen}
-          onSubmit={async (value) => {
-            const success = await handleAdd(value as API.UserVO);
-            if (success) {
-              handleModalOpen(false);
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
+          }
+        }}
+        onCancel={() => handleModalOpen(false)}
+        columns={UserAddModalFormColumns} width={"480px"}
+        size={"large"}
+      />
+      <ModalForm
+        title={"修改用户信息"}
+        open={() => {
+          return updateModalOpen;
+        }}
+        value={currentRow}
+        onOpenChange={handleUpdateModalOpen}
+        onSubmit={async (value) => {
+          const success = await handleUpdate(value as API.UserVO);
+          if (success) {
+            handleUpdateModalOpen(false);
+            if (actionRef.current) {
+              actionRef.current.reload();
             }
-          }}
-          onCancel={() => handleModalOpen(false)}
-          columns={UserAddModalFormColumns} width={"480px"}
-          size={"large"}
-        />
-        <ModalForm
-          title={"修改用户信息"}
-          open={() => {
-            return updateModalOpen;
-          }}
-          value={currentRow}
-          onOpenChange={handleUpdateModalOpen}
-          onSubmit={async (value) => {
-            const success = await handleUpdate(value as API.UserVO);
-            if (success) {
-              handleUpdateModalOpen(false);
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            }
-          }}
-          onCancel={() => handleUpdateModalOpen(false)}
-          columns={UserUpdateModalFormColumns} width={"480px"}
-          size={"large"}
-        />
-      </Watermark>
+          }
+        }}
+        onCancel={() => handleUpdateModalOpen(false)}
+        columns={UserUpdateModalFormColumns} width={"480px"}
+        size={"large"}
+      />
+
     </Card>
   );
 };

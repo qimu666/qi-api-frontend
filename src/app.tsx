@@ -102,8 +102,6 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
     avatarProps: {
       src: valueLength(initialState?.loginUser?.userAvatar) ? initialState?.loginUser?.userAvatar :
         "https://img.qimuu.icu/typory/notLogin.png",
-      icon: valueLength(initialState?.loginUser?.userAvatar) ? initialState?.loginUser?.userAvatar :
-        "https://img.qimuu.icu/typory/notLogin.png",
       title: initialState?.loginUser ? <AvatarName/> : "游客",
       render: (_, avatarChildren) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>
@@ -112,9 +110,9 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
 
     onPageChange: () => {
       const {location} = history;
-      if (!whiteList.includes(location.pathname)) {
-        getInitialState();
-      }
+      // if (!whiteList.includes(location.pathname)) {
+      //   getInitialState();
+      // }
       // 如果没有登录，重定向到 login
       if (!initialState?.loginUser && !/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/') {
         history.push(loginPath);

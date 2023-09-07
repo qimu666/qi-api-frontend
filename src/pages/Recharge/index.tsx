@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Card, message, Spin, Tooltip, Watermark} from "antd";
+import {Button, Card, message, Spin, Tooltip} from "antd";
 import ProCard, {CheckCard} from "@ant-design/pro-card";
 import KunCoin from "@/components/Icon/KunCoin";
 import {history, useModel} from "@umijs/max";
@@ -39,8 +39,7 @@ const PayOrder: React.FC = () => {
 
   return (
     <>
-      {/*// @ts-ignore*/}
-      <Watermark content={['柒木接口', initialState?.loginUser?.userAccount]}>
+
         <Spin spinning={loading}>
           <Card style={{minWidth: 360}}>
             <ProCard type={"inner"} headerBordered bordered tooltip={"用于平台接口调用"}
@@ -125,7 +124,7 @@ const PayOrder: React.FC = () => {
             </ProCard>
           </Card>
         </Spin>
-      </Watermark>
+
     </>
   )
 }

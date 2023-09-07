@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import {request} from '@umijs/max';
+import { request } from '@umijs/max';
 
 /** doDailyCheckIn POST /api/dailyCheckIn/doCheckIn */
 export async function doDailyCheckInUsingPOST(options?: { [key: string]: any }) {

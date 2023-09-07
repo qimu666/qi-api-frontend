@@ -1,5 +1,5 @@
 import {useModel} from '@umijs/max';
-import {Card, theme, Typography, Watermark} from 'antd';
+import {Card, theme, Typography} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {Link, useParams} from "@@/exports";
 import GetGiftModal from "@/components/Gift/GetGift";
@@ -111,120 +111,119 @@ const Welcome: React.FC = () => {
 
   return (
     <>
-      {/*// @ts-ignore*/}
-      <Watermark content={['柒木接口', initialState?.loginUser?.userAccount]}>
-        <Card
+
+      <Card
+        style={{
+          borderRadius: 8,
+        }}
+        bodyStyle={{
+          backgroundImage:
+            initialState?.settings?.navTheme === 'realDark'
+              ? 'background-image: linear-gradient(75deg, #1A1B1F 0%, #191C1F 100%)'
+              : 'background-image: linear-gradient(75deg, #FBFDFF 0%, #F5F7FF 100%)',
+        }}
+      >
+        <div
           style={{
-            borderRadius: 8,
-          }}
-          bodyStyle={{
+            backgroundPosition: '100% -30%',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: '274px auto',
             backgroundImage:
-              initialState?.settings?.navTheme === 'realDark'
-                ? 'background-image: linear-gradient(75deg, #1A1B1F 0%, #191C1F 100%)'
-                : 'background-image: linear-gradient(75deg, #FBFDFF 0%, #F5F7FF 100%)',
+              "url('https://gw.alipayobjects.com/mdn/rms_a9745b/afts/img/A*BuFmQqsB2iAAAAAAAAAAAAAAARQnAQ')",
           }}
         >
           <div
             style={{
-              backgroundPosition: '100% -30%',
-              backgroundRepeat: 'no-repeat',
-              backgroundSize: '274px auto',
-              backgroundImage:
-                "url('https://gw.alipayobjects.com/mdn/rms_a9745b/afts/img/A*BuFmQqsB2iAAAAAAAAAAAAAAARQnAQ')",
+              fontSize: '20px',
+              color: token.colorTextHeading,
             }}
           >
-            <div
-              style={{
-                fontSize: '20px',
-                color: token.colorTextHeading,
-              }}
-            >
-              <Title level={3}> 欢迎使用 柒木接口 🎉</Title>
-            </div>
-            <div
-              style={{
-                fontSize: '14px',
-                color: token.colorTextSecondary,
-                lineHeight: '22px',
-                marginTop: 16,
-                marginBottom: 32,
-                width: '100%',
-              }}
-            >
-              <Text strong>
-                <Title level={4}>柒木接口是一个为用户和开发者提供全面API接口调用服务的平台 🛠</Title>
-                <Title level={5}>
-                  😀 作为用户您可以通过注册登录账户，获取接口调用权限，并根据自己的需求浏览和选择适合的接口。您可以在线进行接口调试，快速验证接口的功能和效果。
-                  <br/>
-                  💻 作为开发者 我们提供了
-                  {/*todo 地址修改*/}
-                  <a href="https://github.com/qimu666/api-frontend" target="_blank" rel="noreferrer">
-                    客户端SDK
-                  </a>
-                  ，
-                  通过
-                  <Link to="/account/center">
-                    开发者凭证
-                  </Link>
-                  即可将轻松集成接口到您的代码中，实现更高效的开发和调用。
-                  <br/>
-                  🤝 您可以将自己的接口接入到柒木接口平台上，并发布给其他用户使用。
-                  您可以管理和各个接口，以便更好地分析和优化接口性能。
-                  <br/>
-                  👌 我们还提供了开发者文档和技术支持，帮助您快速接入和发布接口。
-                  <br/>
-                  🏁 无论您是用户还是开发者，柒木接口都致力于提供稳定、安全、高效的接口调用服务，帮助您实现更快速、便捷的开发和调用体验。
-                </Title>
-              </Text>
-            </div>
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: 16,
-              }}
-            >
-              <InfoCard
-                index={1}
-                href="https://柒木接口js.org/docs/introduce/introduce"
-                title={<Title level={5}>多样化的接口选择</Title>}
-                desc={<Text
-                  strong>平台上提供了丰富多样的接口供用户选择，涵盖了各个领域的功能和服务，满足不同用户的需求。</Text>}
-              />
-              <InfoCard
-                index={2}
-                href="https://柒木接口js.org/docs/introduce/introduce"
-                title={<Title level={5}>在线调试功能</Title>}
-                desc={<Text
-                  strong>用户可以在平台上进行接口在线调试，快速验证接口的功能和效果，节省了开发调试的时间和工作量。</Text>}
-              />
-              <InfoCard
-                index={3}
-                href="https://柒木接口js.org/docs/introduce/introduce"
-                title={<Title level={5}>客户端SDK支持</Title>}
-                desc={<Text
-                  strong>为了方便开发者集成接口到自己的代码中，平台提供了客户端SDK，使调用接口变得更加简单和便捷。
-                </Text>}
-              />
-              <InfoCard
-                index={4}
-                href="https://柒木接口js.org/docs/introduce/introduce"
-                title={<Title level={5}>开发者文档和技术支持</Title>}
-                desc={<Text
-                  strong>平台提供了详细的开发者文档和技术支持，帮助开发者快速接入和发布接口，解决遇到的问题和困难。</Text>}
-              />
-              <InfoCard
-                index={5}
-                href="https://柒木接口js.org/docs/introduce/introduce"
-                title={<Title level={5}>稳定和安全</Title>}
-                desc={<Text
-                  strong>平台致力于提供稳定和安全的接口调用服务，采用了安全措施和技术手段，保障用户数据的安全性和隐私保护。</Text>}
-              />
-            </div>
+            <Title level={3}> 欢迎使用 柒木接口 🎉</Title>
           </div>
-          <GetGiftModal data={data} onCancel={() => setOpen(false)} open={open}/>
-        </Card>
-      </Watermark>
+          <div
+            style={{
+              fontSize: '14px',
+              color: token.colorTextSecondary,
+              lineHeight: '22px',
+              marginTop: 16,
+              marginBottom: 32,
+              width: '100%',
+            }}
+          >
+            <Text strong>
+              <Title level={4}>柒木接口是一个为用户和开发者提供全面API接口调用服务的平台 🛠</Title>
+              <Title level={5}>
+                😀 作为用户您可以通过注册登录账户，获取接口调用权限，并根据自己的需求浏览和选择适合的接口。您可以在线进行接口调试，快速验证接口的功能和效果。
+                <br/>
+                💻 作为开发者 我们提供了
+                {/*todo 地址修改*/}
+                <a href="https://github.com/qimu666/api-frontend" target="_blank" rel="noreferrer">
+                  客户端SDK
+                </a>
+                ，
+                通过
+                <Link to="/account/center">
+                  开发者凭证
+                </Link>
+                即可将轻松集成接口到您的代码中，实现更高效的开发和调用。
+                <br/>
+                🤝 您可以将自己的接口接入到柒木接口平台上，并发布给其他用户使用。
+                您可以管理和各个接口，以便更好地分析和优化接口性能。
+                <br/>
+                👌 我们还提供了开发者文档和技术支持，帮助您快速接入和发布接口。
+                <br/>
+                🏁 无论您是用户还是开发者，柒木接口都致力于提供稳定、安全、高效的接口调用服务，帮助您实现更快速、便捷的开发和调用体验。
+              </Title>
+            </Text>
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 16,
+            }}
+          >
+            <InfoCard
+              index={1}
+              href="https://柒木接口js.org/docs/introduce/introduce"
+              title={<Title level={5}>多样化的接口选择</Title>}
+              desc={<Text
+                strong>平台上提供了丰富多样的接口供用户选择，涵盖了各个领域的功能和服务，满足不同用户的需求。</Text>}
+            />
+            <InfoCard
+              index={2}
+              href="https://柒木接口js.org/docs/introduce/introduce"
+              title={<Title level={5}>在线调试功能</Title>}
+              desc={<Text
+                strong>用户可以在平台上进行接口在线调试，快速验证接口的功能和效果，节省了开发调试的时间和工作量。</Text>}
+            />
+            <InfoCard
+              index={3}
+              href="https://柒木接口js.org/docs/introduce/introduce"
+              title={<Title level={5}>客户端SDK支持</Title>}
+              desc={<Text
+                strong>为了方便开发者集成接口到自己的代码中，平台提供了客户端SDK，使调用接口变得更加简单和便捷。
+              </Text>}
+            />
+            <InfoCard
+              index={4}
+              href="https://柒木接口js.org/docs/introduce/introduce"
+              title={<Title level={5}>开发者文档和技术支持</Title>}
+              desc={<Text
+                strong>平台提供了详细的开发者文档和技术支持，帮助开发者快速接入和发布接口，解决遇到的问题和困难。</Text>}
+            />
+            <InfoCard
+              index={5}
+              href="https://柒木接口js.org/docs/introduce/introduce"
+              title={<Title level={5}>稳定和安全</Title>}
+              desc={<Text
+                strong>平台致力于提供稳定和安全的接口调用服务，采用了安全措施和技术手段，保障用户数据的安全性和隐私保护。</Text>}
+            />
+          </div>
+        </div>
+        <GetGiftModal data={data} onCancel={() => setOpen(false)} open={open}/>
+      </Card>
+
     </>
   );
 };

@@ -1,5 +1,5 @@
 import {history, useModel} from '@umijs/max';
-import {Button, Descriptions, message, Modal, Spin, Tooltip, Upload, UploadFile, UploadProps, Watermark} from 'antd';
+import {Button, Descriptions, message, Modal, Spin, Tooltip, Upload, UploadFile, UploadProps} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {RcFile} from "antd/es/upload";
 import {EditOutlined, PlusOutlined, VerticalAlignBottomOutlined} from "@ant-design/icons";
@@ -186,160 +186,159 @@ const UserInfo: React.FC = () => {
 
   return (
     <Spin spinning={loading}>
-      {/*// @ts-ignore*/}
-      <Watermark content={['柒木接口', initialState?.loginUser?.userAccount]}>
+
+      <ProCard
+        type="inner"
+        bordered
+        direction="column"
+      >
         <ProCard
+          extra={<Button onClick={updateUserInfo}>提交修改</Button>
+          }
+          title={<strong>个人信息设置</strong>}
           type="inner"
           bordered
-          direction="column"
         >
-          <ProCard
-            extra={<Button onClick={updateUserInfo}>提交修改</Button>
-            }
-            title={<strong>个人信息设置</strong>}
-            type="inner"
-            bordered
-          >
-            <Descriptions.Item>
-              <ImgCrop
-                rotationSlider
-                quality={1}
-                aspectSlider
-                maxZoom={4}
-                cropShape={"round"}
-                zoomSlider
-                showReset
-              >
-                <Upload {...props}>
-                  {fileList.length >= 1 ? undefined : uploadButton()}
-                </Upload>
-              </ImgCrop>
-              <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
-                <img alt="example" style={{width: '100%'}} src={previewImage}/>
-              </Modal>
-            </Descriptions.Item>
-            <Descriptions column={1}>
-              <div>
-                <h4>昵称：</h4>
-                <Paragraph
-                  editable={
-                    {
-                      icon: <EditOutlined/>,
-                      tooltip: '编辑',
-                      onChange: (value) => {
-                        setUserName(value)
-                      }
+          <Descriptions.Item>
+            <ImgCrop
+              rotationSlider
+              quality={1}
+              aspectSlider
+              maxZoom={4}
+              cropShape={"round"}
+              zoomSlider
+              showReset
+            >
+              <Upload {...props}>
+                {fileList.length >= 1 ? undefined : uploadButton()}
+              </Upload>
+            </ImgCrop>
+            <Modal open={previewOpen} title={previewTitle} footer={null} onCancel={handleCancel}>
+              <img alt="example" style={{width: '100%'}} src={previewImage}/>
+            </Modal>
+          </Descriptions.Item>
+          <Descriptions column={1}>
+            <div>
+              <h4>昵称：</h4>
+              <Paragraph
+                editable={
+                  {
+                    icon: <EditOutlined/>,
+                    tooltip: '编辑',
+                    onChange: (value) => {
+                      setUserName(value)
                     }
                   }
-                >
-                  {userName}
-                </Paragraph>
-              </div>
-              <div>
-                <h4>我的id：</h4>
-                <Paragraph
-                  copyable={valueLength(loginUser?.id)}
-                >
-                  {loginUser?.id}
-                </Paragraph>
-              </div>
-              <div>
-                <Tooltip title={"邀请好友注册双方都可获得100积分"}>
-                  <h4>我的邀请码：</h4>
-                </Tooltip>
-                <Paragraph
-                  copyable={valueLength(loginUser?.invitationCode)}
-                >
-                  {loginUser?.invitationCode}
-                </Paragraph>
-              </div>
-            </Descriptions>
-          </ProCard>
-          <br/>
-          <ProCard type={"inner"} bordered tooltip={"用于平台接口调用"} title={<strong>我的钱包</strong>}
-                   extra={
-                     <>
-                       <Button onClick={() => {
-                         history.push("/recharge/list")
-                       }}>充值余额</Button>
-                     </>
-                   }
-          >
-            <strong>坤币 💰: </strong> <span
-            style={{color: "red", fontSize: 18}}>{loginUser?.balance}</span>
-            <br/>
-            <strong>获取更多：</strong>
-            <br/>
-            <Button style={{marginRight: 10, marginBottom: 10}} type={"primary"} onClick={() => {
-              setOpen(true)
-            }}>邀请好友</Button>
-            <Button loading={dailyCheckInLoading}
-                    style={{marginRight: 10}} type={"primary"} onClick={async () => {
-              setDailyCheckInLoading(true)
-              const res = await doDailyCheckInUsingPOST()
-              if (res.data && res.code === 0) {
-                const res = await getLoginUserUsingGET();
-                if (res.data && res.code === 0) {
-                  message.success("签到成功")
-                  setInitialState({loginUser: res.data, settings: Settings})
                 }
-              }
-              setTimeout(() => {
-                setDailyCheckInLoading(false)
-              }, 1000)
-            }}>
-              <Tooltip title={<>
-                <p>每日签到可获取10积分</p>
-                {/*<p>普通用户上限100</p>*/}
-                {/*<p>VPI会员上限1000</p>*/}
-              </>}>
-                每日签到
+              >
+                {userName}
+              </Paragraph>
+            </div>
+            <div>
+              <h4>我的id：</h4>
+              <Paragraph
+                copyable={valueLength(loginUser?.id)}
+              >
+                {loginUser?.id}
+              </Paragraph>
+            </div>
+            <div>
+              <Tooltip title={"邀请好友注册双方都可获得100积分"}>
+                <h4>我的邀请码：</h4>
               </Tooltip>
-            </Button>
-          </ProCard>
-          <br/>
-          <ProCard
-            bordered
-            type="inner"
-            title={"开发者凭证（调用接口的凭证）"}
-            extra={
-              <Button
-                loading={voucherLoading}
-                onClick={updateVoucher}>{(loginUser?.accessKey && loginUser?.secretKey) ? "更新" : "生成"}凭证</Button>
-            }
-          >
-            {
-              (loginUser?.accessKey && loginUser?.secretKey) ? (
-                <Descriptions column={1}>
-                  <Descriptions.Item label="AccessKey">
-                    <Paragraph copyable={valueLength(loginUser?.accessKey)}>
-                      {loginUser?.accessKey}
-                    </Paragraph>
-                  </Descriptions.Item>
-                  <Descriptions.Item label="SecretKey">
-                    <Paragraph copyable={valueLength(loginUser?.secretKey)}>
-                      {loginUser?.secretKey}
-                    </Paragraph>
-                  </Descriptions.Item>
-                </Descriptions>) : "暂无凭证,请先生成凭证"
-            }
-          </ProCard>
-          <br/>
-          <ProCard
-            type="inner"
-            title={<strong>开发者 SDK（快速接入API接口）</strong>}
-            bordered
-          >
-            <Button size={"large"}>
-              <a target={"_blank"} href={"https://github.com/qimu666/api-frontend"}
-                 rel="noreferrer"><VerticalAlignBottomOutlined/> Java SDK</a>
-            </Button>
-          </ProCard>
+              <Paragraph
+                copyable={valueLength(loginUser?.invitationCode)}
+              >
+                {loginUser?.invitationCode}
+              </Paragraph>
+            </div>
+          </Descriptions>
         </ProCard>
-        <SendGiftModal invitationCode={loginUser?.invitationCode} onCancel={() => {
-          setOpen(false)
-        }} open={open}/>
-      </Watermark>
+        <br/>
+        <ProCard type={"inner"} bordered tooltip={"用于平台接口调用"} title={<strong>我的钱包</strong>}
+                 extra={
+                   <>
+                     <Button onClick={() => {
+                       history.push("/recharge/list")
+                     }}>充值余额</Button>
+                   </>
+                 }
+        >
+          <strong>坤币 💰: </strong> <span
+          style={{color: "red", fontSize: 18}}>{loginUser?.balance}</span>
+          <br/>
+          <strong>获取更多：</strong>
+          <br/>
+          <Button style={{marginRight: 10, marginBottom: 10}} type={"primary"} onClick={() => {
+            setOpen(true)
+          }}>邀请好友</Button>
+          <Button loading={dailyCheckInLoading}
+                  style={{marginRight: 10}} type={"primary"} onClick={async () => {
+            setDailyCheckInLoading(true)
+            const res = await doDailyCheckInUsingPOST()
+            if (res.data && res.code === 0) {
+              const res = await getLoginUserUsingGET();
+              if (res.data && res.code === 0) {
+                message.success("签到成功")
+                setInitialState({loginUser: res.data, settings: Settings})
+              }
+            }
+            setTimeout(() => {
+              setDailyCheckInLoading(false)
+            }, 1000)
+          }}>
+            <Tooltip title={<>
+              <p>每日签到可获取10积分</p>
+              {/*<p>普通用户上限100</p>*/}
+              {/*<p>VPI会员上限1000</p>*/}
+            </>}>
+              每日签到
+            </Tooltip>
+          </Button>
+        </ProCard>
+        <br/>
+        <ProCard
+          bordered
+          type="inner"
+          title={"开发者凭证（调用接口的凭证）"}
+          extra={
+            <Button
+              loading={voucherLoading}
+              onClick={updateVoucher}>{(loginUser?.accessKey && loginUser?.secretKey) ? "更新" : "生成"}凭证</Button>
+          }
+        >
+          {
+            (loginUser?.accessKey && loginUser?.secretKey) ? (
+              <Descriptions column={1}>
+                <Descriptions.Item label="AccessKey">
+                  <Paragraph copyable={valueLength(loginUser?.accessKey)}>
+                    {loginUser?.accessKey}
+                  </Paragraph>
+                </Descriptions.Item>
+                <Descriptions.Item label="SecretKey">
+                  <Paragraph copyable={valueLength(loginUser?.secretKey)}>
+                    {loginUser?.secretKey}
+                  </Paragraph>
+                </Descriptions.Item>
+              </Descriptions>) : "暂无凭证,请先生成凭证"
+          }
+        </ProCard>
+        <br/>
+        <ProCard
+          type="inner"
+          title={<strong>开发者 SDK（快速接入API接口）</strong>}
+          bordered
+        >
+          <Button size={"large"}>
+            <a target={"_blank"} href={"https://github.com/qimu666/api-frontend"}
+               rel="noreferrer"><VerticalAlignBottomOutlined/> Java SDK</a>
+          </Button>
+        </ProCard>
+      </ProCard>
+      <SendGiftModal invitationCode={loginUser?.invitationCode} onCancel={() => {
+        setOpen(false)
+      }} open={open}/>
+
     </Spin>
   );
 };

@@ -9,7 +9,6 @@ import * as interfaceInfoController from './interfaceInfoController';
 import * as orderController from './orderController';
 import * as productInfoController from './productInfoController';
 import * as userController from './userController';
-
 export default {
   basicErrorController,
   dailyCheckInController,
