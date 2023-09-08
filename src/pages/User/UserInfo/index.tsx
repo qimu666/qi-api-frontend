@@ -38,7 +38,11 @@ const UserInfo: React.FC = () => {
     setLoading(true)
     const res = await getLoginUserUsingGET();
     if (res.data && res.code === 0) {
-      setInitialState({loginUser: res.data, settings: Settings})
+      if (initialState?.settings.navTheme === "light") {
+        setInitialState({loginUser: res.data, settings: {...Settings, navTheme: "light"}})
+      } else {
+        setInitialState({loginUser:res.data,settings: {...Settings, navTheme: "realDark"}})
+      }
       const updatedFileList = [...fileList];
       if (loginUser && loginUser.userAvatar) {
         updatedFileList[0] = {

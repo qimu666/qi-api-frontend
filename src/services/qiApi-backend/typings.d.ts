@@ -129,6 +129,7 @@ declare namespace API {
   };
 
   type InterfaceInfo = {
+    avatarUrl?: string;
     createTime?: string;
     description?: string;
     id?: number;
@@ -160,6 +161,7 @@ declare namespace API {
   };
 
   type InterfaceInfoUpdateRequest = {
+    avatarUrl?: string;
     description?: string;
     id?: number;
     method?: string;
@@ -423,6 +425,7 @@ declare namespace API {
 
   type ProductInfoUpdateRequest = {
     addPoints?: number;
+    avatarUrl?: string;
     description?: string;
     expirationTime?: string;
     id?: number;

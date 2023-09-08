@@ -1,45 +1,44 @@
+import React, {useEffect, useState} from "react";
+import ProCard from "@ant-design/pro-card";
+import {Badge, Card, List, Spin} from "antd";
+import Search from "antd/es/input/Search";
+import {history} from "@umijs/max";
 import {
   listInterfaceInfoByPageUsingGET,
-  listInterfaceInfoBySearchTextPageUsingGET,
-} from '@/services/qiApi-backend/interfaceInfoController';
-import {Link} from '@@/exports';
-
-import {Badge, Button, Card, Empty, Input} from 'antd';
-import VirtualList from 'rc-virtual-list';
-import React, {useEffect, useState} from 'react';
+  listInterfaceInfoBySearchTextPageUsingGET
+} from "@/services/qiApi-backend/interfaceInfoController";
 import {valueLength} from "@/pages/User/UserInfo";
-import ProCard from "@ant-design/pro-card";
-import {history} from "@umijs/max";
-import {InterfaceStatusEnum} from "@/enum/commonEnum";
 
-const ContainerHeight = 760;
 
 const InterfaceSquare: React.FC = () => {
   const [data, setData] = useState<API.InterfaceInfo[]>([]);
-  const [current, setCurrent] = useState<number>(1);
   const [searchText, setSearchText] = useState<string>('');
+  const [total, setTotal] = useState<number>();
+  const [pageSize] = useState<number>(12);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const appendData = async () => {
+  const loadData = async (current = 1) => {
+    setLoading(true)
     const res = await listInterfaceInfoByPageUsingGET({
       current: current,
       name: searchText,
+      pageSize: pageSize,
+      sortField: 'totalInvokes',
+      sortOrder: 'descend',
       description: searchText,
     });
-    if (res.data) {
-      setCurrent(current + 1);
-      setData(data.concat(res?.data?.records || []));
+    if (res.code === 0 && res.data) {
+      setData(res?.data?.records || []);
+      setTotal(res.data.total)
+      setLoading(false)
+    } else {
+      setLoading(false)
     }
   };
 
   useEffect(() => {
-    appendData();
+    loadData();
   }, []);
-
-  const onScroll = (e: React.UIEvent<HTMLElement, UIEvent>) => {
-    if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop === ContainerHeight) {
-      appendData();
-    }
-  };
 
   const onSearch = async () => {
     const res = await listInterfaceInfoBySearchTextPageUsingGET({
@@ -48,77 +47,79 @@ const InterfaceSquare: React.FC = () => {
     });
     if (res.data) {
       setData(res?.data?.records || []);
+      setTotal(res?.data?.total || 0)
     }
   };
 
   return (
     <>
       <Card>
-        <div style={{display: 'flex', justifyContent: 'center', justifyItems: 'center'}}>
-          <Input.Search
-            allowClear
-            placeholder="没找到心仪的接口 ？搜索一下吧"
+        <ProCard layout="center">
+          <Search
+            showCount
             value={searchText}
-            size="large"
-            maxLength={40}
-            enterButton="搜 索"
             onChange={(e) => {
               setSearchText(e.target.value);
             }}
-            addonAfter
-            bordered
-            onPressEnter={() => {
-              setCurrent(2);
-              onSearch();
-            }}
-            onSearch={() => {
-              setCurrent(2);
-              onSearch();
-            }}
-            style={{
-              maxWidth: 670,
-            }}
-          />
-        </div>
+            allowClear
+            size={"large"}
+            maxLength={50}
+            enterButton="搜索"
+            placeholder={"没有找到心仪的接口？快搜索一下吧"}
+            onSearch={onSearch}
+            style={{maxWidth: 600, height: 60}}/>
+        </ProCard>
       </Card>
       <br/>
-      <ProCard>{
-        data && data.length > 0 ?
-          <VirtualList
-            data={data}
-            height={ContainerHeight}
-            itemHeight={1000}
-            itemKey="email"
-            onScroll={onScroll}
-          >
-            {(item: API.InterfaceInfo) => (
-              <ProCard
-                type={"inner"}
-                key={item.id}
-                title={
-                  <Link key={item.id} to={`/interface_info/${item.id}`}>
-                    {item.name}
-                  </Link>
-                }
-                bordered
-                extra={<>
-                  <Badge style={{marginRight: 20}} status={InterfaceStatusEnum[item.status || 0].status}
-                         text={InterfaceStatusEnum[item.status || 0].text}/>
-                  <Button type={'primary'} onClick={() => {
+      <br/>
+      <Spin spinning={loading}>
+        <List
+          pagination={{
+            onChange: (page) => {
+              loadData(page)
+            },
+            pageSize: pageSize,
+            total: total
+          }}
+          grid={{
+            gutter: 20,
+            xs: 1,
+            sm: 1,
+            md: 2,
+            lg: 4,
+            xl: 5,
+            xxl: 6
+          }}
+          dataSource={data}
+          renderItem={(item, index) => (
+            <List.Item>
+              <ProCard key={index} bordered hoverable direction="column" style={{height: 270}}>
+                  <ProCard layout="center" onClick={() => {
                     history.push(`/interface_info/${item.id}`)
-                  }}>获取</Button></>}
-              >
-                {valueLength(item?.description) <= 0
-                  ? '暂无描述信息'
-                  : valueLength(item?.description).length > 50
-                    ? item.description?.slice(0, 50) + '...'
-                    : item.description}
-              </ProCard>
-            )}
-          </VirtualList> : <Empty/>}
-      </ProCard>
+                  }}>
+                    <Badge count={item.totalInvokes} overflowCount={999999999} color='#eb4d4b'>
+                    <img style={{width: 80, borderRadius: 8, marginLeft: 10}}
+                         src={valueLength(item.avatarUrl) ? item?.avatarUrl : 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg'}
+                         alt={item.name}/>
+                    </Badge>
+                  </ProCard>
+                  <ProCard onClick={() => {
+                    history.push(`/interface_info/${item.id}`)
+                  }} layout="center" style={{marginTop: -10, fontSize: 16}}>
+                    {item.name}
+                  </ProCard>
+                  <ProCard onClick={() => {
+                    history.push(`/interface_info/${item.id}`)
+                  }} layout="center" style={{marginTop: -18, fontSize: 14}}>
+                    {!item.description ? "暂无接口描述" : item.description.length > 15 ? item.description.slice(0, 15) + '...' : item.description}
+                  </ProCard>
+                </ProCard>
+            </List.Item>
+          )}
+        />
+      </Spin>
     </>
-  );
+  )
 };
 
 export default InterfaceSquare;

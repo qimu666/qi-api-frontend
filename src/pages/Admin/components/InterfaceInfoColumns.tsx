@@ -81,6 +81,20 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     key: "reduceScore",
     colProps: {
       span: 12,
+    }, formItemProps: {
+      rules: [
+        () => ({
+          validator(_, value) {
+            if (!value) {
+              return Promise.reject(new Error("扣除积分个数为必填项"));
+            }
+            if (value < 0) {
+              return Promise.reject(new Error("扣除积分个数不能为负数"));
+            }
+            return Promise.resolve();
+          },
+          required: true,
+        })],
     },
   },
   {
@@ -93,30 +107,6 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     colProps: {
       span: 12,
     },
-  },
-  {
-    title: '响应头,需包含 {"Content-Type":"application/json"}',
-    dataIndex: 'responseHeader',
-    tooltip: '响应头,需包含 {"Content-Type":"application/json"}',
-    width: 'lg',
-    key: "responseHeader",
-    valueType: "jsonCode"
-  },
-  {
-    title: '请求头,需包含 {"Content-Type":"application/json"}',
-    dataIndex: 'requestHeader',
-    tooltip: '请求头,需包含 {"Content-Type":"application/json"}',
-    width: 'lg',
-    key: "requestHeader",
-    valueType: "jsonCode"
-  },
-  {
-    title: '请求示例',
-    dataIndex: 'requestExample',
-    tooltip: "请求示例",
-    width: 'lg',
-    key: "requestExample",
-    valueType: "jsonCode"
   },
   {
     title: '接口描述',
@@ -141,7 +131,6 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
   },
   {
     title: '接口名称',
-    width: 120,
     dataIndex: 'name',
     copyable: true,
     valueType: 'text',
@@ -162,16 +151,24 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     key: 'url',
   },
   {
+    title: '接口图片',
+    dataIndex: 'avatarUrl',
+    valueType: 'image',
+    width: 80,
+    key: 'avatarUrl',
+  },
+  {
     title: '扣除积分个数',
     dataIndex: 'reduceScore',
     valueType: 'text',
+    width: 80,
     key: "reduceScore",
   },
   {
     title: '总调用次数',
     dataIndex: 'totalInvokes',
     valueType: 'text',
-    search:false,
+    search: false,
     key: "totalInvokes",
   },
   {
@@ -181,27 +178,29 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     copyable: true,
     ellipsis: true,
     key: 'description',
-  },
-  {
-    title: '请求示例',
-    dataIndex: 'requestExample',
-    key: 'requestExample',
-    valueType: 'text',
-    width: 120,
-    search: false,
-    copyable: true,
-    ellipsis: true,
-  },
-  {
-    title: '请求头',
-    dataIndex: 'requestHeader',
-    valueType: 'text',
-    search: false,
-    width: 120,
-    ellipsis: true,
-    copyable: true,
-    key: 'requestHeader',
-  },
+  }
+  // ,
+  // {
+  //   title: '请求示例',
+  //   dataIndex: 'requestExample',
+  //   key: 'requestExample',
+  //   valueType: 'text',
+  //   width: 120,
+  //   search: false,
+  //   copyable: true,
+  //   ellipsis: true,
+  // },
+  // {
+  //   title: '请求头',
+  //   dataIndex: 'requestHeader',
+  //   valueType: 'text',
+  //   search: false,
+  //   width: 120,
+  //   ellipsis: true,
+  //   copyable: true,
+  //   key: 'requestHeader',
+  // },
+  ,
   {
     title: '请求参数',
     dataIndex: 'requestParams',
@@ -212,16 +211,16 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     copyable: true,
     key: 'requestParams',
   },
-  {
-    title: '响应头',
-    dataIndex: 'responseHeader',
-    valueType: 'text',
-    search: false,
-    width: 120,
-    copyable: true,
-    ellipsis: true,
-    key: 'responseHeader',
-  },
+  // {
+  //   title: '响应头',
+  //   dataIndex: 'responseHeader',
+  //   valueType: 'text',
+  //   search: false,
+  //   width: 120,
+  //   copyable: true,
+  //   ellipsis: true,
+  //   key: 'responseHeader',
+  // },
   {
     title: '状态',
     filters: true,

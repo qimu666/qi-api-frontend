@@ -10,9 +10,10 @@
         html,
         body,
         #root {
-          height: 100%;
-          margin: 0;
-          padding: 0;
+         height: 100%;
+         width: 90%;
+         margin: 0 auto;
+         padding: 0;
         }
         #root {
           background-repeat: no-repeat;

@@ -24,6 +24,7 @@ import {
   CodeOutlined,
   FileExclamationOutlined,
   FileTextOutlined,
+  LoginOutlined,
   PlusOutlined,
   VerticalAlignBottomOutlined
 } from "@ant-design/icons";
@@ -32,10 +33,10 @@ import './index.less'
 import ProCard from "@ant-design/pro-card";
 import {errorCode} from "@/enum/ErrorCodeEnum";
 import Search from "antd/es/input/Search";
-import {useParams} from "@@/exports";
+import {Link, useParams} from "@@/exports";
 import {axiosExample, returnExample} from "@/pages/InterfaceInfo/components";
 
-const InterfaceSearch: React.FC = () => {
+const InterfaceInfo: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setDate] = useState<API.InterfaceInfo>();
   const [requestParams, setRequestParams] = useState<[]>();
@@ -61,7 +62,11 @@ const InterfaceSearch: React.FC = () => {
         setDate(res.data || {});
         let requestParams = res.data.requestParams
         // @ts-ignore
-        setRequestParams(JSON.parse(requestParams))
+        try {
+          setRequestParams(requestParams ? JSON.parse(requestParams) : [])
+        }catch (e:any){
+          setRequestParams( [])
+        }
       }
       setLoading(false);
     } catch (e: any) {
@@ -96,20 +101,20 @@ const InterfaceSearch: React.FC = () => {
       label: <><CodeOutlined/>示例代码</>,
     }
   ];
-  const code = [{
+  const responseParameters = [{
     name: 'code',
     type: "int",
-    des: <>返回码：<a onClick={() => setActiveTabKey("errorCode")}>错误码参照</a></>,
+    desc: <>返回码：<a onClick={() => setActiveTabKey("errorCode")}>错误码参照</a></>,
     required: '是'
   }, {
     name: 'massage',
     type: "string",
-    des: "返回码描述",
+    desc: "返回码描述",
     required: '是'
   }, {
     name: 'data',
     type: "string",
-    des: "返回数据",
+    desc: "返回数据",
     required: '是'
   }]
 
@@ -158,16 +163,16 @@ const InterfaceSearch: React.FC = () => {
       <p className="highlightLine">请求参数说明：</p>
       <Table dataSource={requestParams} pagination={false} style={{maxWidth: 800}} size={"small"}>
         <Column title="名称" dataIndex="name" key="name"/>
-        <Column title="必选" dataIndex="required" key="type"/>
-        <Column title="类型" dataIndex="type" key="isTrue"/>
-        <Column title="描述" dataIndex="des" key="des"/>
+        <Column title="必选" dataIndex="required" key="required"/>
+        <Column title="类型" dataIndex="type" key="type"/>
+        <Column title="描述" dataIndex="desc" key="desc"/>
       </Table>
       <p className="highlightLine" style={{marginTop: 15}}>响应参数说明：</p>
-      <Table dataSource={code} pagination={false} style={{maxWidth: 800}} size={"small"}>
+      <Table dataSource={responseParameters} pagination={false} style={{maxWidth: 800}} size={"small"}>
         <Column title="名称" dataIndex="name" key="name"/>
-        <Column title="必选" dataIndex="required" key="type"/>
-        <Column title="类型" dataIndex="type" key="isTrue"/>
-        <Column title="描述" dataIndex="des" key="des"/>
+        <Column title="必选" dataIndex="required" key="required"/>
+        <Column title="类型" dataIndex="type" key="type"/>
+        <Column title="描述" dataIndex="desc" key="desc"/>
       </Table>
       <p className="highlightLine" style={{marginTop: 15}}>请求示例：</p>
       <a onClick={() => setActiveTabKey("sampleCode")}>见示例代码</a>
@@ -233,6 +238,7 @@ const InterfaceSearch: React.FC = () => {
                         删除
                       </Button>
                     </Space>
+                    <br/>
                   </>
                 ))}
                 <Form.Item>
@@ -307,6 +313,7 @@ const InterfaceSearch: React.FC = () => {
           <Descriptions.Item key={"url"} label={"接口地址"}><a target={"_blank"} href={data?.url}
                                                                rel="noreferrer">{data?.url}</a></Descriptions.Item>
           <Descriptions.Item key={"json"} label="返回格式">{"JSON"}</Descriptions.Item>
+          <Descriptions.Item key={"reduceScore"} label="消费积分">{data?.reduceScore}个</Descriptions.Item>
           <Descriptions.Item key={"request"} label="请求方式"> <Tag
             color={InterfaceRequestMethodEnum[data?.method ?? 'default']}>{data?.method}</Tag></Descriptions.Item>
           <Descriptions.Item key={"totalInvokes"} label="调用次数">{data?.totalInvokes}次</Descriptions.Item>
@@ -321,7 +328,8 @@ const InterfaceSearch: React.FC = () => {
               <Badge status="error" text={statusEnum[data.status]}/>
             ) : null}
           </Descriptions.Item>
-          <Descriptions.Item key={"description"} label="接口描述">{data?.description}</Descriptions.Item>
+          <Descriptions.Item key={"description"}
+                             label="接口描述">{data?.description ?? '该接口暂无描述信息'}</Descriptions.Item>
         </Descriptions>
       </Card>
       <br/>
@@ -338,6 +346,9 @@ const InterfaceSearch: React.FC = () => {
         type="inner"
         title={<strong>开发者 SDK（快速接入API接口）</strong>}
         bordered
+        extra={<Link to="/account/center">
+          <LoginOutlined/> 前往获取开发者凭证
+        </Link>}
       >
         <Button size={"large"}>
           <a target={"_blank"} href={"https://github.com/qimu666/api-frontend"}
@@ -348,4 +359,4 @@ const InterfaceSearch: React.FC = () => {
   )
 }
 
-export default InterfaceSearch;
+export default InterfaceInfo;

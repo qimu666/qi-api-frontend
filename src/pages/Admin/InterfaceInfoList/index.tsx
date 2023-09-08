@@ -14,6 +14,7 @@ import '@umijs/max';
 import {Button, Card, message, Popconfirm} from 'antd';
 import React, {useRef, useState} from 'react';
 import ModalForm from "@/pages/Admin/components/ModalForm";
+import UploadModal from "@/components/UploadModal";
 
 const InterfaceInfoList: React.FC = () => {
 
@@ -29,6 +30,7 @@ const InterfaceInfoList: React.FC = () => {
   const [updateModalOpen, handleUpdateModalOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
+  const [modalOpen, setModalOpen] = useState(false);
   const [currentRow, setCurrentRow] = useState<API.InterfaceInfo>();
 
   /**
@@ -73,6 +75,31 @@ const InterfaceInfoList: React.FC = () => {
       hide();
       message.error('修改失败' + error.message);
       return false;
+    }
+  };
+
+
+  /**
+   * @en-US Update node
+   * @zh-CN 更新接口图片
+   *
+   */
+  const handleUpdateAvatar = async (url: string) => {
+    if (url) {
+      const hide = message.loading('修改中');
+      try {
+        const res = await updateInterfaceInfoUsingPOST({id: currentRow?.id, avatarUrl: url});
+        if (res.data && res.code === 0) {
+          hide();
+          message.success('修改成功');
+          actionRef.current?.reload()
+          return true;
+        }
+      } catch (error: any) {
+        hide();
+        message.error('修改失败' + error.message);
+        return false;
+      }
     }
   };
 
@@ -214,7 +241,6 @@ const InterfaceInfoList: React.FC = () => {
         <Popconfirm
           key={'Delete'}
           title="请确认是否删除该接口!"
-          // description="请勿误删接口"
           onConfirm={confirm}
           onCancel={cancel}
           okText="Yes"
@@ -229,12 +255,20 @@ const InterfaceInfoList: React.FC = () => {
             删除
           </a>
         </Popconfirm>,
+        <a
+          key="upload"
+          onClick={async () => {
+            setCurrentRow(record);
+            setModalOpen(true)
+          }}
+        >
+          更新图片
+        </a>
       ],
     },
   ];
   return (
     <Card>
-
       <ProTable<API.InterfaceInfo>
         headerTitle={'接口管理'}
         actionRef={actionRef}
@@ -299,7 +333,6 @@ const InterfaceInfoList: React.FC = () => {
         open={() => {
           return updateModalOpen;
         }}
-
         value={currentRow}
         onOpenChange={handleUpdateModalOpen}
         onSubmit={async (value) => {
@@ -314,7 +347,12 @@ const InterfaceInfoList: React.FC = () => {
         onCancel={() => handleUpdateModalOpen(false)}
         columns={InterfaceInfoModalFormColumns} width={"840px"}
       />
-
+      <UploadModal
+        url={currentRow?.avatarUrl}
+        onCancel={() => setModalOpen(false)}
+        open={modalOpen}
+        onSubmit={handleUpdateAvatar}
+      />
     </Card>
   );
 };

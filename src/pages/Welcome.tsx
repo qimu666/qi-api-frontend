@@ -185,21 +185,21 @@ const Welcome: React.FC = () => {
           >
             <InfoCard
               index={1}
-              href="https://柒木接口js.org/docs/introduce/introduce"
+              href="https://api.qimuu.icu/"
               title={<Title level={5}>多样化的接口选择</Title>}
               desc={<Text
                 strong>平台上提供了丰富多样的接口供用户选择，涵盖了各个领域的功能和服务，满足不同用户的需求。</Text>}
             />
             <InfoCard
               index={2}
-              href="https://柒木接口js.org/docs/introduce/introduce"
+              href="https://api.qimuu.icu/"
               title={<Title level={5}>在线调试功能</Title>}
               desc={<Text
                 strong>用户可以在平台上进行接口在线调试，快速验证接口的功能和效果，节省了开发调试的时间和工作量。</Text>}
             />
             <InfoCard
               index={3}
-              href="https://柒木接口js.org/docs/introduce/introduce"
+              href="https://api.qimuu.icu/"
               title={<Title level={5}>客户端SDK支持</Title>}
               desc={<Text
                 strong>为了方便开发者集成接口到自己的代码中，平台提供了客户端SDK，使调用接口变得更加简单和便捷。
@@ -207,14 +207,14 @@ const Welcome: React.FC = () => {
             />
             <InfoCard
               index={4}
-              href="https://柒木接口js.org/docs/introduce/introduce"
+              href="https://api.qimuu.icu/"
               title={<Title level={5}>开发者文档和技术支持</Title>}
               desc={<Text
                 strong>平台提供了详细的开发者文档和技术支持，帮助开发者快速接入和发布接口，解决遇到的问题和困难。</Text>}
             />
             <InfoCard
               index={5}
-              href="https://柒木接口js.org/docs/introduce/introduce"
+              href="https://api.qimuu.icu/"
               title={<Title level={5}>稳定和安全</Title>}
               desc={<Text
                 strong>平台致力于提供稳定和安全的接口调用服务，采用了安全措施和技术手段，保障用户数据的安全性和隐私保护。</Text>}

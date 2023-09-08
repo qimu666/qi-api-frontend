@@ -27,9 +27,6 @@ export default [
     path: '/account/center', name: '个人信息', icon: 'UserOutlined', component: './User/UserInfo', hideInMenu: true,
   },
   {
-    path: '/my/interface_info', name: '我的接口', icon: 'ApiOutlined', component: './MyInterface'
-  },
-  {
     path: '/interface_info/:id',
     name: '接口详情',
     component: './InterfaceInfo',
