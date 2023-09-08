@@ -3,7 +3,7 @@ import {SettingDrawer} from '@ant-design/pro-components';
 import type {RunTimeLayoutConfig} from '@umijs/max';
 import {history} from '@umijs/max';
 import {AvatarDropdown, AvatarName} from './components/RightContent/AvatarDropdown';
-
+import logo from '../public/logo.gif';
 import Footer from '@/components/Footer';
 import {requestConfig} from '@/requestConfig';
 import Settings from '../config/defaultSettings';
@@ -42,9 +42,11 @@ export async function getInitialState(): Promise<InitialState> {
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => {
   return {
+
     waterMarkProps: {
       content: initialState?.loginUser?.userName,
     },
+    logo: logo,
     footerRender: () => <>
       <Footer/>
       <FloatButton.Group
@@ -114,7 +116,7 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
       //   getInitialState();
       // }
       // 如果没有登录，重定向到 login
-      if (!initialState?.loginUser && !/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/'&&location.pathname !== '/interface/list') {
+      if (!initialState?.loginUser && !/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/' && location.pathname !== '/interface/list') {
         history.push(loginPath);
       }
     },

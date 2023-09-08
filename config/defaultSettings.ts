@@ -15,8 +15,7 @@ const Settings: ProLayoutProps & {
   splitMenus: false,
   title: '柒木接口',
   pwa: false,
-  logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
-  iconfontUrl: '',
-
+  // logo: 'https://img.qimuu.icu/typory/logo.gif',
+  iconfontUrl: 'https://img.qimuu.icu/typory/logo.gif',
 };
 export default Settings;
