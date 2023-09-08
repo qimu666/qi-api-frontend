@@ -92,6 +92,36 @@ export async function listProductInfoByPageUsingGET(
   });
 }
 
+/** offlineProductInfo POST /api/productInfo/offline */
+export async function offlineProductInfoUsingPOST(
+  body: API.IdRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseboolean>('/api/productInfo/offline', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** onlineProductInfo POST /api/productInfo/online */
+export async function onlineProductInfoUsingPOST(
+  body: API.IdRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseboolean>('/api/productInfo/online', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** updateProductInfo POST /api/productInfo/update */
 export async function updateProductInfoUsingPOST(
   body: API.ProductInfoUpdateRequest,

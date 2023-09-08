@@ -10,9 +10,10 @@ import {
   addProductInfoUsingPOST,
   deleteProductInfoUsingPOST,
   listProductInfoByPageUsingGET,
+  offlineProductInfoUsingPOST,
+  onlineProductInfoUsingPOST,
   updateProductInfoUsingPOST
 } from "@/services/qiApi-backend/productInfoController";
-import {useModel} from "@umijs/max";
 
 
 const ProductInfoList: React.FC = () => {
@@ -76,6 +77,59 @@ const ProductInfoList: React.FC = () => {
     }
   };
 
+
+  /**
+   * @en-US Update node
+   * @zh-CN 发布
+   *
+   * @param record
+   */
+  const handleOnline = async (record: API.IdRequest) => {
+    const hide = message.loading('发布中');
+    if (!record) return true;
+    try {
+      const res = await onlineProductInfoUsingPOST({
+        id: record.id,
+      });
+      hide();
+      if (res.data) {
+        message.success('发布成功');
+        actionRef.current?.reload();
+      }
+      return true;
+    } catch (error: any) {
+      hide();
+      message.error(error.message);
+      return false;
+    }
+  };
+
+  /**
+   * @en-US Update node
+   * @zh-CN 下线
+   *
+   * @param record
+   */
+  const handleOffline = async (record: API.IdRequest) => {
+    const hide = message.loading('下线中');
+    if (!record) return true;
+    try {
+      const res = await offlineProductInfoUsingPOST({
+        id: record.id,
+      });
+      hide();
+      if (res.data) {
+        message.success('下线成功');
+        actionRef.current?.reload();
+      }
+      return true;
+    } catch (error: any) {
+      hide();
+      message.error(error.message);
+      return false;
+    }
+  };
+
   /**
    *  Delete node
    * @zh-CN 删除节点
@@ -126,6 +180,40 @@ const ProductInfoList: React.FC = () => {
         >
           修改
         </a>,
+        record.status === 0 ? (
+          <a
+            type="text"
+            key="auditing"
+            onClick={() => {
+              handleOnline(record);
+            }}
+          >
+            审核通过
+          </a>
+        ) : null,
+        record.status === 2 ? (
+          <a
+            type="text"
+            key="online"
+            onClick={() => {
+              handleOnline(record);
+            }}
+          >
+            上线
+          </a>
+        ) : null,
+        record.status === 1 ? (
+          <a
+            type="text"
+            key="offline"
+            style={{color: "red"}}
+            onClick={() => {
+              handleOffline(record);
+            }}
+          >
+            下线
+          </a>
+        ) : null,
         <Popconfirm
           key={'Delete'}
           title="请确认是否删除该商品!"
@@ -136,6 +224,7 @@ const ProductInfoList: React.FC = () => {
         >
           <a
             key="Remove"
+            style={{color: "red"}}
             onClick={async () => {
               setCurrentRow(record);
             }}

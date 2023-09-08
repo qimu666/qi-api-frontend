@@ -21,10 +21,10 @@ export default [
   {path: '/:id', name: '欢迎', icon: 'smile', component: './Welcome', hideInMenu: true,},
   {path: '/', name: '欢迎', icon: 'smile', component: './Welcome'},
   {path: '/interface/list', name: '接口广场', icon: 'RedditOutlined', component: './InterfaceSquare'},
-  {path: '/order/pay/:id', icon: "PayCircleOutlined", name: '支付', component: './Order', hideInMenu: true,},
+  {path: '/order/pay/:id', icon: "PayCircleOutlined", name: '订单支付', component: './Order', hideInMenu: true,},
   {path: '/recharge/list', icon: "PayCircleOutlined", name: '购买积分', component: './Recharge'},
   {
-    path: '/account/center', name: '个人信息', icon: 'UserOutlined', component: './User/UserInfo', hideInMenu: true,
+    path: '/account/center', name: '个人中心', icon: 'UserOutlined', component: './User/UserInfo', hideInMenu: true,
   },
   {
     path: '/interface_info/:id',

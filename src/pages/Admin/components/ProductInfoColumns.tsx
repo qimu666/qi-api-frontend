@@ -123,6 +123,27 @@ export const ProductInfoColumns: ProColumns<API.ProductInfo>[] = [
     key: 'description',
   },
   {
+    title: '商品状态',
+    filters: true,
+    onFilter: true,
+    dataIndex: 'status',
+    key: 'status',
+    valueEnum: {
+      0: {
+        text: '审核中',
+        status: 'Default',
+      },
+      2: {
+        text: '已下线',
+        status: 'Error',
+      },
+      1: {
+        text: '已上线',
+        status: 'Processing',
+      },
+    }
+  },
+  {
     title: '产品类型',
     dataIndex: 'productType',
     filters: true,

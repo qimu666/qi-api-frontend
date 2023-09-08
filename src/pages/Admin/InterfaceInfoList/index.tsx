@@ -208,7 +208,7 @@ const InterfaceInfoList: React.FC = () => {
         record.status === 0 ? (
           <a
             type="text"
-            key="online"
+            key="auditing"
             onClick={() => {
               handleOnline(record);
             }}
@@ -219,7 +219,7 @@ const InterfaceInfoList: React.FC = () => {
         record.status === 2 ? (
           <a
             type="text"
-            key="offline"
+            key="online"
             onClick={() => {
               handleOnline(record);
             }}
@@ -231,6 +231,7 @@ const InterfaceInfoList: React.FC = () => {
           <a
             type="text"
             key="offline"
+            style={{color: "red"}}
             onClick={() => {
               handleOffline(record);
             }}
@@ -248,6 +249,7 @@ const InterfaceInfoList: React.FC = () => {
         >
           <a
             key="Remove"
+            style={{color:"red"}}
             onClick={async () => {
               setCurrentRow(record);
             }}

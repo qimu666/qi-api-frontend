@@ -39,8 +39,13 @@ export const requestConfig: RequestConfig = {
         return response;
       } else {
         switch (code) {
+          case 40001: {
+            message.error(data.message);
+            history.push('/user/login');
+          }
+            break;
           case 40100:
-            if (!/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/') {
+            if (!/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/' && location.pathname !== '/interface/list') {
               message.error(data.message);
               history.push('/user/login');
             }

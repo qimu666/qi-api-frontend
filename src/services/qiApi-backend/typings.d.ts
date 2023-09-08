@@ -409,6 +409,7 @@ declare namespace API {
     isDelete?: number;
     name?: string;
     productType?: string;
+    status?: number;
     total?: number;
     updateTime?: string;
     userId?: number;
@@ -425,7 +426,6 @@ declare namespace API {
 
   type ProductInfoUpdateRequest = {
     addPoints?: number;
-    avatarUrl?: string;
     description?: string;
     expirationTime?: string;
     id?: number;

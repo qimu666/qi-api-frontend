@@ -9,8 +9,10 @@ import ModalForm from "@/pages/Admin/components/ModalForm";
 import UserColumns, {UserAddModalFormColumns, UserUpdateModalFormColumns} from "@/pages/Admin/components/UserColumns";
 import {
   addUserUsingPOST,
+  banUserUsingPOST,
   deleteUserUsingPOST,
   listUserByPageUsingGET,
+  normalUserUsingPOST,
   updateUserUsingPOST
 } from "@/services/qiApi-backend/userController";
 
@@ -50,6 +52,58 @@ const UserList: React.FC = () => {
     } catch (error: any) {
       hide();
       message.error('添加失败! ' + error.message);
+      return false;
+    }
+  };
+
+  /**
+   * @en-US Update node
+   * @zh-CN 解封
+   *
+   * @param record
+   */
+  const handleNormalUser = async (record: API.IdRequest) => {
+    const hide = message.loading('解封中');
+    if (!record) return true;
+    try {
+      const res = await normalUserUsingPOST({
+        id: record.id,
+      });
+      hide();
+      if (res.data) {
+        message.success('解封成功');
+        actionRef.current?.reload();
+      }
+      return true;
+    } catch (error: any) {
+      hide();
+      message.error(error.message);
+      return false;
+    }
+  };
+
+  /**
+   * @en-US Update node
+   * @zh-CN 封号
+   *
+   * @param record
+   */
+  const handleBanUser = async (record: API.IdRequest) => {
+    const hide = message.loading('封号中');
+    if (!record) return true;
+    try {
+      const res = await banUserUsingPOST({
+        id: record.id,
+      });
+      hide();
+      if (res.data) {
+        message.success('封号成功');
+        actionRef.current?.reload();
+      }
+      return true;
+    } catch (error: any) {
+      hide();
+      message.error(error.message);
       return false;
     }
   };
@@ -126,6 +180,29 @@ const UserList: React.FC = () => {
         >
           修改
         </a>,
+        record.status === 1 ? (
+          <a
+            type="text"
+            key="normal"
+            onClick={() => {
+              handleNormalUser(record);
+            }}
+          >
+            解封
+          </a>
+        ) : null,
+        record.status === 0 ? (
+          <a
+            style={{color: "red"}}
+            type="text"
+            key="ban"
+            onClick={() => {
+              handleBanUser(record);
+            }}
+          >
+            封号
+          </a>
+        ) : null,
         <Popconfirm
           key={'Delete'}
           title="请确认是否删除该用户!"
@@ -136,6 +213,7 @@ const UserList: React.FC = () => {
         >
           <a
             key="Remove"
+            style={{color: "red"}}
             onClick={async () => {
               setCurrentRow(record);
             }}

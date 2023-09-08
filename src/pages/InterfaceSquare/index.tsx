@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import ProCard from "@ant-design/pro-card";
-import {Badge, Card, List, Spin} from "antd";
+import {Badge, Card, Image, List, Spin} from "antd";
 import Search from "antd/es/input/Search";
 import {history} from "@umijs/max";
 import {
@@ -53,8 +53,8 @@ const InterfaceSquare: React.FC = () => {
 
   return (
     <>
-      <Card>
-        <ProCard layout="center">
+      <Card hoverable>
+        <ProCard  layout="center">
           <Search
             showCount
             value={searchText}
@@ -94,26 +94,29 @@ const InterfaceSquare: React.FC = () => {
           renderItem={(item, index) => (
             <List.Item>
               <ProCard key={index} bordered hoverable direction="column" style={{height: 270}}>
-                  <ProCard layout="center" onClick={() => {
-                    history.push(`/interface_info/${item.id}`)
-                  }}>
-                    <Badge count={item.totalInvokes} overflowCount={999999999} color='#eb4d4b'>
-                    <img style={{width: 80, borderRadius: 8, marginLeft: 10}}
-                         src={valueLength(item.avatarUrl) ? item?.avatarUrl : 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg'}
-                         alt={item.name}/>
-                    </Badge>
-                  </ProCard>
-                  <ProCard onClick={() => {
-                    history.push(`/interface_info/${item.id}`)
-                  }} layout="center" style={{marginTop: -10, fontSize: 16}}>
-                    {item.name}
-                  </ProCard>
-                  <ProCard onClick={() => {
-                    history.push(`/interface_info/${item.id}`)
-                  }} layout="center" style={{marginTop: -18, fontSize: 14}}>
-                    {!item.description ? "暂无接口描述" : item.description.length > 15 ? item.description.slice(0, 15) + '...' : item.description}
-                  </ProCard>
+                <ProCard layout="center" onClick={() => {
+                  history.push(`/interface_info/${item.id}`)
+                }}>
+                  <Badge count={item.totalInvokes} overflowCount={999999999} color='#eb4d4b'>
+                    <Image style={{width: 80, borderRadius: 8, marginLeft: 10}}
+                           src={valueLength(item.avatarUrl) ? item?.avatarUrl : 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg'}
+                           fallback={"https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"}
+                           alt={item.name}
+                           preview={false}
+                    />
+                  </Badge>
                 </ProCard>
+                <ProCard onClick={() => {
+                  history.push(`/interface_info/${item.id}`)
+                }} layout="center" style={{marginTop: -10, fontSize: 16}}>
+                  {item.name}
+                </ProCard>
+                <ProCard onClick={() => {
+                  history.push(`/interface_info/${item.id}`)
+                }} layout="center" style={{marginTop: -18, fontSize: 14}}>
+                  {!item.description ? "暂无接口描述" : item.description.length > 15 ? item.description.slice(0, 15) + '...' : item.description}
+                </ProCard>
+              </ProCard>
             </List.Item>
           )}
         />
