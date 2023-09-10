@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "柒木接口",
+    "title": "Qi-API 接口开放平台",
     "version": "1.0.0"
   },
   "servers": [

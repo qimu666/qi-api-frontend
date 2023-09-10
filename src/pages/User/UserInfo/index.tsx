@@ -1,13 +1,26 @@
 import {history, useModel} from '@umijs/max';
-import {Button, Descriptions, message, Modal, Spin, Tooltip, Upload, UploadFile, UploadProps} from 'antd';
-import React, {useEffect, useState} from 'react';
+import {
+  Button,
+  Descriptions,
+  message,
+  Modal,
+  Spin,
+  Tooltip,
+  Tour,
+  TourProps,
+  Upload,
+  UploadFile,
+  UploadProps
+} from 'antd';
+import React, {useEffect, useRef, useState} from 'react';
 import {RcFile} from "antd/es/upload";
 import {EditOutlined, PlusOutlined, VerticalAlignBottomOutlined} from "@ant-design/icons";
 import ImgCrop from "antd-img-crop";
 import {
   getLoginUserUsingGET,
   updateUserUsingPOST,
-  updateVoucherUsingPOST
+  updateVoucherUsingPOST,
+  userBindEmailUsingPOST
 } from "@/services/qiApi-backend/userController";
 import Settings from '../../../../config/defaultSettings';
 import Paragraph from "antd/lib/typography/Paragraph";
@@ -15,6 +28,7 @@ import ProCard from "@ant-design/pro-card";
 import {requestConfig} from "@/requestConfig";
 import {doDailyCheckInUsingPOST} from "@/services/qiApi-backend/dailyCheckInController";
 import SendGiftModal from "@/components/Gift/SendGift";
+import BindEmailModal from "@/components/BindEmail/BindEmail";
 
 export const valueLength = (val: any) => {
   return val && val.trim().length > 0
@@ -33,6 +47,38 @@ const UserInfo: React.FC = () => {
   const handleCancel = () => setPreviewOpen(false);
   const [userName, setUserName] = useState<string | undefined>('');
   const [open, setOpen] = useState(false);
+  const [openBindEmail, setOpenBindEmail] = useState(false);
+
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
+  const ref3 = useRef(null);
+  const ref4 = useRef(null);
+
+  const [openTour, setOpenTour] = useState<boolean>(false);
+
+  const steps: TourProps['steps'] = [
+    {
+      title: '个人信息设置',
+      description: <span>这里是你的账号信息，您可以便捷的查看您的基本信息。<br/>您还可以修改和更新昵称和头像。
+        <br/>邮箱主要用于接收<strong>支付订单信息</strong>，不绑定无法接收哦，快去绑定吧！！🥰</span>,
+      target: () => ref1.current,
+    },
+    {
+      title: '我的钱包',
+      description: <span>这里是您的钱包，坤币用于平台接口的调用费用。<br/>除了充值坤币外，您还可以每日签到或者邀请好友注册来获得坤币</span>,
+      target: () => ref2.current,
+    },
+    {
+      title: '接口调用凭证',
+      description: '这里是您调用接口的凭证，没有凭证将无法调用接口',
+      target: () => ref3.current,
+    },
+    {
+      title: '开发者SDK',
+      description: '您可以使用开发者SDK，快速高效的接入接口到您的项目中',
+      target: () => ref4.current,
+    }
+  ];
 
   const loadData = async () => {
     setLoading(true)
@@ -41,7 +87,7 @@ const UserInfo: React.FC = () => {
       if (initialState?.settings.navTheme === "light") {
         setInitialState({loginUser: res.data, settings: {...Settings, navTheme: "light"}})
       } else {
-        setInitialState({loginUser:res.data,settings: {...Settings, navTheme: "realDark"}})
+        setInitialState({loginUser: res.data, settings: {...Settings, navTheme: "realDark"}})
       }
       const updatedFileList = [...fileList];
       if (loginUser && loginUser.userAvatar) {
@@ -50,7 +96,7 @@ const UserInfo: React.FC = () => {
           uid: loginUser?.userAccount,
           // @ts-ignore
           name: loginUser?.userAvatar?.substring(loginUser?.userAvatar!.lastIndexOf('-') + 1),
-          status: "success",
+          status: "done",
           percent: 100,
           url: loginUser?.userAvatar
         }
@@ -58,6 +104,10 @@ const UserInfo: React.FC = () => {
       }
       setUserName(loginUser?.userName)
       setLoading(false)
+    }
+    const tour = localStorage.getItem('tour');
+    if (!tour) {
+      setOpenTour(true)
     }
   }
 
@@ -188,16 +238,48 @@ const UserInfo: React.FC = () => {
     },
   };
 
+  const handleBindEmailSubmit = async (values: API.UserBindEmailRequest) => {
+    try {
+      // 绑定邮箱
+      const res = await userBindEmailUsingPOST({
+        ...values,
+      });
+      if (res.data && res.code === 0) {
+        if (initialState?.settings.navTheme === "light") {
+          setInitialState({loginUser: res.data, settings: {...Settings, navTheme: "light"}})
+        } else {
+          setInitialState({loginUser: res.data, settings: {...Settings, navTheme: "realDark"}})
+        }
+        setOpenBindEmail(false)
+        message.success('绑定成功');
+      }
+    } catch (error) {
+      const defaultLoginFailureMessage = '操作失败！';
+      message.error(defaultLoginFailureMessage);
+    }
+  };
+
   return (
     <Spin spinning={loading}>
-
       <ProCard
         type="inner"
         bordered
         direction="column"
       >
         <ProCard
-          extra={<Button onClick={updateUserInfo}>提交修改</Button>
+          ref={ref1}
+          extra={
+            <>
+              <Tooltip title={"用于接收订单信息"}>
+                <Button onClick={() => {
+                  setOpenBindEmail(true)
+                }
+                }>{loginUser?.email ? '更新邮箱' : "绑定邮箱"}</Button>
+              </Tooltip>
+              <Tooltip title={"提交修改的信息"}>
+                <Button style={{marginLeft: 10}} onClick={updateUserInfo}>提交修改</Button>
+              </Tooltip>
+            </>
           }
           title={<strong>个人信息设置</strong>}
           type="inner"
@@ -235,15 +317,7 @@ const UserInfo: React.FC = () => {
                   }
                 }
               >
-                {userName}
-              </Paragraph>
-            </div>
-            <div>
-              <h4>我的id：</h4>
-              <Paragraph
-                copyable={valueLength(loginUser?.id)}
-              >
-                {loginUser?.id}
+                {valueLength(userName) ? userName : '无名氏'}
               </Paragraph>
             </div>
             <div>
@@ -256,10 +330,26 @@ const UserInfo: React.FC = () => {
                 {loginUser?.invitationCode}
               </Paragraph>
             </div>
+            <div>
+              <h4>我的id：</h4>
+              <Paragraph
+                copyable={valueLength(loginUser?.id)}
+              >
+                {loginUser?.id}
+              </Paragraph>
+            </div>
+            <div>
+              <h4>我的邮箱：</h4>
+              <Paragraph
+                copyable={valueLength(loginUser?.email)}
+              >
+                {valueLength(loginUser?.email) ? loginUser?.email : '未绑定邮箱'}
+              </Paragraph>
+            </div>
           </Descriptions>
         </ProCard>
         <br/>
-        <ProCard type={"inner"} bordered tooltip={"用于平台接口调用"} title={<strong>我的钱包</strong>}
+        <ProCard ref={ref2} type={"inner"} bordered tooltip={"用于平台接口调用"} title={<strong>我的钱包</strong>}
                  extra={
                    <>
                      <Button onClick={() => {
@@ -302,6 +392,7 @@ const UserInfo: React.FC = () => {
         </ProCard>
         <br/>
         <ProCard
+          ref={ref3}
           bordered
           type="inner"
           title={"开发者凭证（调用接口的凭证）"}
@@ -329,12 +420,13 @@ const UserInfo: React.FC = () => {
         </ProCard>
         <br/>
         <ProCard
+          ref={ref4}
           type="inner"
           title={<strong>开发者 SDK（快速接入API接口）</strong>}
           bordered
         >
           <Button size={"large"}>
-            <a target={"_blank"} href={"https://github.com/qimu666/api-frontend"}
+            <a target={"_blank"} href={"https://github.com/qimu666/qi-api-sdk"}
                rel="noreferrer"><VerticalAlignBottomOutlined/> Java SDK</a>
           </Button>
         </ProCard>
@@ -342,7 +434,12 @@ const UserInfo: React.FC = () => {
       <SendGiftModal invitationCode={loginUser?.invitationCode} onCancel={() => {
         setOpen(false)
       }} open={open}/>
-
+      <BindEmailModal onSubmit={handleBindEmailSubmit} data={loginUser} onCancel={() => setOpenBindEmail(false)}
+                      open={openBindEmail}/>
+      <Tour open={openTour} onClose={() => {
+        setOpenTour(false)
+        localStorage.setItem('tour',"true");
+      }} steps={steps}/>
     </Spin>
   );
 };

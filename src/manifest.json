@@ -1,6 +1,6 @@
 {
-  "name": "柒木接口",
-  "short_name": "柒木接口",
+  "name": "Qi-API 接口开放平台",
+  "short_name": "Qi-API 接口开放平台",
   "display": "standalone",
   "start_url": "./?utm_source=homescreen",
   "theme_color": "#002140",

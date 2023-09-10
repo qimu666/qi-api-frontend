@@ -73,7 +73,7 @@ export default defineConfig({
    * @name layout 插件
    * @doc https://umijs.org/docs/max/layout-menu
    */
-  title: '柒木接口',
+  title: 'Qi-API 接口开放平台',
   layout: {
     locale: true,
     ...defaultSettings,

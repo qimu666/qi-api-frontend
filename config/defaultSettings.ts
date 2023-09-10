@@ -13,7 +13,7 @@ const Settings: ProLayoutProps & {
   fixSiderbar: true,
   colorWeak: false,
   splitMenus: false,
-  title: '柒木接口',
+  title: 'Qi-API 接口开放平台',
   pwa: false,
   // logo: 'https://img.qimuu.icu/typory/logo.gif',
   iconfontUrl: 'https://img.qimuu.icu/typory/logo.gif',

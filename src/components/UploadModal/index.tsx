@@ -31,7 +31,7 @@ const UploadModal: React.FC<Props> = (props) => {
         uid: '1',
         // @ts-ignore
         name: url?.substring(url!.lastIndexOf('-') + 1),
-        status: "success",
+        status: "done",
         percent: 100,
         url: url
       }

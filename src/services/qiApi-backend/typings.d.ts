@@ -467,6 +467,11 @@ declare namespace API {
     userRole?: string;
   };
 
+  type UserBindEmailRequest = {
+    captcha?: string;
+    emailAccount?: string;
+  };
+
   type UserEmailLoginRequest = {
     captcha?: string;
     emailAccount?: string;
@@ -510,6 +515,7 @@ declare namespace API {
     accessKey?: string;
     balance?: number;
     createTime?: string;
+    email?: string;
     gender?: string;
     id?: number;
     invitationCode?: string;

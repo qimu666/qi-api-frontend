@@ -24,7 +24,7 @@ const Admin: React.FC = () => {
             textAlign: 'center',
           }}
         >
-          <SmileTwoTone/> 柒木接口 <HeartTwoTone twoToneColor="#eb2f96"/> You
+          <SmileTwoTone/> Qi-API 接口开放平台 <HeartTwoTone twoToneColor="#eb2f96"/> You
         </Typography.Title>
       </Card>
       <p

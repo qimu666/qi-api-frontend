@@ -1,7 +1,7 @@
-import {ExportOutlined, PlusOutlined} from '@ant-design/icons';
+import {PlusOutlined} from '@ant-design/icons';
 import '@umijs/max';
 import React from 'react';
-import {Button, Tooltip} from "antd";
+import {Button} from "antd";
 
 export type SiderTheme = 'light' | 'dark';
 export const Release = () => {
@@ -9,21 +9,17 @@ export const Release = () => {
     <Button shape="round" key="1"><PlusOutlined/> 发布接口 </Button>
   );
 };
-export const Question = () => {
+export const Docs = () => {
   return (
-    <div
-      style={{
-        display: 'flex',
-        height: 26,
-      }}
+    <span
+      className="anticon"
+      style={{fontSize: 14, fontWeight: "bold"}}
       onClick={() => {
-        navigator.clipboard.writeText(window.location.href);
+        window.open('https://doc.qimuu.icu', '_blank')
       }}
     >
-      <Tooltip title="分享此网站">
-        <ExportOutlined/>
-      </Tooltip>
-    </div>
+        📘 开发者文档
+    </span>
   );
 };
 

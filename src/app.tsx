@@ -13,7 +13,7 @@ import {FloatButton, message} from 'antd';
 import React from "react";
 import wechat from '@/../public/assets/WeChat.jpg';
 import LightColor from "@/components/Icon/LightColor";
-import {helloWord} from "@/components/RightContent";
+import {Docs, helloWord} from "@/components/RightContent";
 import SendGift from "@/components/Gift/SendGift";
 import NoFoundPage from "@/pages/404";
 
@@ -42,7 +42,7 @@ export async function getInitialState(): Promise<InitialState> {
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => {
   return {
-
+    actionsRender: () => [<Docs key="doc"/>],
     waterMarkProps: {
       content: initialState?.loginUser?.userName,
     },
@@ -109,7 +109,6 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>
       },
     },
-
     onPageChange: () => {
       const {location} = history;
       // if (!whiteList.includes(location.pathname)) {

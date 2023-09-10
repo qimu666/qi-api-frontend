@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
       // @ts-ignore
       copyright={<>
         {`${currentYear} ${defaultMessage}`} |{' '}
-        <a target={'_blank'} href={"https://beian.miit.gov.cn/"} rel="noreferrer"> 豫公网安备 41172702000163号</a>
+        <a target={'_blank'} href={"https://beian.miit.gov.cn/"} rel="noreferrer"> 豫ICP备2023004098号-1</a>
         {" | "}
         <a target={'_blank'} href={'https://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41172702000163'}
            rel="noreferrer">

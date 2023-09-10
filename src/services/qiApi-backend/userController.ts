@@ -26,6 +26,21 @@ export async function banUserUsingPOST(body: API.IdRequest, options?: { [key: st
   });
 }
 
+/** userBindEmail POST /api/user/bind/login */
+export async function userBindEmailUsingPOST(
+  body: API.UserBindEmailRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseUserVO>('/api/user/bind/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** deleteUser POST /api/user/delete */
 export async function deleteUserUsingPOST(
   body: API.DeleteRequest,
