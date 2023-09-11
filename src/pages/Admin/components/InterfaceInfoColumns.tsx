@@ -98,7 +98,7 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     },
   },
   {
-    title: '请求参数',
+    title: '请求参数 参考写法：[{"name": "url","type": "string","desc": "请求地址","required": "是"}]',
     dataIndex: 'requestParams',
     tooltip: "请求参数",
     width: 'lg',

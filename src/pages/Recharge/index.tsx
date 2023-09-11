@@ -73,11 +73,11 @@ const PayOrder: React.FC = () => {
                             // @ts-ignore
                             style={{
                               color: "red",
-                              fontSize: item.productType === "EXPERIENCE" ? 16 : 18,
+                              fontSize: item.productType === "RECHARGEACTIVITY" ? 16 : 18,
                               fontWeight: "bold"
                             }
                             }>￥
-                            {item.productType === "EXPERIENCE" ? "体验 " : null}
+                            {item.productType === "RECHARGEACTIVITY" ? "体验 " : null}
                             {/*// @ts-ignore*/}
                             {(item?.total) / 100}
                           </h3>
@@ -124,7 +124,6 @@ const PayOrder: React.FC = () => {
             </ProCard>
           </Card>
         </Spin>
-
     </>
   )
 }

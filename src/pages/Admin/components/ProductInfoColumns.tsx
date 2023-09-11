@@ -27,6 +27,22 @@ export const ProductInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, "t
     },
   },
   {
+    title: '产品类型',
+    dataIndex: 'productType',
+    key: 'productType',
+    valueEnum: {
+      VIP: {
+        text: 'VIP会员',
+      },
+      RECHARGE: {
+        text: '积分充值',
+      },
+      RECHARGEACTIVITY: {
+        text: "充值活动"
+      }
+    }
+  },
+  {
     tooltip: "本商品购买后增加的积分数",
     title: '增加积分数 (单位：个)',
     dataIndex: 'addPoints',
@@ -157,7 +173,7 @@ export const ProductInfoColumns: ProColumns<API.ProductInfo>[] = [
       RECHARGE: {
         text: '积分充值',
       },
-      EXPERIENCE: {
+      RECHARGEACTIVITY: {
         text: "充值活动"
       }
     }

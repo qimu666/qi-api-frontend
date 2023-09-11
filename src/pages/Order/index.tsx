@@ -1,4 +1,4 @@
-import {Card, message, QRCode, Radio, Spin, Tooltip, Watermark} from 'antd';
+import {Card, message, QRCode, Radio, Spin, Tooltip} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {history} from '@umijs/max';
 
@@ -7,7 +7,7 @@ import WxPay from "@/components/Icon/WxPay";
 import ProCard from "@ant-design/pro-card";
 import Alipay from "@/components/Icon/Alipay";
 import {valueLength} from "@/pages/User/UserInfo";
-import {useModel, useParams} from "@@/exports";
+import {useParams} from "@@/exports";
 import {createOrderUsingPOST, queryOrderStatusUsingPOST} from "@/services/qiApi-backend/orderController";
 
 const PayOrder: React.FC = () => {
@@ -24,12 +24,15 @@ const PayOrder: React.FC = () => {
     setStatus("loading")
     // @ts-ignore
     const res = await createOrderUsingPOST({productId: params.id, payType: payType})
-    if (res.data) {
+    if (res.code === 0 && res.data) {
       setOrder(res.data)
       // @ts-ignore
       setTotal((res.data.total) / 100)
       setStatus("active")
       setLoading(false)
+    }
+    if (res.code === 50001) {
+      history.back()
     }
   }
   const queryOrderStatus = async () => {
@@ -103,102 +106,102 @@ const PayOrder: React.FC = () => {
   return (
     <>
 
-        <Card style={{minWidth: 385}}>
-          <Spin spinning={loading}>
-            <Card title={<strong>商品信息</strong>}>
-              <div style={{marginLeft: 10}}>
-                <h3>{order?.productInfo?.name}</h3>
-                <h4>{valueLength(order?.productInfo?.description) ? order?.productInfo?.description : "暂无商品描述信息"}</h4>
-              </div>
-            </Card>
+      <Card style={{minWidth: 385}}>
+        <Spin spinning={loading}>
+          <Card title={<strong>商品信息</strong>}>
+            <div style={{marginLeft: 10}}>
+              <h3>{order?.productInfo?.name}</h3>
+              <h4>{valueLength(order?.productInfo?.description) ? order?.productInfo?.description : "暂无商品描述信息"}</h4>
+            </div>
+          </Card>
+          <br/>
+          <ProCard
+            bordered
+            headerBordered
+            layout={"center"}
+            title={<strong>支付方式</strong>}
+          >
+            <Radio.Group name="payType" value={payType}>
+              <ProCard wrap gutter={18}>
+                <ProCard
+                  onClick={() => {
+                    changePayType("WX")
+                  }}
+                  hoverable
+                  style={{
+                    border: payType === "WX" ? '1px solid #1890ff' : '1px solid rgba(128, 128, 128, 0.5)',
+                    maxWidth: 260,
+                    minWidth: 210,
+                    margin: 10,
+                  }}
+                  colSpan={
+                    {
+                      xs: 24,
+                      sm: 12,
+                      md: 12,
+                      lg: 12,
+                      xl: 12
+                    }
+                  }>
+                  <Radio value={"WX"} style={{fontSize: "1.12rem"}}>
+                    <WxPay/> 微信支付
+                  </Radio>
+                </ProCard>
+                <ProCard
+                  onClick={() => {
+                    changePayType("ALIPAY")
+                  }}
+                  hoverable
+                  style={{
+                    margin: 10,
+                    maxWidth: 260,
+                    minWidth: 210,
+                    border: payType === "ALIPAY" ? '1px solid #1890ff' : '1px solid rgba(128, 128, 128, 0.5)',
+                  }}
+                  colSpan={
+                    {
+                      xs: 24,
+                      sm: 12,
+                      md: 12,
+                      lg: 12,
+                      xl: 12
+                    }
+                  }
+                >
+                  <Radio value={"ALIPAY"} style={{fontSize: "1.2rem"}}>
+                    <Alipay/> 支付宝
+                  </Radio>
+                </ProCard>
+              </ProCard>
+            </Radio.Group>
+          </ProCard>
+          <br/>
+          <Card title={"支付二维码"}>
             <br/>
             <ProCard
-              bordered
-              headerBordered
-              layout={"center"}
-              title={<strong>支付方式</strong>}
-            >
-              <Radio.Group name="payType" value={payType}>
-                <ProCard wrap gutter={18}>
-                  <ProCard
-                    onClick={() => {
-                      changePayType("WX")
-                    }}
-                    hoverable
-                    style={{
-                      border: payType === "WX" ? '1px solid #1890ff' : '1px solid rgba(128, 128, 128, 0.5)',
-                      maxWidth: 260,
-                      minWidth: 210,
-                      margin: 10,
-                    }}
-                    colSpan={
-                      {
-                        xs: 24,
-                        sm: 12,
-                        md: 12,
-                        lg: 12,
-                        xl: 12
-                      }
-                    }>
-                    <Radio value={"WX"} style={{fontSize: "1.12rem"}}>
-                      <WxPay/> 微信支付
-                    </Radio>
-                  </ProCard>
-                  <ProCard
-                    onClick={() => {
-                      changePayType("ALIPAY")
-                    }}
-                    hoverable
-                    style={{
-                      margin: 10,
-                      maxWidth: 260,
-                      minWidth: 210,
-                      border: payType === "ALIPAY" ? '1px solid #1890ff' : '1px solid rgba(128, 128, 128, 0.5)',
-                    }}
-                    colSpan={
-                      {
-                        xs: 24,
-                        sm: 12,
-                        md: 12,
-                        lg: 12,
-                        xl: 12
-                      }
-                    }
-                  >
-                    <Radio value={"ALIPAY"} style={{fontSize: "1.2rem"}}>
-                      <Alipay/> 支付宝
-                    </Radio>
-                  </ProCard>
-                </ProCard>
-              </Radio.Group>
+              style={{marginTop: -30}}
+              layout={"center"}>
+              <QRCode
+                errorLevel="H"
+                size={240}
+                value={order?.codeUrl || '-'}
+                // @ts-ignore
+                status={status}
+                onRefresh={() => {
+                  createOrder()
+                }}
+              />
             </ProCard>
-            <br/>
-            <Card title={"支付二维码"}>
-              <br/>
-              <ProCard
-                style={{marginTop: -30}}
-                layout={"center"}>
-                <QRCode
-                  errorLevel="H"
-                  size={240}
-                  value={order?.codeUrl || '-'}
-                  // @ts-ignore
-                  status={status}
-                  onRefresh={() => {
-                    createOrder()
-                  }}
-                />
-              </ProCard>
-              <ProCard style={{
-                marginTop: -30,
-                color: "#f55f4e",
-                fontSize: 22,
-                display: 'flex',
-                fontWeight: "bold",
-              }} layout={"center"}>
-                ￥{total}
-              </ProCard>
-              <ProCard style={{marginTop: -20}} layout={"center"}>
+            <ProCard style={{
+              marginTop: -30,
+              color: "#f55f4e",
+              fontSize: 22,
+              display: 'flex',
+              fontWeight: "bold",
+            }} layout={"center"}>
+              ￥{total}
+            </ProCard>
+            <ProCard style={{marginTop: -20}} layout={"center"}>
               <span>本商品为虚拟内容，购买后不支持<strong
                 style={{color: "red"}}>退换</strong>。确认支付表示您已阅读并接受<a
                 target={"_blank"}
@@ -209,10 +212,10 @@ const PayOrder: React.FC = () => {
                <a>aqimu66</a>
              </Tooltip>
             </span>
-              </ProCard>
-            </Card>
-          </Spin>
-        </Card>
+            </ProCard>
+          </Card>
+        </Spin>
+      </Card>
 
     </>
   )

@@ -160,7 +160,9 @@ const InterfaceInfo: React.FC = () => {
 
   const responseExampleContentList: Record<string, React.ReactNode> = {
     api: <>
-      <p className="highlightLine">请求参数说明：</p>
+      <p className="highlightLine">开发者文档：</p>
+      <a href={"https://doc.qimuu.icu/"} target={"_blank"} rel="noreferrer">📘 开发者文档</a>
+      <p className="highlightLine" style={{marginTop: 15}}>请求参数说明：</p>
       <Table dataSource={requestParams} pagination={false} style={{maxWidth: 800}} size={"small"}>
         <Column title="名称" dataIndex="name" key="name"/>
         <Column title="必选" dataIndex="required" key="required"/>
@@ -350,6 +352,9 @@ const InterfaceInfo: React.FC = () => {
           <LoginOutlined/> 前往获取开发者凭证
         </Link>}
       >
+        <p className="highlightLine">开发者文档：</p>
+        <a href={"https://doc.qimuu.icu/"} target={"_blank"} rel="noreferrer">📘 开发者文档</a>
+        <p className="highlightLine" style={{marginTop:20}}>开发者SDK：</p>
         <Button size={"large"}>
           <a target={"_blank"} href={"https://github.com/qimu666/api-frontend"}
              rel="noreferrer"><VerticalAlignBottomOutlined/> Java SDK</a>
