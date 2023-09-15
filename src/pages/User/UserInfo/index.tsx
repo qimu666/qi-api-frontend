@@ -28,7 +28,7 @@ import ProCard from "@ant-design/pro-card";
 import {requestConfig} from "@/requestConfig";
 import {doDailyCheckInUsingPOST} from "@/services/qiApi-backend/dailyCheckInController";
 import SendGiftModal from "@/components/Gift/SendGift";
-import BindEmailModal from "@/components/BindEmail/BindEmail";
+import BindEmailModal from "@/components/BindEmailModal";
 
 export const valueLength = (val: any) => {
   return val && val.trim().length > 0
@@ -145,6 +145,7 @@ const UserInfo: React.FC = () => {
 
   const beforeUpload = async (file: RcFile) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    console.log(file.type)
     if (!unloadFileTypeList.concat(file.type)) {
       message.error('图片类型有误,请上传jpg/png/svg/jpeg/webp格式!');
     }
@@ -195,13 +196,13 @@ const UserInfo: React.FC = () => {
         const {data: {status, url}} = response
         const updatedFileList = [...fileList];
         if (response.code !== 0 || status === 'error') {
-          message.error(`头像更新失败`);
+          message.error(response.message);
           file.status = "error"
           updatedFileList[0] = {
             // @ts-ignore
             uid: loginUser?.userAccount,
             // @ts-ignore
-            name: loginUser?.userAvatar?.substring(loginUser?.userAvatar!.lastIndexOf('-') + 1),
+            name: loginUser?.userAvatar ? loginUser?.userAvatar?.substring(loginUser?.userAvatar!.lastIndexOf('-') + 1) : "error",
             status: "error",
             percent: 100
           }
@@ -438,7 +439,7 @@ const UserInfo: React.FC = () => {
                       open={openBindEmail}/>
       <Tour open={openTour} onClose={() => {
         setOpenTour(false)
-        localStorage.setItem('tour',"true");
+        localStorage.setItem('tour', "true");
       }} steps={steps}/>
     </Spin>
   );

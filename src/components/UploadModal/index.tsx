@@ -89,7 +89,7 @@ const UploadModal: React.FC<Props> = (props) => {
         const {data: {status, url, name, uid}} = response
         const updatedFileList = [...fileList];
         if (response.code !== 0 || status === 'error') {
-          message.error(`头像更新失败`);
+          message.error(response.message);
           file.status = "error"
           updatedFileList[0] = {
             // @ts-ignore

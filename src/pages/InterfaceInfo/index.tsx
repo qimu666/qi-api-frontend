@@ -64,8 +64,8 @@ const InterfaceInfo: React.FC = () => {
         // @ts-ignore
         try {
           setRequestParams(requestParams ? JSON.parse(requestParams) : [])
-        }catch (e:any){
-          setRequestParams( [])
+        } catch (e: any) {
+          setRequestParams([])
         }
       }
       setLoading(false);
@@ -131,12 +131,13 @@ const InterfaceInfo: React.FC = () => {
 
   const selectAfter = (
     <Select
+      disabled
       defaultValue={data?.method}
       style={{width: 120}}
       onChange={handleChange}
       options={[
-        {value: 'GET', label: 'GET'},
-        {value: 'POST', label: 'POST'},
+        {value: 'GET', label: 'GET', disabled: true},
+        {value: 'POST', label: 'POST', disabled: true},
         {value: 'PUT', label: 'PUT', disabled: true},
         {value: 'DELETE', label: 'DELETE', disabled: true},
       ]}
@@ -150,12 +151,12 @@ const InterfaceInfo: React.FC = () => {
       id: data?.id,
       ...values
     })
-    if (res.data && res.code === 0) {
-      setResult(JSON.stringify(res.data, null, 4))
-      setTimeout(() => setResultLoading(false), 1000)
-    } else {
-      setResultLoading(false)
-    }
+    // if (res.data && res.code === 0) {
+    setResult(res.data ? JSON.stringify(res.data, null, 4) : JSON.stringify(res, null, 4))
+    setTimeout(() => setResultLoading(false), 1000)
+    // } else {
+    //   setResultLoading(false)
+    // }
   };
 
   const responseExampleContentList: Record<string, React.ReactNode> = {
@@ -193,7 +194,7 @@ const InterfaceInfo: React.FC = () => {
           }}
         >
           <div style={{display: 'flex', justifyContent: 'center', justifyItems: 'center',}}>
-            <Search size={"large"} style={{maxWidth: 600}} value={data?.url} addonBefore={selectAfter}
+            <Search size={"large"} readOnly style={{maxWidth: 600}} value={data?.url} addonBefore={selectAfter}
                     enterButton="发起请求" onSearch={form.submit}/>
           </div>
           <p className="highlightLine" style={{marginTop: 25}}>请求参数设置：</p>
@@ -354,7 +355,7 @@ const InterfaceInfo: React.FC = () => {
       >
         <p className="highlightLine">开发者文档：</p>
         <a href={"https://doc.qimuu.icu/"} target={"_blank"} rel="noreferrer">📘 开发者文档</a>
-        <p className="highlightLine" style={{marginTop:20}}>开发者SDK：</p>
+        <p className="highlightLine" style={{marginTop: 20}}>开发者SDK：</p>
         <Button size={"large"}>
           <a target={"_blank"} href={"https://github.com/qimu666/api-frontend"}
              rel="noreferrer"><VerticalAlignBottomOutlined/> Java SDK</a>

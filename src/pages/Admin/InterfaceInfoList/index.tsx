@@ -1,4 +1,4 @@
-import InterfaceInfoColumns, {InterfaceInfoModalFormColumns} from '@/pages/Admin/components/InterfaceInfoColumns';
+import InterfaceInfoColumns, {InterfaceInfoModalFormColumns} from '@/pages/Admin/Columns/InterfaceInfoColumns';
 import {
   addInterfaceInfoUsingPOST,
   deleteInterfaceInfoUsingPOST,
@@ -249,7 +249,7 @@ const InterfaceInfoList: React.FC = () => {
         >
           <a
             key="Remove"
-            style={{color:"red"}}
+            style={{color: "red"}}
             onClick={async () => {
               setCurrentRow(record);
             }}
