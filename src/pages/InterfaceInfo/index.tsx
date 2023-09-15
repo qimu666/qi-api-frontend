@@ -1,19 +1,4 @@
-import {
-  Badge,
-  Button,
-  Card,
-  Descriptions,
-  Empty,
-  Form,
-  Input,
-  message,
-  Select,
-  Space,
-  Spin,
-  Table,
-  Tabs,
-  Tag
-} from 'antd';
+import {Badge, Button, Card, Descriptions, Empty, Form, message, Select, Space, Spin, Table, Tabs, Tag} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {getInterfaceInfoByIdUsingGET, invokeInterfaceUsingPOST} from "@/services/qiApi-backend/interfaceInfoController";
 
@@ -25,7 +10,6 @@ import {
   FileExclamationOutlined,
   FileTextOutlined,
   LoginOutlined,
-  PlusOutlined,
   VerticalAlignBottomOutlined
 } from "@ant-design/icons";
 import {Column} from "rc-table";
@@ -35,6 +19,8 @@ import {errorCode} from "@/enum/ErrorCodeEnum";
 import Search from "antd/es/input/Search";
 import {Link, useParams} from "@@/exports";
 import {axiosExample, returnExample} from "@/pages/InterfaceInfo/components";
+import RequestParamTable from "@/components/RequestParamTable";
+import {ProColumns} from "@ant-design/pro-components";
 
 const InterfaceInfo: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -102,17 +88,17 @@ const InterfaceInfo: React.FC = () => {
     }
   ];
   const responseParameters = [{
-    name: 'code',
+    fieldName: 'code',
     type: "int",
     desc: <>返回码：<a onClick={() => setActiveTabKey("errorCode")}>错误码参照</a></>,
     required: '是'
   }, {
-    name: 'massage',
+    fieldName: 'massage',
     type: "string",
     desc: "返回码描述",
     required: '是'
   }, {
-    name: 'data',
+    fieldName: 'data',
     type: "string",
     desc: "返回数据",
     required: '是'
@@ -151,13 +137,36 @@ const InterfaceInfo: React.FC = () => {
       id: data?.id,
       ...values
     })
-    // if (res.data && res.code === 0) {
     setResult(res.data ? JSON.stringify(res.data, null, 4) : JSON.stringify(res, null, 4))
     setTimeout(() => setResultLoading(false), 1000)
-    // } else {
-    //   setResultLoading(false)
-    // }
   };
+
+  const requestParam: ProColumns[] = [
+    {
+      title: '参数名称',
+      dataIndex: 'fieldName',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            whitespace: true,
+            message: '此项是必填项',
+          },
+        ],
+      },
+    }, {
+      title: '参数值',
+      dataIndex: 'value',
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            whitespace: true,
+            message: '此项是必填项',
+          },
+        ],
+      },
+    },]
 
   const responseExampleContentList: Record<string, React.ReactNode> = {
     api: <>
@@ -165,14 +174,14 @@ const InterfaceInfo: React.FC = () => {
       <a href={"https://doc.qimuu.icu/"} target={"_blank"} rel="noreferrer">📘 开发者文档</a>
       <p className="highlightLine" style={{marginTop: 15}}>请求参数说明：</p>
       <Table dataSource={requestParams} pagination={false} style={{maxWidth: 800}} size={"small"}>
-        <Column title="名称" dataIndex="name" key="name"/>
+        <Column title="名称" dataIndex="fieldName" key="fieldName"/>
         <Column title="必选" dataIndex="required" key="required"/>
         <Column title="类型" dataIndex="type" key="type"/>
         <Column title="描述" dataIndex="desc" key="desc"/>
       </Table>
       <p className="highlightLine" style={{marginTop: 15}}>响应参数说明：</p>
       <Table dataSource={responseParameters} pagination={false} style={{maxWidth: 800}} size={"small"}>
-        <Column title="名称" dataIndex="name" key="name"/>
+        <Column title="名称" dataIndex="fieldName" key="fieldName"/>
         <Column title="必选" dataIndex="required" key="required"/>
         <Column title="类型" dataIndex="type" key="type"/>
         <Column title="描述" dataIndex="desc" key="desc"/>
@@ -198,70 +207,9 @@ const InterfaceInfo: React.FC = () => {
                     enterButton="发起请求" onSearch={form.submit}/>
           </div>
           <p className="highlightLine" style={{marginTop: 25}}>请求参数设置：</p>
-          <Form.List name="fieldList">
-            {(fields, {add, remove}) => (
-              <>
-                {fields.map((field) => (
-                  <>
-                    <Space key={field.key} style={{marginBottom: 15}}>
-                      <Form.Item
-                        style={{maxWidth: 320, marginBottom: 0}}
-                        label="字段名"
-                        name={[field.name, 'fieldName']}
-                        rules={[
-                          () => ({
-                            validator(_, value) {
-                              if (!value) {
-                                return Promise.reject(new Error("字段名为必填项"));
-                              }
-                              return Promise.resolve();
-                            },
-                            required: true,
-                          })
-                        ]}
-                      >
-                        <Input placeholder="请求字段见API文档"/>
-                      </Form.Item>
-                      <Form.Item
-                        style={{maxWidth: 320, marginBottom: 0}}
-                        label="字段值"
-                        name={[field.name, 'value']}
-                        rules={[{required: true}]}
-                      >
-                        <Input placeholder={"请输入字段值"}/>
-                      </Form.Item>
-                      <Button
-                        type="text"
-                        danger
-                        onClick={(e) => {
-                          remove(field.name);
-                          e.stopPropagation();
-                        }}
-                      >
-                        删除
-                      </Button>
-                    </Space>
-                    <br/>
-                  </>
-                ))}
-                <Form.Item>
-                  <Space
-                    direction="vertical"
-                    style={{width: '100%', marginTop: 16}}
-                  >
-                    <Button
-                      type="dashed"
-                      onClick={() => add(DEFAULT_ADD_FIELD)}
-                      block
-                      icon={<PlusOutlined/>}
-                    >
-                      新增字段
-                    </Button>
-                  </Space>
-                </Form.Item>
-              </>
-            )}
-          </Form.List>
+          <Form.Item name={"requestParams"}>
+            <RequestParamTable defaultNewColumn={DEFAULT_ADD_FIELD} column={requestParam}/>
+          </Form.Item>
           <Form.Item>
             <Space size="large" wrap>
               <Button type="primary" htmlType="reset" style={{width: 180}}>
@@ -331,6 +279,8 @@ const InterfaceInfo: React.FC = () => {
               <Badge status="error" text={statusEnum[data.status]}/>
             ) : null}
           </Descriptions.Item>
+          <Descriptions.Item key={"请求示例"}
+                             label="请求示例">{data?.requestExample ?? '该接口暂无请求示例'}</Descriptions.Item>
           <Descriptions.Item key={"description"}
                              label="接口描述">{data?.description ?? '该接口暂无描述信息'}</Descriptions.Item>
         </Descriptions>

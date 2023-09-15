@@ -2,7 +2,65 @@ import {Link} from '@@/exports';
 import {ProColumns, ProFormColumnsType} from '@ant-design/pro-components';
 import {Tag} from 'antd';
 import {InterfaceRequestMethodEnum} from "@/enum/commonEnum";
+import RequestParamTable from "@/components/RequestParamTable";
+import {NewColumn} from "@/components/RequestParamTable/components/type";
 
+export const defaultNewRequestColumn: NewColumn = {
+  fieldName: '',
+  required: "是",
+  type: "string",
+  desc: "",
+}
+
+export const requestParam: ProColumns[] = [
+  {
+    title: '参数名称',
+    dataIndex: 'fieldName',
+    formItemProps: {
+      rules: [
+        {
+          required: true,
+          whitespace: true,
+          message: '此项是必填项',
+        },
+      ],
+    },
+  },
+  {
+    title: '必填',
+    valueType: "select",
+    dataIndex: 'required',
+    valueEnum: {
+      "是": {text: "是"},
+      "否": {text: "否"},
+    }, formItemProps: {
+      rules: [
+        {
+          required: true,
+          whitespace: true,
+          message: '此项是必填项',
+        },
+      ],
+    },
+  },
+  {
+    title: '参数类型',
+    dataIndex: 'type',
+    formItemProps: {
+      rules: [
+        {
+          required: true,
+          whitespace: true,
+          message: '此项是必填项',
+        },
+      ],
+    },
+  },
+  {
+    title: '描述',
+    dataIndex: 'desc',
+  },
+]
 
 export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, "text">[] = [
   {
@@ -98,15 +156,24 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     },
   },
   {
-    title: '请求参数 参考写法：[{"name": "url","type": "string","desc": "请求地址","required": "是"}]',
-    dataIndex: 'requestParams',
-    tooltip: "请求参数",
+    title: '请求示例',
+    key: "requestExample",
+    dataIndex: 'description',
     width: 'lg',
-    key: "requestParams",
-    valueType: "jsonCode",
+    valueType: "text",
     colProps: {
       span: 12,
     },
+  },
+  {
+    title: '请求参数',
+    dataIndex: 'requestParams',
+    tooltip: "请求参数",
+    key: "requestParams",
+    colProps: {
+      span: 24,
+    },
+    renderFormItem: () => <RequestParamTable column={requestParam} defaultNewColumn={defaultNewRequestColumn}/>,
   },
   {
     title: '接口描述',
@@ -114,10 +181,19 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     dataIndex: 'description',
     tooltip: "接口描述",
     width: 'lg',
-    valueType: "textarea",
+    valueType: "jsonCode",
     colProps: {
       span: 12,
     },
+  }, {
+    title: '请求头',
+    dataIndex: 'requestHeader',
+    width: 'lg',
+    valueType: "jsonCode",
+    colProps: {
+      span: 12,
+    },
+    key: 'requestHeader',
   },
 ];
 
@@ -179,28 +255,27 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     ellipsis: true,
     key: 'description',
   }
-  // ,
-  // {
-  //   title: '请求示例',
-  //   dataIndex: 'requestExample',
-  //   key: 'requestExample',
-  //   valueType: 'text',
-  //   width: 120,
-  //   search: false,
-  //   copyable: true,
-  //   ellipsis: true,
-  // },
-  // {
-  //   title: '请求头',
-  //   dataIndex: 'requestHeader',
-  //   valueType: 'text',
-  //   search: false,
-  //   width: 120,
-  //   ellipsis: true,
-  //   copyable: true,
-  //   key: 'requestHeader',
-  // },
   ,
+  {
+    title: '请求示例',
+    dataIndex: 'requestExample',
+    key: 'requestExample',
+    valueType: 'text',
+    width: 120,
+    search: false,
+    copyable: true,
+    ellipsis: true,
+  },
+  {
+    title: '请求头',
+    dataIndex: 'requestHeader',
+    valueType: 'text',
+    search: false,
+    width: 120,
+    ellipsis: true,
+    copyable: true,
+    key: 'requestHeader',
+  },
   {
     title: '请求参数',
     dataIndex: 'requestParams',

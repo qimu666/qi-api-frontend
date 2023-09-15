@@ -65,12 +65,19 @@ const InterfaceInfoList: React.FC = () => {
   const handleUpdate = async (fields: API.InterfaceInfoUpdateRequest) => {
     const hide = message.loading('修改中');
     try {
-      const res = await updateInterfaceInfoUsingPOST({id: currentRow?.id, ...fields});
-      if (res.data && res.code === 0) {
-        hide();
-        message.success('修改成功');
-        return true;
+      if (fields) {
+        if (typeof fields.requestParams === "string") {
+          const parseValue = JSON.parse(fields.requestParams);
+          fields.requestParams = [...parseValue];
+        }
+        const res = await updateInterfaceInfoUsingPOST({id: currentRow?.id, ...fields});
+        if (res.data && res.code === 0) {
+          hide();
+          message.success('修改成功');
+          return true;
+        }
       }
+
     } catch (error: any) {
       hide();
       message.error('修改失败' + error.message);
@@ -319,7 +326,7 @@ const InterfaceInfoList: React.FC = () => {
         }}
         onOpenChange={handleModalOpen}
         onSubmit={async (value) => {
-          const success = await handleAdd(value as API.InterfaceInfo);
+          const success = await handleAdd(value as API.InterfaceInfoAddRequest);
           if (success) {
             handleModalOpen(false);
             if (actionRef.current) {
@@ -338,7 +345,7 @@ const InterfaceInfoList: React.FC = () => {
         value={currentRow}
         onOpenChange={handleUpdateModalOpen}
         onSubmit={async (value) => {
-          const success = await handleUpdate(value as API.InterfaceInfo);
+          const success = await handleUpdate(value as API.InterfaceInfoUpdateRequest);
           if (success) {
             handleUpdateModalOpen(false);
             if (actionRef.current) {
