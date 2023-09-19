@@ -18,21 +18,29 @@ import ProCard from "@ant-design/pro-card";
 import {errorCode} from "@/enum/ErrorCodeEnum";
 import Search from "antd/es/input/Search";
 import {Link, useParams} from "@@/exports";
-import {axiosExample, returnExample} from "@/pages/InterfaceInfo/components";
-import RequestParamTable from "@/components/RequestParamTable";
-import {ProColumns} from "@ant-design/pro-components";
+import {
+  axiosExample, DEFAULT_ADD_FIELD,
+  requestParam,
+  requestParameters,
+  responseParameters,
+  returnExample
+} from "@/pages/InterfaceInfo/components";
+import ParamsTable from "@/components/ParamsTable";
+import {valueLength} from "@/pages/User/UserInfo";
+import Paragraph from "antd/lib/typography/Paragraph";
 
 const InterfaceInfo: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setDate] = useState<API.InterfaceInfo>();
   const [requestParams, setRequestParams] = useState<[]>();
-
+  const [temporaryParams, setTemporaryParams] = useState<any>();
+  const [responseParams, setResponseParams] = useState<[]>();
   const [requestExampleActiveTabKey, setRequestExampleActiveTabKey] = useState<string>('javadoc');
   const [activeTabKey, setActiveTabKey] = useState<'tools' | 'api' | 'errorCode' | 'sampleCode' | string>('api');
   const [result, setResult] = useState<string>();
   const [resultLoading, setResultLoading] = useState<boolean>(false);
   const params = useParams();
-
+  const [form] = Form.useForm();
   const axiosCode = axiosExample(data?.url)
 
   const loadedData = async () => {
@@ -47,11 +55,13 @@ const InterfaceInfo: React.FC = () => {
       if (res.data && res.code === 0) {
         setDate(res.data || {});
         let requestParams = res.data.requestParams
-        // @ts-ignore
+        let responseParams = res.data.responseParams
         try {
           setRequestParams(requestParams ? JSON.parse(requestParams) : [])
+          setResponseParams(responseParams ? JSON.parse(responseParams) : [])
         } catch (e: any) {
           setRequestParams([])
+          setResponseParams([])
         }
       }
       setLoading(false);
@@ -87,40 +97,12 @@ const InterfaceInfo: React.FC = () => {
       label: <><CodeOutlined/>示例代码</>,
     }
   ];
-  const responseParameters = [{
-    fieldName: 'code',
-    type: "int",
-    desc: <>返回码：<a onClick={() => setActiveTabKey("errorCode")}>错误码参照</a></>,
-    required: '是'
-  }, {
-    fieldName: 'massage',
-    type: "string",
-    desc: "返回码描述",
-    required: '是'
-  }, {
-    fieldName: 'data',
-    type: "string",
-    desc: "返回数据",
-    required: '是'
-  }]
-
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
-
-  const DEFAULT_ADD_FIELD = {
-    fieldName: 'userName',
-    value: ''
-  };
-
-  const [form] = Form.useForm();
 
   const selectAfter = (
     <Select
       disabled
       defaultValue={data?.method}
       style={{width: 120}}
-      onChange={handleChange}
       options={[
         {value: 'GET', label: 'GET', disabled: true},
         {value: 'POST', label: 'POST', disabled: true},
@@ -132,57 +114,34 @@ const InterfaceInfo: React.FC = () => {
 
   const onSearch = async (values: any) => {
     setResultLoading(true)
-    console.log(values)
     const res = await invokeInterfaceUsingPOST({
       id: data?.id,
       ...values
     })
-    setResult(res.data ? JSON.stringify(res.data, null, 4) : JSON.stringify(res, null, 4))
+    setResult(JSON.stringify(res, null, 4))
     setTimeout(() => setResultLoading(false), 1000)
   };
-
-  const requestParam: ProColumns[] = [
-    {
-      title: '参数名称',
-      dataIndex: 'fieldName',
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            whitespace: true,
-            message: '此项是必填项',
-          },
-        ],
-      },
-    }, {
-      title: '参数值',
-      dataIndex: 'value',
-      formItemProps: {
-        rules: [
-          {
-            required: true,
-            whitespace: true,
-            message: '此项是必填项',
-          },
-        ],
-      },
-    },]
 
   const responseExampleContentList: Record<string, React.ReactNode> = {
     api: <>
       <p className="highlightLine">开发者文档：</p>
       <a href={"https://doc.qimuu.icu/"} target={"_blank"} rel="noreferrer">📘 开发者文档</a>
       <p className="highlightLine" style={{marginTop: 15}}>请求参数说明：</p>
-      <Table dataSource={requestParams} pagination={false} style={{maxWidth: 800}} size={"small"}>
+      <Table dataSource={requestParams && requestParams.length > 0 ? requestParams : requestParameters}
+             pagination={false}
+             style={{maxWidth: 800}} size={"small"}>
         <Column title="名称" dataIndex="fieldName" key="fieldName"/>
         <Column title="必选" dataIndex="required" key="required"/>
         <Column title="类型" dataIndex="type" key="type"/>
         <Column title="描述" dataIndex="desc" key="desc"/>
       </Table>
-      <p className="highlightLine" style={{marginTop: 15}}>响应参数说明：</p>
-      <Table dataSource={responseParameters} pagination={false} style={{maxWidth: 800}} size={"small"}>
+      <p className="highlightLine" style={{marginTop: 15}}>响应参数说明：<a
+        onClick={() => setActiveTabKey("errorCode")}>错误码参照</a></p>
+      <Table dataSource={responseParams && responseParams?.length > 0 ? responseParams : responseParameters}
+             pagination={false}
+             style={{maxWidth: 800}}
+             size={"small"}>
         <Column title="名称" dataIndex="fieldName" key="fieldName"/>
-        <Column title="必选" dataIndex="required" key="required"/>
         <Column title="类型" dataIndex="type" key="type"/>
         <Column title="描述" dataIndex="desc" key="desc"/>
       </Table>
@@ -199,7 +158,7 @@ const InterfaceInfo: React.FC = () => {
           onFinish={onSearch}
           scrollToFirstError
           onReset={() => {
-            form.resetFields(['fieldList']);
+            form.resetFields(['requestParams']);
           }}
         >
           <div style={{display: 'flex', justifyContent: 'center', justifyItems: 'center',}}>
@@ -208,7 +167,9 @@ const InterfaceInfo: React.FC = () => {
           </div>
           <p className="highlightLine" style={{marginTop: 25}}>请求参数设置：</p>
           <Form.Item name={"requestParams"}>
-            <RequestParamTable defaultNewColumn={DEFAULT_ADD_FIELD} column={requestParam}/>
+            <ParamsTable value={temporaryParams} onChange={(e: any) => {
+              setTemporaryParams(e)
+            }} defaultNewColumn={DEFAULT_ADD_FIELD} column={requestParam}/>
           </Form.Item>
           <Form.Item>
             <Space size="large" wrap>
@@ -263,7 +224,7 @@ const InterfaceInfo: React.FC = () => {
         <Descriptions column={1}>
           <Descriptions.Item key={"url"} label={"接口地址"}><a target={"_blank"} href={data?.url}
                                                                rel="noreferrer">{data?.url}</a></Descriptions.Item>
-          <Descriptions.Item key={"json"} label="返回格式">{"JSON"}</Descriptions.Item>
+          <Descriptions.Item key={"returnFormat"} label="返回格式">{data?.returnFormat}</Descriptions.Item>
           <Descriptions.Item key={"reduceScore"} label="消费积分">{data?.reduceScore}个</Descriptions.Item>
           <Descriptions.Item key={"request"} label="请求方式"> <Tag
             color={InterfaceRequestMethodEnum[data?.method ?? 'default']}>{data?.method}</Tag></Descriptions.Item>
@@ -279,10 +240,13 @@ const InterfaceInfo: React.FC = () => {
               <Badge status="error" text={statusEnum[data.status]}/>
             ) : null}
           </Descriptions.Item>
-          <Descriptions.Item key={"请求示例"}
-                             label="请求示例">{data?.requestExample ?? '该接口暂无请求示例'}</Descriptions.Item>
           <Descriptions.Item key={"description"}
                              label="接口描述">{data?.description ?? '该接口暂无描述信息'}</Descriptions.Item>
+          <Descriptions.Item key={"请求示例"}
+                             label="请求示例">
+            {data?.requestExample ? <Paragraph
+              copyable={valueLength(data?.requestExample)}>{data?.requestExample}</Paragraph> : '该接口暂无请求示例'}
+          </Descriptions.Item>
         </Descriptions>
       </Card>
       <br/>

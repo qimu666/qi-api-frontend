@@ -17,7 +17,7 @@ jobs:
       # 安装Node10
       - name: 安装node.js
         # 使用action库  actions/setup-node安装node
-        uses: actions/checkout@v3
+        uses: actions/setup-node@v3
         with:
           node-version: '16.x'
 
@@ -40,3 +40,4 @@ jobs:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.REMOTE_TARGET }}
           EXCLUDE: "/dist/, /node_modules/"
+

@@ -141,6 +141,8 @@ declare namespace API {
     requestHeader?: string;
     requestParams?: string;
     responseHeader?: string;
+    responseParams?: string;
+    returnFormat?: string;
     status?: number;
     totalInvokes?: number;
     updateTime?: string;
@@ -157,6 +159,8 @@ declare namespace API {
     requestHeader?: string;
     requestParams?: RequestParamsField[];
     responseHeader?: string;
+    responseParams?: ResponseParamsField[];
+    returnFormat?: string;
     url?: string;
   };
 
@@ -171,13 +175,15 @@ declare namespace API {
     requestHeader?: string;
     requestParams?: RequestParamsField[];
     responseHeader?: string;
+    responseParams?: ResponseParamsField[];
+    returnFormat?: string;
     status?: number;
     url?: string;
   };
 
   type InvokeRequest = {
-    fieldList?: Field[];
     id?: number;
+    requestParams?: Field[];
     userRequestParams?: string;
   };
 
@@ -188,6 +194,11 @@ declare namespace API {
     name?: string;
     pageSize?: number;
     reduceScore?: number;
+    'responseParams[0].desc'?: string;
+    'responseParams[0].fieldName'?: string;
+    'responseParams[0].id'?: string;
+    'responseParams[0].type'?: string;
+    returnFormat?: string;
     sortField?: string;
     sortOrder?: string;
     status?: number;
@@ -210,6 +221,11 @@ declare namespace API {
     name?: string;
     pageSize?: number;
     reduceScore?: number;
+    'responseParams[0].desc'?: string;
+    'responseParams[0].fieldName'?: string;
+    'responseParams[0].id'?: string;
+    'responseParams[0].type'?: string;
+    returnFormat?: string;
     sortField?: string;
     sortOrder?: string;
     status?: number;
@@ -380,6 +396,13 @@ declare namespace API {
     fieldName?: string;
     id?: string;
     required?: string;
+    type?: string;
+  };
+
+  type ResponseParamsField = {
+    desc?: string;
+    fieldName?: string;
+    id?: string;
     type?: string;
   };
 

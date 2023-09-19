@@ -7,8 +7,6 @@ import {
   listInterfaceInfoByPageUsingGET,
   listInterfaceInfoBySearchTextPageUsingGET
 } from "@/services/qiApi-backend/interfaceInfoController";
-import {valueLength} from "@/pages/User/UserInfo";
-
 
 const InterfaceSquare: React.FC = () => {
   const [data, setData] = useState<API.InterfaceInfo[]>([]);
@@ -54,7 +52,7 @@ const InterfaceSquare: React.FC = () => {
   return (
     <>
       <Card hoverable>
-        <ProCard  layout="center">
+        <ProCard layout="center">
           <Search
             showCount
             value={searchText}
@@ -99,8 +97,8 @@ const InterfaceSquare: React.FC = () => {
                 }}>
                   <Badge count={item.totalInvokes} overflowCount={999999999} color='#eb4d4b'>
                     <Image style={{width: 80, borderRadius: 8, marginLeft: 10}}
-                           src={valueLength(item.avatarUrl) ? item?.avatarUrl : 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg'}
-                           fallback={"https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"}
+                           src={item?.avatarUrl ?? "https://img.qimuu.icu/typory/logo.gif"}
+                           fallback={"https://img.qimuu.icu/typory/logo.gif"}
                            alt={item.name}
                            preview={false}
                     />

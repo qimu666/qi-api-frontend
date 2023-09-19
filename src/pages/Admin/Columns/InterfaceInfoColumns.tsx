@@ -2,12 +2,19 @@ import {Link} from '@@/exports';
 import {ProColumns, ProFormColumnsType} from '@ant-design/pro-components';
 import {Tag} from 'antd';
 import {InterfaceRequestMethodEnum} from "@/enum/commonEnum";
-import RequestParamTable from "@/components/RequestParamTable";
-import {NewColumn} from "@/components/RequestParamTable/components/type";
+import ParamsTable from "@/components/ParamsTable";
+import {NewRequestColumn, NewResponseColumn} from "@/components/ParamsTable/components/type";
 
-export const defaultNewRequestColumn: NewColumn = {
+
+export const defaultNewRequestColumn: NewRequestColumn = {
   fieldName: '',
   required: "是",
+  type: "string",
+  desc: "",
+}
+
+export const defaultNewResponseColumn: NewResponseColumn = {
+  fieldName: '',
   type: "string",
   desc: "",
 }
@@ -34,6 +41,38 @@ export const requestParam: ProColumns[] = [
       "是": {text: "是"},
       "否": {text: "否"},
     }, formItemProps: {
+      rules: [
+        {
+          required: true,
+          whitespace: true,
+          message: '此项是必填项',
+        },
+      ],
+    },
+  },
+  {
+    title: '参数类型',
+    dataIndex: 'type',
+    formItemProps: {
+      rules: [
+        {
+          required: true,
+          whitespace: true,
+          message: '此项是必填项',
+        },
+      ],
+    },
+  },
+  {
+    title: '描述',
+    dataIndex: 'desc',
+  },
+]
+export const responseParam: ProColumns[] = [
+  {
+    title: '参数名称',
+    dataIndex: 'fieldName',
+    formItemProps: {
       rules: [
         {
           required: true,
@@ -164,6 +203,15 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     colProps: {
       span: 12,
     },
+  }, {
+    title: '返回格式',
+    key: "returnFormat",
+    dataIndex: 'returnFormat',
+    width: 'lg',
+    valueType: "text",
+    colProps: {
+      span: 12,
+    },
   },
   {
     title: '请求参数',
@@ -173,7 +221,17 @@ export const InterfaceInfoModalFormColumns: ProFormColumnsType<API.ProductInfo, 
     colProps: {
       span: 24,
     },
-    renderFormItem: () => <RequestParamTable column={requestParam} defaultNewColumn={defaultNewRequestColumn}/>,
+    renderFormItem: () => <ParamsTable column={requestParam} defaultNewColumn={defaultNewRequestColumn}/>,
+  },
+  {
+    title: '响应参数',
+    dataIndex: 'responseParams',
+    tooltip: "响应参数",
+    key: "responseParams",
+    colProps: {
+      span: 24,
+    },
+    renderFormItem: () => <ParamsTable column={responseParam} defaultNewColumn={defaultNewResponseColumn}/>,
   },
   {
     title: '接口描述',
@@ -225,6 +283,13 @@ const InterfaceInfoColumns: ProColumns<API.InterfaceInfo>[] = [
     ellipsis: true,
     copyable: true,
     key: 'url',
+  },
+  {
+    title: '返回格式',
+    key: "returnFormat",
+    dataIndex: 'returnFormat',
+    width: 'lg',
+    valueType: "text",
   },
   {
     title: '接口图片',

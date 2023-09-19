@@ -145,7 +145,6 @@ const UserInfo: React.FC = () => {
 
   const beforeUpload = async (file: RcFile) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    console.log(file.type)
     if (!unloadFileTypeList.concat(file.type)) {
       message.error('图片类型有误,请上传jpg/png/svg/jpeg/webp格式!');
     }

@@ -1,9 +1,8 @@
 import {EditableProTable, ProColumns} from '@ant-design/pro-components';
 import React, {useEffect, useState} from 'react';
-import {NewColumn} from "@/components/RequestParamTable/components/type";
 
-const RequestParamTable: React.FC<{
-  defaultNewColumn: NewColumn | any,
+const ParamsTable: React.FC<{
+  defaultNewColumn: any,
   column: ProColumns[];
   value?: string;
   onChange?: (
@@ -20,14 +19,23 @@ const RequestParamTable: React.FC<{
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>(() => {
     return dataSource.map((item) => item.id as React.Key);
   });
+  const doData = (value: any) => {
+    const valueArray = [...value];
+    setDataSource(valueArray)
+    let requestIds = valueArray?.map((item) => item.id as unknown as string) || [];
+    setEditableRowKeys(requestIds)
+  }
   useEffect(() => {
-    if (value && typeof value === 'string') {
-      const parseValue = JSON.parse(value);
-      const valueArray = [...parseValue];
-      setDataSource(valueArray)
-      let requestIds = valueArray?.map((item) => item.id as unknown as string) || [];
-      setEditableRowKeys(requestIds)
+    if (value) {
+      if (typeof value === 'string') {
+        const parseValue = JSON.parse(value);
+        doData(parseValue)
+      } else {
+        const parseValue = value as any;
+        doData(parseValue)
+      }
     }
+
   }, [value])
   const handleInputChange = (e: any) => {
     onChange?.(e);
@@ -71,10 +79,13 @@ const RequestParamTable: React.FC<{
       recordCreatorProps={{
         newRecordType: 'dataSource',
         position: 'bottom',
-        record: () => ({
-          id: Date.now().toString(),
-          ...defaultNewColumn
-        }),
+        record: () => {
+          return (
+            {
+              id: Date.now().toString(),
+              ...defaultNewColumn
+            })
+        },
       }}
       editable={{
         type: 'multiple',
@@ -90,4 +101,4 @@ const RequestParamTable: React.FC<{
     />
   );
 };
-export default RequestParamTable
+export default ParamsTable

@@ -117,7 +117,6 @@ const UserList: React.FC = () => {
   const handleUpdate = async (fields: API.UserUpdateRequest) => {
     const hide = message.loading('修改中');
     try {
-      console.log(fields)
       const res = await updateUserUsingPOST({id: currentRow?.id, ...fields});
       if (res.data && res.code === 0) {
         hide();

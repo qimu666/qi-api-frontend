@@ -17,7 +17,7 @@ export async function createOrderUsingPOST(
   });
 }
 
-/** 支付回调通知处理 POST /api/order/notify/order */
+/** parseOrderNotifyResult POST /api/order/notify/order */
 export async function parseOrderNotifyResultUsingPOST(
   body: string,
   options?: { [key: string]: any },
