@@ -95,7 +95,7 @@ const SendGiftModal: React.FC<Props> = (props) => {
       <ProCard layout={"center"}>
         {contextHolder}
         <p style={{marginTop: -15, color: 'red'}}
-        >异常刷取积分将永久封号处理</p>
+        >异常刷取积分将永久封禁账号</p>
       </ProCard>
     </ProCard>
   </Modal>;

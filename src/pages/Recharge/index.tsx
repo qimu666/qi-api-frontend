@@ -115,10 +115,10 @@ const PayOrder: React.FC = () => {
                     message.error("请先选择积分规格哦")
                     return
                   }
-                  message.loading("正在前往收银台,请稍后.....", 0.8)
+                  message.loading("正在前往收银台,请稍后.....", 0.6)
                   setTimeout(() => {
                     history.push(`/order/pay/${productId}`)
-                  }, 1000)
+                  }, 800)
                 }} size={"large"} type={"primary"}>立即购买</Button>
               </div>
             </ProCard>

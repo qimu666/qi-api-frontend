@@ -53,6 +53,14 @@ export const requestParam: ProColumns[] = [
   {
     title: '参数类型',
     dataIndex: 'type',
+    valueEnum: {
+      "int": {text: "int"},
+      "string": {text: "string"},
+      "long": {text: "long"},
+      "boolean": {text: "boolean"},
+      "double": {text: "double"},
+    },
+    valueType: "select",
     formItemProps: {
       rules: [
         {
@@ -85,6 +93,14 @@ export const responseParam: ProColumns[] = [
   {
     title: '参数类型',
     dataIndex: 'type',
+    valueEnum: {
+      "int": {text: "int"},
+      "string": {text: "string"},
+      "long": {text: "long"},
+      "boolean": {text: "boolean"},
+      "double": {text: "double"},
+    },
+    valueType: "select",
     formItemProps: {
       rules: [
         {

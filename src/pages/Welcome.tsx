@@ -170,7 +170,7 @@ const Welcome: React.FC = () => {
                 🤝 您可以将自己的接口接入到Qi-API 接口开放平台平台上，并发布给其他用户使用。
                 您可以管理和各个接口，以便更好地分析和优化接口性能。
                 <br/>
-                👌 我们还提供了<a href={"https://doc.qimuu.icu"} target={"_blank"} rel="noreferrer">开发者文档</a>和技术支持，帮助您快速接入和发布接口。
+                👌 我们还提供了<a href={"https://doc.qimuu.icu"} target={"_blank"} rel="noreferrer">开发者在线文档</a>和技术支持，帮助您快速接入和发布接口。
                 <br/>
                 🏁 无论您是用户还是开发者，Qi-API 接口开放平台都致力于提供稳定、安全、高效的接口调用服务，帮助您实现更快速、便捷的开发和调用体验。
               </Title>

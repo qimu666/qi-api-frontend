@@ -1,21 +1,24 @@
-import React, {useEffect, useRef} from "react";
-import {message, Modal} from "antd";
+import React, {useEffect, useRef, useState} from "react";
+import {Button, message, Modal} from "antd";
 import {ProFormCaptcha, ProFormText} from "@ant-design/pro-form";
 import {LockOutlined, MailOutlined} from "@ant-design/icons";
 import {getCaptchaUsingGET,} from "@/services/qiApi-backend/userController";
 import {LoginForm} from "@ant-design/pro-components";
 import {ProFormInstance} from "@ant-design/pro-form/lib";
+import {valueLength} from "@/pages/User/UserInfo";
 
 export type Props = {
   open: boolean;
   onCancel: () => void;
   data?: API.UserVO
-  onSubmit: (values: API.UserBindEmailRequest) => Promise<void>;
+  bindSubmit: (values: API.UserBindEmailRequest) => Promise<void>;
+  unbindSubmit: (values: API.UserUnBindEmailRequest) => Promise<void>;
 };
 
-const BindEmailModal: React.FC<Props> = (props) => {
+const EmailModal: React.FC<Props> = (props) => {
   const formRef = useRef<ProFormInstance>();
-  const {open, data, onCancel, onSubmit} = props;
+  const [key, setKey] = useState<"bind" | "unbind">()
+  const {open, data, onCancel, bindSubmit, unbindSubmit} = props;
   useEffect(() => {
     // 关闭表单时刷新form
     if (!open) {
@@ -38,11 +41,44 @@ const BindEmailModal: React.FC<Props> = (props) => {
         }}
         submitter={
           {
-            searchConfig: {
-              submitText: data?.email ? '更新邮箱' : "绑定邮箱"
-            }
-          }}
-        onFinish={async (values) => onSubmit?.(values)}
+            render: () => {
+              return [
+                <>
+                  <Button
+                    type={"primary"}
+                    key="submit"
+                    block
+                    onClick={() => {
+                      setKey("bind")
+                      formRef.current?.submit()
+                    }}
+                  >
+                    {data?.email ? '更新邮箱' : "绑定邮箱"}
+                  </Button>
+                  {valueLength(data?.email) && <Button
+                    style={{marginTop: 10}}
+                    key="Unbinding"
+                    block
+                    danger
+                    onClick={() => {
+                      setKey("unbind")
+                      formRef.current?.submit()
+                    }}
+                  >
+                    解绑邮箱
+                  </Button>}
+                </>
+              ];
+            },
+          }
+        }
+        onFinish={async (values) => {
+          if (key === "bind") {
+            bindSubmit?.(values)
+          } else {
+            unbindSubmit?.(values)
+          }
+        }}
       >
         <ProFormText
           fieldProps={{
@@ -98,4 +134,4 @@ const BindEmailModal: React.FC<Props> = (props) => {
   );
 };
 
-export default BindEmailModal;
+export default EmailModal;

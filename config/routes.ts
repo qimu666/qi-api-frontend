@@ -1,5 +1,4 @@
-﻿
-export default [
+﻿export default [
   {
     path: '/user',
     layout: false,
@@ -21,7 +20,6 @@ export default [
   {path: '/:id', name: '欢迎', icon: 'smile', component: './Welcome', hideInMenu: true,},
   {path: '/', name: '欢迎', icon: 'smile', component: './Welcome'},
   {path: '/interface/list', name: '接口广场', icon: 'RedditOutlined', component: './InterfaceSquare'},
-  {path: '/order/pay/:id', icon: "PayCircleOutlined", name: '订单支付', component: './Order', hideInMenu: true,},
   {path: '/recharge/list', icon: "PayCircleOutlined", name: '购买积分', component: './Recharge'},
   {
     path: '/account/center', name: '个人中心', icon: 'UserOutlined', component: './User/UserInfo', hideInMenu: true,
@@ -31,6 +29,11 @@ export default [
     name: '接口详情',
     component: './InterfaceInfo',
     hideInMenu: true,
+  },{
+    path: '/order/list',
+    name: '我的订单',
+    icon: 'ProfileOutlined',
+    component: './Order/OrderList',
   },
   {
     path: '/admin',
@@ -57,6 +60,15 @@ export default [
         component: './Admin/UserList',
       },
     ],
+  },
+  {
+    path: '/order/pay/:id',
+    icon: "PayCircleOutlined",
+    name: '订单支付',
+    component: './Order/PayOrder',
+    hideInMenu: true
+  }, {
+    path: '/order/info', icon: "ProfileOutlined", name: '订单详情', component: './Order/OrderInfo', hideInMenu: true
   },
   {path: '*', layout: false, component: './404'},
 ];

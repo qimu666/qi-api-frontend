@@ -219,6 +219,21 @@ export async function userRegisterUsingPOST(
   });
 }
 
+/** userUnBindEmail POST /api/user/unbindEmail */
+export async function userUnBindEmailUsingPOST(
+  body: API.UserUnBindEmailRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseUserVO>('/api/user/unbindEmail', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** updateUser POST /api/user/update */
 export async function updateUserUsingPOST(
   body: API.UserUpdateRequest,

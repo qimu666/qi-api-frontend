@@ -2,7 +2,7 @@ import {Card, message, QRCode, Radio, Spin, Tooltip} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {history} from '@umijs/max';
 
-import wechat from "../../../public/assets/WeChat.jpg";
+import wechat from "../../../../public/assets/WeChat.jpg";
 import WxPay from "@/components/Icon/WxPay";
 import ProCard from "@ant-design/pro-card";
 import Alipay from "@/components/Icon/Alipay";
@@ -16,9 +16,8 @@ const PayOrder: React.FC = () => {
   const [total, setTotal] = useState<any>("0.00");
   const [status, setStatus] = useState<string>('active');
   const [payType, setPayType] = useState<string>('WX');
-
+  const [qrCode, setQrCode] = useState<any>('');
   const params = useParams()
-
   const createOrder = async () => {
     setLoading(true)
     setStatus("loading")
@@ -30,9 +29,21 @@ const PayOrder: React.FC = () => {
       setTotal((res.data.total) / 100)
       setStatus("active")
       setLoading(false)
+      const codeUrl = new URL(window.location.href).searchParams.get("codeUrl");
+      if (codeUrl) {
+        setQrCode(codeUrl)
+        return;
+      } else {
+        setQrCode(res.data.codeUrl)
+      }
     }
     if (res.code === 50001) {
       history.back()
+    }
+    // 判断是否为手机设备
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) {
+      window.location.href = qrCode
     }
   }
   const queryOrderStatus = async () => {
@@ -49,19 +60,21 @@ const PayOrder: React.FC = () => {
       message.error('参数不存在');
       return;
     }
-    const res = await createOrderUsingPOST({productId: params.id, payType: "ALIPAY"})
     setLoading(true)
-    message.loading("正在前往收银台,请稍后....")
-    setTimeout(() => {
-      document.write(res?.data?.formData as string);
+    const res = await createOrderUsingPOST({productId: params.id, payType: "ALIPAY"})
+    if (res.code === 0 && res.data) {
+      message.loading("正在前往收银台,请稍后....")
+      setTimeout(() => {
+        document.write(res?.data?.formData as string);
+        setLoading(false)
+      }, 2000)
+    } else {
       setLoading(false)
-    }, 2000)
+    }
   }
-
   const changePayType = (value: string) => {
     setPayType(value);
   };
-
   useEffect(() => {
     if (!params.id) {
       message.error('参数不存在');
@@ -105,7 +118,6 @@ const PayOrder: React.FC = () => {
 
   return (
     <>
-
       <Card style={{minWidth: 385}}>
         <Spin spinning={loading}>
           <Card title={<strong>商品信息</strong>}>
@@ -184,7 +196,7 @@ const PayOrder: React.FC = () => {
               <QRCode
                 errorLevel="H"
                 size={240}
-                value={order?.codeUrl || '-'}
+                value={qrCode}
                 // @ts-ignore
                 status={status}
                 onRefresh={() => {
@@ -216,7 +228,6 @@ const PayOrder: React.FC = () => {
           </Card>
         </Spin>
       </Card>
-
     </>
   )
 }

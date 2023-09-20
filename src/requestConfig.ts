@@ -51,7 +51,7 @@ export const requestConfig: RequestConfig = {
             }
             break;
           default:
-            if (location.pathname.concat("/interface_info/")) {
+            if (location.pathname.includes("/interface_info/")) {
               break
             }
             message.error(data.message);

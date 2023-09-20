@@ -143,7 +143,7 @@ packages:
       - '@types/react'
       - '@types/react-dom'
       - antd
-      - babel-plugin-styled-components
+      - babel-plugin-styled-Components
       - debug
       - dva
       - rc-field-form
@@ -4740,7 +4740,7 @@ packages:
       babel-plugin-styled-components: 2.0.7
       core-js: 3.27.1
     transitivePeerDependencies:
-      - styled-components
+      - styled-Components
       - supports-color
     dev: true
 
@@ -4833,7 +4833,7 @@ packages:
     transitivePeerDependencies:
       - '@types/webpack'
       - sockjs-client
-      - styled-components
+      - styled-Components
       - supports-color
       - type-fest
       - typescript
@@ -4931,7 +4931,7 @@ packages:
       - postcss-less
       - postcss-markdown
       - postcss-scss
-      - styled-components
+      - styled-Components
       - stylelint
       - supports-color
       - typescript
@@ -4960,7 +4960,7 @@ packages:
       - postcss-less
       - postcss-markdown
       - postcss-scss
-      - styled-components
+      - styled-Components
       - stylelint
       - supports-color
       - typescript
@@ -5000,7 +5000,7 @@ packages:
       - '@types/webpack'
       - '@volar/vue-language-plugin-pug'
       - '@volar/vue-typescript'
-      - babel-plugin-styled-components
+      - babel-plugin-styled-Components
       - debug
       - dva
       - jest
@@ -5018,7 +5018,7 @@ packages:
       - rollup
       - sass
       - sockjs-client
-      - styled-components
+      - styled-Components
       - stylus
       - sugarss
       - supports-color
@@ -5109,7 +5109,7 @@ packages:
       - '@types/react'
       - '@types/react-dom'
       - antd
-      - babel-plugin-styled-components
+      - babel-plugin-styled-Components
       - debug
       - dva
       - rc-field-form
@@ -5154,7 +5154,7 @@ packages:
       - '@types/react'
       - '@types/react-dom'
       - antd
-      - babel-plugin-styled-components
+      - babel-plugin-styled-Components
       - debug
       - dva
       - rc-field-form
@@ -5199,7 +5199,7 @@ packages:
       - '@types/react'
       - '@types/react-dom'
       - antd
-      - babel-plugin-styled-components
+      - babel-plugin-styled-Components
       - debug
       - dva
       - rc-field-form
@@ -5250,7 +5250,7 @@ packages:
       - rollup
       - sass
       - sockjs-client
-      - styled-components
+      - styled-Components
       - stylus
       - sugarss
       - supports-color
@@ -16212,7 +16212,7 @@ packages:
       - '@types/react'
       - '@types/react-dom'
       - antd
-      - babel-plugin-styled-components
+      - babel-plugin-styled-Components
       - chokidar
       - debug
       - dva
@@ -16283,7 +16283,7 @@ packages:
       - rollup
       - sass
       - sockjs-client
-      - styled-components
+      - styled-Components
       - stylelint
       - stylus
       - sugarss

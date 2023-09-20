@@ -4,7 +4,7 @@ import {ProTable} from '@ant-design/pro-components';
 import '@umijs/max';
 import {Button, Card, message, Popconfirm} from 'antd';
 import React, {useRef, useState} from 'react';
-import ModalForm from "@/pages/Admin/components/ModalForm";
+import ModalForm from "@/pages/Admin/Components/ModalForm";
 import ProductInfoModalFormColumns, {ProductInfoColumns} from "@/pages/Admin/Columns/ProductInfoColumns";
 import {
   addProductInfoUsingPOST,

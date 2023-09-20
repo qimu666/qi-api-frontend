@@ -1,4 +1,4 @@
-import {BarsOutlined, ExportOutlined, GithubOutlined, PlusOutlined, WechatOutlined} from '@ant-design/icons';
+import {BarsOutlined, ExportOutlined, FileTextOutlined, GithubOutlined, WechatOutlined} from '@ant-design/icons';
 import {SettingDrawer} from '@ant-design/pro-components';
 import type {RunTimeLayoutConfig} from '@umijs/max';
 import {history} from '@umijs/max';
@@ -41,6 +41,8 @@ export async function getInitialState(): Promise<InitialState> {
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => {
+
+
   return {
     actionsRender: () => [<Docs key="doc"/>],
     waterMarkProps: {
@@ -59,8 +61,12 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
           icon={<WechatOutlined/>}
         />
         <FloatButton
-          tooltip={"发布接口"}
-          icon={<PlusOutlined/>}
+          tooltip={"📘 接口在线文档"}
+          icon={<FileTextOutlined/>}
+          onClick={() => {
+            location.href = "https://doc.qimuu.icu/"
+          }
+          }
         />
         <FloatButton
           tooltip={"分享此网站"}
@@ -78,7 +84,7 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
           tooltip={"查看本站技术及源码，欢迎 star"}
           icon={<GithubOutlined/>}
           onClick={() => {
-            location.href = "https://github.com/qimu666/api-frontend"
+            location.href = "https://github.com/qimu666/qi-api"
           }
           }
         />

@@ -63,7 +63,8 @@ const ParamsTable: React.FC<{
           }
         >
           删除
-        </a>]
+        </a>,
+      ]
     },
   ];
 

@@ -9,3 +9,5 @@ export type NewResponseColumn = {
   type: 'int' | 'string' | 'boolean' | 'double' | 'long',
   desc?: string,
 }
+
+
