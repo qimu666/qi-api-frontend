@@ -1,4 +1,5 @@
 import {ProColumns} from '@ant-design/pro-components';
+import {Link} from "@@/exports";
 
 export const OrderColumns: ProColumns<API.ProductOrderVo>[] = [
   {
@@ -10,14 +11,18 @@ export const OrderColumns: ProColumns<API.ProductOrderVo>[] = [
     key: "id"
   },
   {
-    title: '商品名称',
+    title: '订单名称',
     dataIndex: 'orderName',
     align: "center",
     key: "orderName",
     ellipsis: true,
     copyable: true,
-    width: 120
-    // render:(_,record)=><Link key={record.id} to={}></Link>
+    width: 120,
+    render: (_, record) => (
+      <Link key={record.id} to={`/order/info/${record.id}`}>
+        {record.orderName}
+      </Link>
+    ),
   },
   {
     title: '订单号',
@@ -35,6 +40,10 @@ export const OrderColumns: ProColumns<API.ProductOrderVo>[] = [
     align: "center",
     onFilter: true,
     valueEnum: {
+      "NOTPAY": {
+        text: "未支付",
+        status: "Error"
+      },
       "SUCCESS": {
         text: "支付成功",
         status: "Success"
@@ -43,10 +52,6 @@ export const OrderColumns: ProColumns<API.ProductOrderVo>[] = [
         text: "已取消",
         status: 'Default'
       },
-      "NOTPAY": {
-        text: "未支付",
-        status: "Error"
-      }
     }
   },
   {

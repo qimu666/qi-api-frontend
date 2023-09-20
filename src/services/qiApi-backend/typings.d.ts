@@ -125,7 +125,7 @@ declare namespace API {
 
   type getProductOrderByIdUsingGETParams = {
     /** id */
-    id?: number;
+    id?: string;
   };
 
   type getUserByIdUsingGETParams = {

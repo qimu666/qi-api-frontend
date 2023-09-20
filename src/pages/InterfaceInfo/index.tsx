@@ -1,9 +1,9 @@
-import {Badge, Button, Card, Descriptions, Form, message, Select, Spin, Table, Tabs, Tag} from 'antd';
+import {Badge, Button, Card, Descriptions, Form, message, Spin, Table, Tabs, Tag} from 'antd';
 import React, {useEffect, useState} from 'react';
 import {getInterfaceInfoByIdUsingGET, invokeInterfaceUsingPOST} from "@/services/qiApi-backend/interfaceInfoController";
 
 import CodeHighlighting from "@/components/CodeHighlighting";
-import {InterfaceRequestMethodEnum, statusEnum} from "@/enum/commonEnum";
+import {InterfaceRequestMethodEnum, orderStatusEnum, statusEnum} from "@/enum/commonEnum";
 import {
   BugOutlined,
   CodeOutlined,
@@ -44,7 +44,7 @@ const InterfaceInfo: React.FC = () => {
   const [totalInvokes, setTotalInvokes] = useState<number>(0);
   const [javaCode, setJavaCode] = useState<any>();
   const [returnCode, setReturnCode] = useState<any>(returnExample);
-  const docUrl=process.env.NODE_ENV === 'production' ? "https://doc.qimuu.icu" : 'http://localhost:8080'
+  const docUrl = process.env.NODE_ENV === 'production' ? "https://doc.qimuu.icu" : 'http://localhost:8080'
   const loadedData = async () => {
     if (!params.id) {
       message.error('参数不存在');
@@ -174,7 +174,7 @@ const InterfaceInfo: React.FC = () => {
   return (
     <Spin spinning={loading}>
       <Card title={data?.name}>
-        <Descriptions column={1}>
+        <Descriptions >
           <Descriptions.Item key={"url"} label={"接口地址"}><a target={"_blank"} href={data?.url}
                                                                rel="noreferrer">{data?.url}</a></Descriptions.Item>
           <Descriptions.Item key={"returnFormat"} label="返回格式">{data?.returnFormat}</Descriptions.Item>
@@ -204,7 +204,8 @@ const InterfaceInfo: React.FC = () => {
       </Card>
       <Card>
         <p className="highlightLine">接口详细描述请前往开发者在线文档查看：</p>
-        <a href={`${docUrl}/pages/${data?.id}/#${data?.name}`} target={"_blank"} rel="noreferrer">📘 接口在线文档：{data?.name}</a>
+        <a href={`${docUrl}/pages/${data?.id}/#${data?.name}`} target={"_blank"} rel="noreferrer">📘
+          接口在线文档：{data?.name}</a>
       </Card>
       <br/>
       <Card

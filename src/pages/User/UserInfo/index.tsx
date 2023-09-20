@@ -106,9 +106,15 @@ const UserInfo: React.FC = () => {
       setUserName(loginUser?.userName)
       setLoading(false)
     }
-    const tour = localStorage.getItem('tour');
-    if (!tour) {
-      setOpenTour(true)
+    // PC端显示指引
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (isMobile) {
+      setOpenTour(false)
+    } else {
+      const tour = localStorage.getItem('tour');
+      if (!tour) {
+        setOpenTour(true)
+      }
     }
   }
 

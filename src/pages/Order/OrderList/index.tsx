@@ -107,12 +107,13 @@ export default () => {
       render: (_, record) => [
         <a
           key="SUCCESS"
-          onClick={async () => {
-            setCurrentRow(record);
+          onClick={() => {
+            location.href = `/order/info/${record.id}`
           }}
         >
           查看
         </a>,
+        record?.status !== "NOTPAY" &&
         <Popconfirm
           key={'Delete'}
           title="请确认是否删除该订单!"
@@ -140,7 +141,7 @@ export default () => {
               }
             >
               付款
-            </a>,
+            </a>
             <Popconfirm
               key={'Closed'}
               title="请确认是否取消该订单!"
