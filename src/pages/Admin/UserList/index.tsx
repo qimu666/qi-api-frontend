@@ -4,7 +4,7 @@ import {ProTable} from '@ant-design/pro-components';
 import '@umijs/max';
 import {Button, Card, message, Popconfirm} from 'antd';
 import React, {useRef, useState} from 'react';
-import ModalForm from "@/pages/Admin/components/ModalForm";
+import ModalForm from "@/pages/Admin/Components/ModalForm";
 
 import UserColumns, {UserAddModalFormColumns, UserUpdateModalFormColumns} from "@/pages/Admin/Columns/UserColumns";
 import {
@@ -117,7 +117,6 @@ const UserList: React.FC = () => {
   const handleUpdate = async (fields: API.UserUpdateRequest) => {
     const hide = message.loading('修改中');
     try {
-      console.log(fields)
       const res = await updateUserUsingPOST({id: currentRow?.id, ...fields});
       if (res.data && res.code === 0) {
         hide();

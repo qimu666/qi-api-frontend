@@ -13,7 +13,7 @@ import {ProTable} from '@ant-design/pro-components';
 import '@umijs/max';
 import {Button, Card, message, Popconfirm} from 'antd';
 import React, {useRef, useState} from 'react';
-import ModalForm from "@/pages/Admin/components/ModalForm";
+import ModalForm from "@/pages/Admin/Components/ModalForm";
 import UploadModal from "@/components/UploadModal";
 
 const InterfaceInfoList: React.FC = () => {
@@ -66,6 +66,10 @@ const InterfaceInfoList: React.FC = () => {
     const hide = message.loading('修改中');
     try {
       if (fields) {
+        if (typeof fields.responseParams === "string") {
+          const parseValue = JSON.parse(fields.responseParams);
+          fields.responseParams = [...parseValue];
+        }
         if (typeof fields.requestParams === "string") {
           const parseValue = JSON.parse(fields.requestParams);
           fields.requestParams = [...parseValue];

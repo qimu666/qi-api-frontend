@@ -40,6 +40,9 @@ export const requestConfig: RequestConfig = {
       } else {
         switch (code) {
           case 40001: {
+            if (location.pathname.includes("/interface_info/")) {
+              break
+            }
             message.error(data.message);
             history.push('/user/login');
           }
@@ -51,7 +54,7 @@ export const requestConfig: RequestConfig = {
             }
             break;
           default:
-            if (location.pathname.concat("/interface_info/")) {
+            if (location.pathname.includes("/interface_info/")) {
               break
             }
             message.error(data.message);

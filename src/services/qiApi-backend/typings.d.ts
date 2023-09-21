@@ -47,6 +47,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseOrderVo = {
+    code?: number;
+    data?: OrderVo;
+    message?: string;
+  };
+
   type BaseResponsePageInterfaceInfo = {
     code?: number;
     data?: PageInterfaceInfo;
@@ -83,6 +89,16 @@ declare namespace API {
     message?: string;
   };
 
+  type closedProductOrderUsingPOSTParams = {
+    /** orderNo */
+    orderNo?: string;
+  };
+
+  type deleteProductOrderUsingPOSTParams = {
+    /** id */
+    id?: number;
+  };
+
   type DeleteRequest = {
     id?: number;
   };
@@ -105,6 +121,11 @@ declare namespace API {
   type getProductInfoByIdUsingGETParams = {
     /** id */
     id?: number;
+  };
+
+  type getProductOrderByIdUsingGETParams = {
+    /** id */
+    id?: string;
   };
 
   type getUserByIdUsingGETParams = {
@@ -141,6 +162,8 @@ declare namespace API {
     requestHeader?: string;
     requestParams?: string;
     responseHeader?: string;
+    responseParams?: string;
+    returnFormat?: string;
     status?: number;
     totalInvokes?: number;
     updateTime?: string;
@@ -157,6 +180,8 @@ declare namespace API {
     requestHeader?: string;
     requestParams?: RequestParamsField[];
     responseHeader?: string;
+    responseParams?: ResponseParamsField[];
+    returnFormat?: string;
     url?: string;
   };
 
@@ -171,13 +196,15 @@ declare namespace API {
     requestHeader?: string;
     requestParams?: RequestParamsField[];
     responseHeader?: string;
+    responseParams?: ResponseParamsField[];
+    returnFormat?: string;
     status?: number;
     url?: string;
   };
 
   type InvokeRequest = {
-    fieldList?: Field[];
     id?: number;
+    requestParams?: Field[];
     userRequestParams?: string;
   };
 
@@ -188,6 +215,11 @@ declare namespace API {
     name?: string;
     pageSize?: number;
     reduceScore?: number;
+    'responseParams[0].desc'?: string;
+    'responseParams[0].fieldName'?: string;
+    'responseParams[0].id'?: string;
+    'responseParams[0].type'?: string;
+    returnFormat?: string;
     sortField?: string;
     sortOrder?: string;
     status?: number;
@@ -210,6 +242,11 @@ declare namespace API {
     name?: string;
     pageSize?: number;
     reduceScore?: number;
+    'responseParams[0].desc'?: string;
+    'responseParams[0].fieldName'?: string;
+    'responseParams[0].id'?: string;
+    'responseParams[0].type'?: string;
+    returnFormat?: string;
     sortField?: string;
     sortOrder?: string;
     status?: number;
@@ -249,6 +286,20 @@ declare namespace API {
     total?: number;
   };
 
+  type listProductOrderByPageUsingGETParams = {
+    addPoints?: number;
+    current?: number;
+    orderName?: string;
+    orderNo?: string;
+    pageSize?: number;
+    payType?: string;
+    productInfo?: string;
+    sortField?: string;
+    sortOrder?: string;
+    status?: string;
+    total?: number;
+  };
+
   type listUserByPageUsingGETParams = {
     current?: number;
     gender?: string;
@@ -276,6 +327,19 @@ declare namespace API {
   type OrderItem = {
     asc?: boolean;
     column?: string;
+  };
+
+  type OrderVo = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    optimizeJoinOfCountSql?: boolean;
+    orders?: OrderItem[];
+    records?: ProductOrderVo[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
   };
 
   type PageInterfaceInfo = {
@@ -357,12 +421,24 @@ declare namespace API {
   };
 
   type ProductOrderQueryRequest = {
+    addPoints?: number;
+    current?: number;
+    orderName?: string;
     orderNo?: string;
+    pageSize?: number;
+    payType?: string;
+    productInfo?: string;
+    sortField?: string;
+    sortOrder?: string;
+    status?: string;
+    total?: number;
   };
 
   type ProductOrderVo = {
     addPoints?: number;
     codeUrl?: string;
+    createTime?: string;
+    description?: string;
     expirationTime?: string;
     formData?: string;
     id?: number;
@@ -371,8 +447,9 @@ declare namespace API {
     payType?: string;
     productId?: number;
     productInfo?: ProductInfo;
+    productType?: string;
     status?: string;
-    total?: number;
+    total?: string;
   };
 
   type RequestParamsField = {
@@ -380,6 +457,13 @@ declare namespace API {
     fieldName?: string;
     id?: string;
     required?: string;
+    type?: string;
+  };
+
+  type ResponseParamsField = {
+    desc?: string;
+    fieldName?: string;
+    id?: string;
     type?: string;
   };
 
@@ -427,6 +511,11 @@ declare namespace API {
     userAccount?: string;
     userName?: string;
     userPassword?: string;
+  };
+
+  type UserUnBindEmailRequest = {
+    captcha?: string;
+    emailAccount?: string;
   };
 
   type UserUpdateRequest = {

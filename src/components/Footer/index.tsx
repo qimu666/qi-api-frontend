@@ -33,7 +33,7 @@ const Footer: React.FC = () => {
               <GithubOutlined/> 支持项目
             </Tooltip>
           ),
-          href: 'https://github.com/qimu666/api-frontend',
+          href: 'https://github.com/qimu666/qi-api',
           blankTarget: true,
         },
         {
