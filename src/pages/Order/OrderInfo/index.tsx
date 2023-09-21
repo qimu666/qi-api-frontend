@@ -59,9 +59,9 @@ export default () => {
       hide();
       if (res.data) {
         message.success('取消订单成功');
-        setTimeout(()=>{
-          location.href="/order/list"
-        },800)
+        setTimeout(() => {
+          location.href = "/order/list"
+        }, 800)
       }
       return true;
     } catch (error: any) {
@@ -86,9 +86,9 @@ export default () => {
       hide();
       if (res.data) {
         message.success('删除订单成功');
-        setTimeout(()=>{
-          location.href="/order/list"
-        },800)
+        setTimeout(() => {
+          location.href = "/order/list"
+        }, 800)
       }
       return true;
     } catch (error: any) {
@@ -117,7 +117,7 @@ export default () => {
       } else {
         message.loading("正在前往收银台,请稍后.....", 0.6)
         setTimeout(() => {
-          history.push(`/order/pay/${record.productId}?codeUrl=${record?.codeUrl?.trim()}`)
+          history.push(`/order/pay/${record.productId}?codeUrl=${record?.codeUrl?.trim()}&payType=${record?.payType?.trim()}`)
         }, 800)
       }
     } else {

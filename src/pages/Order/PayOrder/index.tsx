@@ -15,8 +15,11 @@ const PayOrder: React.FC = () => {
   const [order, setOrder] = useState<API.ProductOrderVo>();
   const [total, setTotal] = useState<any>("0.00");
   const [status, setStatus] = useState<string>('active');
-  const [payType, setPayType] = useState<string>('WX');
-  const [qrCode, setQrCode] = useState<any>('');
+  const [payType, setPayType] = useState<string>();
+  const urlParams = new URL(window.location.href).searchParams;
+  const codeUrl = urlParams.get("codeUrl")
+  const urlPayType = urlParams.get("payType")
+  const [qrCode, setQrCode] = useState<any>('暂未选择支付方式');
   const params = useParams()
   const createOrder = async () => {
     setLoading(true)
@@ -29,21 +32,10 @@ const PayOrder: React.FC = () => {
       setTotal((res.data.total) / 100)
       setStatus("active")
       setLoading(false)
-      const codeUrl = new URL(window.location.href).searchParams.get("codeUrl");
-      if (codeUrl) {
-        setQrCode(codeUrl)
-        return;
-      } else {
-        setQrCode(res.data.codeUrl)
-      }
+      setQrCode(res.data.codeUrl)
     }
     if (res.code === 50001) {
       history.back()
-    }
-    // 判断是否为手机设备
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    if (isMobile) {
-      window.location.href = qrCode
     }
   }
   const queryOrderStatus = async () => {
@@ -80,12 +72,36 @@ const PayOrder: React.FC = () => {
       message.error('参数不存在');
       return;
     }
+    // 判断是否为手机设备
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (codeUrl) {
+      if (isMobile) {
+        window.location.href = codeUrl
+        return;
+      }
+      setQrCode(codeUrl)
+      setStatus("active")
+      setPayType("WX")
+      return;
+    }
+    if (!urlPayType && !payType) {
+      message.error("请选择支付方式")
+      setStatus("expired")
+      return
+    }
+    if (urlPayType) {
+      setPayType(urlPayType)
+      return;
+    }
     createOrder()
   }, [])
 
   useEffect(() => {
     if (payType === "ALIPAY") {
       toAlipay()
+    }
+    if (payType === "WX" && !codeUrl) {
+      createOrder()
     }
   }, [payType])
 
@@ -200,6 +216,10 @@ const PayOrder: React.FC = () => {
                 // @ts-ignore
                 status={status}
                 onRefresh={() => {
+                  if (!payType) {
+                    message.error("请先选择支付方式")
+                    return
+                  }
                   createOrder()
                 }}
               />

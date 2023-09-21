@@ -121,7 +121,8 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
       //   getInitialState();
       // }
       // 如果没有登录，重定向到 login
-      if (!initialState?.loginUser && !/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/' && location.pathname !== '/interface/list') {
+      if (!initialState?.loginUser && !/^\/\w+\/?$/.test(location.pathname) && location.pathname !== '/'
+        && location.pathname !== '/interface/list' && !location.pathname.includes("/interface_info/")) {
         history.push(loginPath);
       }
     },

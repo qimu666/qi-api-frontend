@@ -7,6 +7,7 @@ import {flushSync} from 'react-dom';
 import HeaderDropdown from '../HeaderDropdown';
 import {valueLength} from "@/pages/User/UserInfo";
 import {userLogoutUsingPOST} from "@/services/qiApi-backend/userController";
+import Settings from "../../../config/defaultSettings";
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;
@@ -20,7 +21,7 @@ export const AvatarName = () => {
 };
 
 export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({children}) => {
-  const {initialState} = useModel('@@initialState');
+  const {initialState, setInitialState} = useModel('@@initialState');
   const {loginUser} = initialState || {};
   /**
    * 退出登录，并且将当前的 url 保存
@@ -33,6 +34,11 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({children}) => 
     const redirect = urlParams.get('redirect');
     // Note: There may be security issues, please note
     if (window.location.pathname !== '/user/login' && !redirect) {
+      if (initialState?.settings.navTheme === "light") {
+        setInitialState({loginUser: {}, settings: {...Settings, navTheme: "light"}})
+      } else {
+        setInitialState({loginUser: {}, settings: {...Settings, navTheme: "realDark"}})
+      }
       history.replace({
         pathname: '/user/login',
         search: stringify({
@@ -42,7 +48,6 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({children}) => 
     }
   };
 
-  const {setInitialState} = useModel('@@initialState');
 
   const onMenuClick = useCallback(
     (event: MenuInfo) => {

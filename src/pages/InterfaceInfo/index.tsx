@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {getInterfaceInfoByIdUsingGET, invokeInterfaceUsingPOST} from "@/services/qiApi-backend/interfaceInfoController";
 
 import CodeHighlighting from "@/components/CodeHighlighting";
-import {InterfaceRequestMethodEnum, orderStatusEnum, statusEnum} from "@/enum/commonEnum";
+import {InterfaceRequestMethodEnum, statusEnum} from "@/enum/commonEnum";
 import {
   BugOutlined,
   CodeOutlined,
@@ -16,7 +16,7 @@ import {Column} from "rc-table";
 import './index.less'
 import ProCard from "@ant-design/pro-card";
 import {errorCode} from "@/enum/ErrorCodeEnum";
-import {Link, useParams} from "@@/exports";
+import {history, Link, useModel, useParams} from "@@/exports";
 import {
   axiosExample,
   convertResponseParams,
@@ -27,8 +27,10 @@ import {valueLength} from "@/pages/User/UserInfo";
 import Paragraph from "antd/lib/typography/Paragraph";
 import ApiTab from "@/pages/InterfaceInfo/components/ApiTab";
 import ToolsTab from "@/pages/InterfaceInfo/components/ToolsTab";
+import {stringify} from "querystring";
 
 const InterfaceInfo: React.FC = () => {
+  const {search, pathname} = window.location;
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setDate] = useState<API.InterfaceInfo>();
   const [requestParams, setRequestParams] = useState<[]>();
@@ -45,6 +47,8 @@ const InterfaceInfo: React.FC = () => {
   const [javaCode, setJavaCode] = useState<any>();
   const [returnCode, setReturnCode] = useState<any>(returnExample);
   const docUrl = process.env.NODE_ENV === 'production' ? "https://doc.qimuu.icu" : 'http://localhost:8080'
+  const {initialState} = useModel('@@initialState');
+  const {loginUser} = initialState || {}
   const loadedData = async () => {
     if (!params.id) {
       message.error('参数不存在');
@@ -107,6 +111,16 @@ const InterfaceInfo: React.FC = () => {
   ];
 
   const onSearch = async (values: any) => {
+    // 未登录跳转到登录页面
+    if (!loginUser) {
+      history.replace({
+        pathname: '/user/login',
+        search: stringify({
+          redirect: pathname + search,
+        }),
+      });
+    }
+
     setResultLoading(true)
     const res = await invokeInterfaceUsingPOST({
       id: data?.id,
@@ -174,7 +188,7 @@ const InterfaceInfo: React.FC = () => {
   return (
     <Spin spinning={loading}>
       <Card title={data?.name}>
-        <Descriptions >
+        <Descriptions>
           <Descriptions.Item key={"url"} label={"接口地址"}><a target={"_blank"} href={data?.url}
                                                                rel="noreferrer">{data?.url}</a></Descriptions.Item>
           <Descriptions.Item key={"returnFormat"} label="返回格式">{data?.returnFormat}</Descriptions.Item>
