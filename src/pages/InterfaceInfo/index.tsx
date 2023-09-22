@@ -130,7 +130,7 @@ const InterfaceInfo: React.FC = () => {
       setTotalInvokes(Number(totalInvokes) + 1)
     }
     setResult(JSON.stringify(res, null, 4))
-    setTimeout(() => setResultLoading(false), 1000)
+    setResultLoading(false)
   };
 
   const responseExampleContentList: Record<string, React.ReactNode> = {
@@ -189,9 +189,8 @@ const InterfaceInfo: React.FC = () => {
     <Spin spinning={loading}>
       <Card title={data?.name}>
         <Descriptions>
-          <Descriptions.Item key={"url"} label={"接口地址"}><a target={"_blank"} href={data?.url}
-                                                               rel="noreferrer">{data?.url}</a></Descriptions.Item>
-          <Descriptions.Item key={"returnFormat"} label="返回格式">{data?.returnFormat}</Descriptions.Item>
+          <Descriptions.Item key={"url"} label={"接口地址"}><Paragraph copyable>{data?.url}</Paragraph></Descriptions.Item>
+          <Descriptions.Item key={"returnFormat"} label="返回格式">{data?.returnFormat ?? "JSON"}</Descriptions.Item>
           <Descriptions.Item key={"reduceScore"} label="消费积分">{data?.reduceScore}个</Descriptions.Item>
           <Descriptions.Item key={"request"} label="请求方式"> <Tag
             color={InterfaceRequestMethodEnum[data?.method ?? 'default']}>{data?.method}</Tag></Descriptions.Item>

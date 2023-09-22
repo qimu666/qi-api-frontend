@@ -59,6 +59,7 @@ export const requestParam: ProColumns[] = [
       "long": {text: "long"},
       "boolean": {text: "boolean"},
       "double": {text: "double"},
+      "object": {text: "object"},
     },
     valueType: "select",
     formItemProps: {
@@ -99,6 +100,7 @@ export const responseParam: ProColumns[] = [
       "long": {text: "long"},
       "boolean": {text: "boolean"},
       "double": {text: "double"},
+      "object": {text: "object"},
     },
     valueType: "select",
     formItemProps: {

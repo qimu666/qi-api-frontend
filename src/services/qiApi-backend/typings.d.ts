@@ -185,6 +185,11 @@ declare namespace API {
     url?: string;
   };
 
+  type InterfaceInfoUpdateAvatarRequest = {
+    avatarUrl?: string;
+    id?: number;
+  };
+
   type InterfaceInfoUpdateRequest = {
     avatarUrl?: string;
     description?: string;

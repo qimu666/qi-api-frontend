@@ -151,3 +151,18 @@ export async function updateInterfaceInfoUsingPOST(
     ...(options || {}),
   });
 }
+
+/** updateInterfaceInfoAvatarUrl POST /api/interfaceInfo/updateInterfaceInfoAvatar */
+export async function updateInterfaceInfoAvatarUrlUsingPOST(
+  body: API.InterfaceInfoUpdateAvatarRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseboolean>('/api/interfaceInfo/updateInterfaceInfoAvatar', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}

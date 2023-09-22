@@ -5,6 +5,7 @@ import {
   listInterfaceInfoByPageUsingGET,
   offlineInterfaceInfoUsingPOST,
   onlineInterfaceInfoUsingPOST,
+  updateInterfaceInfoAvatarUrlUsingPOST,
   updateInterfaceInfoUsingPOST,
 } from '@/services/qiApi-backend/interfaceInfoController';
 import {PlusOutlined} from '@ant-design/icons';
@@ -66,14 +67,26 @@ const InterfaceInfoList: React.FC = () => {
     const hide = message.loading('修改中');
     try {
       if (fields) {
-        if (typeof fields.responseParams === "string") {
-          const parseValue = JSON.parse(fields.responseParams);
-          fields.responseParams = [...parseValue];
+        console.log(fields.requestParams,'reqparams')
+        console.log(fields.responseParams,'resparams')
+
+        if (fields.responseParams) {
+          if (typeof fields.responseParams === "string") {
+            const parseValue = JSON.parse(fields.responseParams);
+            fields.responseParams = [...parseValue];
+          }
+        }else {
+          fields.responseParams=[]
         }
-        if (typeof fields.requestParams === "string") {
-          const parseValue = JSON.parse(fields.requestParams);
-          fields.requestParams = [...parseValue];
+        if (fields.requestParams) {
+          if (typeof fields.requestParams === "string") {
+            const parseValue = JSON.parse(fields.requestParams);
+            fields.requestParams = [...parseValue];
+          }
+        }else {
+          fields.requestParams=[]
         }
+
         const res = await updateInterfaceInfoUsingPOST({id: currentRow?.id, ...fields});
         if (res.data && res.code === 0) {
           hide();
@@ -96,21 +109,24 @@ const InterfaceInfoList: React.FC = () => {
    *
    */
   const handleUpdateAvatar = async (url: string) => {
-    if (url) {
-      const hide = message.loading('修改中');
-      try {
-        const res = await updateInterfaceInfoUsingPOST({id: currentRow?.id, avatarUrl: url});
-        if (res.data && res.code === 0) {
-          hide();
-          message.success('修改成功');
-          actionRef.current?.reload()
-          return true;
+    const hide = message.loading('修改中');
+    try {
+      const res = await updateInterfaceInfoAvatarUrlUsingPOST(
+        {
+          id: currentRow?.id,
+          avatarUrl: url
         }
-      } catch (error: any) {
+      );
+      if (res.data && res.code === 0) {
         hide();
-        message.error('修改失败' + error.message);
-        return false;
+        message.success('修改成功');
+        actionRef.current?.reload()
+        return true;
       }
+    } catch (error: any) {
+      hide();
+      message.error('修改失败' + error.message);
+      return false;
     }
   };
 
