@@ -158,7 +158,7 @@ const InterfaceInfo: React.FC = () => {
     errorCode: <>
       <p className="highlightLine">错误码：</p>
       <Table dataSource={errorCode} pagination={false} style={{maxWidth: 800}} size={"small"}>
-        <Column title="名称" dataIndex="name" key="name"/>
+        <Column title="参数名称" dataIndex="name" key="name"/>
         <Column title="错误码" dataIndex="code" key="code"/>
         <Column title="描述" dataIndex="des" key="des"/>
       </Table>
