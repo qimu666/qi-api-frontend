@@ -164,7 +164,7 @@ yarn build or npm run build
 
 ### 接口广场
 
-![interfaceSquare](C:/Users/qimu/Desktop/qi-api-image/interfaceSquare.png)
+![interfaceSquare](https://img.qimuu.icu/typory/interfaceSquare.png)
 
 ### 开发者在线文档
 
