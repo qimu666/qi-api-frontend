@@ -226,6 +226,13 @@ export const UserColumns: ProColumns<API.UserVO>[] = [
     search: false
   },
   {
+    title: '邮箱',
+    dataIndex: 'email',
+    valueType: 'text',
+    copyable: true,
+    key: 'email',
+  },
+  {
     title: '邀请码',
     dataIndex: 'invitationCode',
     valueType: 'text',

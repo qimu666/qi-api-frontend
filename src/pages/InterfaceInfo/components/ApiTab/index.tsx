@@ -20,7 +20,7 @@ const ApiTab: React.FC<Props> = (props) => {
     <Table dataSource={requestParams && requestParams.length > 0 ? requestParams : requestParameters}
            pagination={false}
            style={{maxWidth: 800}} size={"small"}>
-      <Column title="名称" dataIndex="fieldName" key="fieldName"/>
+      <Column title="参数名称" dataIndex="fieldName" key="fieldName"/>
       <Column title="必选" dataIndex="required" key="required"/>
       <Column title="类型" dataIndex="type" key="type"/>
       <Column title="描述" dataIndex="desc" key="desc"/>
@@ -31,11 +31,11 @@ const ApiTab: React.FC<Props> = (props) => {
            pagination={false}
            style={{maxWidth: 800}}
            size={"small"}>
-      <Column title="名称" dataIndex="fieldName" key="fieldName"/>
+      <Column title="参数名称" dataIndex="fieldName" key="fieldName"/>
       <Column title="类型" dataIndex="type" key="type"/>
       <Column title="描述" dataIndex="desc" key="desc"/>
     </Table>
-    <p className="highlightLine" style={{marginTop: 15}}>请求示例：</p>
+    {/*<p className="highlightLine" style={{marginTop: 15}}>请求示例：</p>*/}
     <a onClick={() => sampleCode?.()}>见示例代码</a>
     <p className="highlightLine" style={{marginTop: 15}}>返回示例：</p>
     <CodeHighlighting codeString={returnCode} language={'javascript'}/>
