@@ -233,6 +233,13 @@ export const UserColumns: ProColumns<API.UserVO>[] = [
     key: 'email',
   },
   {
+    title: '积分',
+    dataIndex: 'balance',
+    valueType: 'text',
+    copyable: true,
+    key: 'balance',
+  },
+  {
     title: '邀请码',
     dataIndex: 'invitationCode',
     valueType: 'text',
