@@ -8,6 +8,8 @@ on:
   pull_request:
     branches:
       - master
+    types:
+      - closed
 jobs:
   build:
     # runs-on 指定job任务运行所需要的虚拟机环境(必填字段)
