@@ -67,9 +67,6 @@ const InterfaceInfoList: React.FC = () => {
     const hide = message.loading('修改中');
     try {
       if (fields) {
-        console.log(fields.requestParams,'reqparams')
-        console.log(fields.responseParams,'resparams')
-
         if (fields.responseParams) {
           if (typeof fields.responseParams === "string") {
             const parseValue = JSON.parse(fields.responseParams);

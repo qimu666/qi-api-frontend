@@ -135,8 +135,8 @@ const Register: React.FC = () => {
             maxWidth: '75vw',
           }}
           logo={<img alt="logo" src="/logo.gif"/>}
-          title="Ant Design"
-          subTitle={'Ant Design 是西湖区最具影响力的 Web 设计规范'}
+          title="Qi-API 接口开放平台"
+          subTitle={'Qi-API 接口开放平台致力于提供稳定、安全、高效的接口调用服务'}
           initialValues={{
             invitationCode: invitationCode
           }}
