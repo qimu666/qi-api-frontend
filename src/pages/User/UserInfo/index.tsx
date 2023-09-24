@@ -35,7 +35,7 @@ export const valueLength = (val: any) => {
   return val && val.trim().length > 0
 }
 const UserInfo: React.FC = () => {
-  const unloadFileTypeList = ["jpeg", "jpg", "svg", "png", "webp"]
+  const unloadFileTypeList = ["image/jpeg", "image/jpg", "image/svg", "image/png", "image/webp", "image/jfif"]
   const {initialState, setInitialState} = useModel('@@initialState');
   const {loginUser} = initialState || {}
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -151,15 +151,28 @@ const UserInfo: React.FC = () => {
   }
 
   const beforeUpload = async (file: RcFile) => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!unloadFileTypeList.concat(file.type)) {
+    const fileType = unloadFileTypeList.includes(file.type)
+    if (!fileType) {
       message.error('图片类型有误,请上传jpg/png/svg/jpeg/webp格式!');
     }
     const isLt2M = file.size / 1024 / 1024 < 1;
     if (!isLt2M) {
       message.error('文件大小不能超过 1M !');
     }
-    return isJpgOrPng && isLt2M;
+    if (!isLt2M && !fileType) {
+      const updatedFileList = [...fileList];
+      updatedFileList[0] = {
+        // @ts-ignore
+        uid: loginUser?.userAccount,
+        // @ts-ignore
+        name:  "error",
+        status: "error",
+        percent: 100
+      }
+      setFileList(updatedFileList);
+      return false
+    }
+    return fileType && isLt2M;
   };
 
   const updateVoucher = async () => {

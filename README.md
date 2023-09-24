@@ -94,6 +94,19 @@ yarn build or npm run build
 
 执行sql目录下ddl.sql
 
+
+
+## 网站导航 🧭
+
+-  **[Qi-API-SDK](https://github.com/qimu666/qi-api-sdk)** 🛠
+
+- **[Qi-API 接口开放平台 🔗](https://api.qimuu.icu/)**
+
+- **[Qi-API-DOC 开发者文档 📖](https://doc.qimuu.icu/)**
+- **[Qi-API-SDK-demo ✔️](https://github.com/qimu666/qi-api-sdk-demo/blob/master/src/main/java/icu/qimuu/qiapisdkdemo/controller/InvokeController.java)**
+
+
+
 ## 项目选型 🎯
 
 ### **后端**
@@ -163,6 +176,12 @@ yarn build or npm run build
 ### 接口广场
 
 ![interfaceSquare](https://img.qimuu.icu/typory/interfaceSquare.png)
+
+### 开发者在线文档
+
+![api](https://img.qimuu.icu/typory/api.png)
+
+![api2](https://img.qimuu.icu/typory/api2.png)
 
 ### 开发者在线文档
 
