@@ -15,10 +15,10 @@ export type Props = {
 
 const UploadModal: React.FC<Props> = (props) => {
   const {open, onCancel, url, onSubmit} = props;
-  const unloadFileTypeList = ["image/jpeg", "image/jpg", "image/svg", "image/png", "image/webp","image/jfif"]
+  const unloadFileTypeList = ["image/jpeg", "image/jpg", "image/svg", "image/png", "image/webp", "image/jfif"]
   const [previewImage, setPreviewImage] = useState('');
   const [previewTitle, setPreviewTitle] = useState('');
-  const [resUrl, setResUrl] = useState<string & undefined>();
+  const [resUrl, setResUrl] = useState<string | undefined>();
   const [previewOpen, setPreviewOpen] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const handleCancel = () => setPreviewOpen(false);
@@ -82,7 +82,7 @@ const UploadModal: React.FC<Props> = (props) => {
         // @ts-ignore
         uid: loginUser?.userAccount,
         // @ts-ignore
-        name:  "error",
+        name: "error",
         status: "error",
         percent: 100
       }
@@ -129,6 +129,7 @@ const UploadModal: React.FC<Props> = (props) => {
         setResUrl(url)
       } else {
         setFileList(newFileList);
+        setResUrl("")
       }
     },
     listType: "picture-circle",
