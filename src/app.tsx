@@ -20,6 +20,15 @@ import NoFoundPage from "@/pages/404";
 const loginPath = '/user/login';
 const whiteList = [loginPath, "/", "/account/center"]
 
+const baiduStatistics = () => {
+  const hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?1c3c7a064d6a39da5a90bf71821b4a9a";
+  const s = document.getElementsByTagName("script")[0];
+  // @ts-ignore
+  s.parentNode.insertBefore(hm, s);
+};
+
+
 const stats: InitialState = {
   loginUser: undefined,
   settings: Settings,
@@ -41,8 +50,6 @@ export async function getInitialState(): Promise<InitialState> {
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => {
-
-
   return {
     actionsRender: () => [<Docs key="doc"/>],
     waterMarkProps: {
@@ -116,6 +123,8 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
       },
     },
     onPageChange: () => {
+      // 百度统计
+      baiduStatistics()
       const {location} = history;
       // if (!whiteList.includes(location.pathname)) {
       //   getInitialState();
