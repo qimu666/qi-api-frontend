@@ -197,6 +197,7 @@ export const UserUpdateModalFormColumns: ProFormColumnsType<API.UserVO, "text">[
   },
 ];
 
+
 export const UserColumns: ProColumns<API.UserVO>[] = [
   {
     dataIndex: 'id',
@@ -238,6 +239,8 @@ export const UserColumns: ProColumns<API.UserVO>[] = [
     valueType: 'text',
     copyable: true,
     key: 'balance',
+    // @ts-ignore
+    sorter: (a, b) => a.balance - b.balance,
   },
   {
     title: '邀请码',
