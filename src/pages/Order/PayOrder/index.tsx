@@ -8,7 +8,11 @@ import ProCard from "@ant-design/pro-card";
 import Alipay from "@/components/Icon/Alipay";
 import {valueLength} from "@/pages/User/UserInfo";
 import {useParams} from "@@/exports";
-import {createOrderUsingPOST, queryOrderStatusUsingPOST} from "@/services/qiApi-backend/orderController";
+import {
+  createOrderUsingPOST,
+  getProductOrderByIdUsingGET,
+  queryOrderStatusUsingPOST
+} from "@/services/qiApi-backend/orderController";
 
 const PayOrder: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -67,33 +71,29 @@ const PayOrder: React.FC = () => {
   const changePayType = (value: string) => {
     setPayType(value);
   };
-  useEffect(() => {
-    if (!params.id) {
-      message.error('参数不存在');
-      return;
-    }
-    // 判断是否为手机设备
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-    if (codeUrl) {
-      if (isMobile) {
-        window.location.href = codeUrl
-        return;
+  const getOrder = async () => {
+    const res = await getProductOrderByIdUsingGET({id:params.id})
+    console.log(res)
+    if (res.code === 0 && res.data) {
+      const data={
+        productInfo:res.data,
+        orderNo:res.data.orderNo,
+        codeUrl:res.data.codeUrl
       }
-      setQrCode(codeUrl)
+      // @ts-ignore
+      setOrder(data)
+      // @ts-ignore
+      setTotal((res.data.total))
       setStatus("active")
-      setPayType("WX")
-      return;
+      setLoading(false)
+      setQrCode(res.data.codeUrl)
     }
-    if (!urlPayType && !payType) {
-      message.error("请选择支付方式")
-      setStatus("expired")
-      return
-    }
+  }
+  useEffect(() => {
     if (urlPayType) {
-      setPayType(urlPayType)
-      return;
+     setPayType(urlPayType)
+     getOrder()
     }
-    createOrder()
   }, [])
 
   useEffect(() => {
@@ -132,6 +132,34 @@ const PayOrder: React.FC = () => {
     }
   }, [order, status])
 
+  useEffect(() => {
+    if (!params.id) {
+      message.error('参数不存在');
+      return;
+    }
+    // 判断是否为手机设备
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    if (codeUrl) {
+      if (isMobile) {
+        window.location.href = codeUrl
+        return;
+      }
+      setQrCode(codeUrl)
+      setStatus("active")
+      setPayType("WX")
+      return;
+    }
+    if (!urlPayType && !payType) {
+      setPayType("WX")
+      setStatus("loading")
+      return
+    }
+    if (urlPayType) {
+      setPayType(urlPayType)
+      return;
+    }
+    createOrder()
+  }, [])
   return (
     <>
       <Card style={{minWidth: 385}}>

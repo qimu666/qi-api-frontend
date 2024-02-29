@@ -117,7 +117,7 @@ export default () => {
       } else {
         message.loading("正在前往收银台,请稍后.....", 0.6)
         setTimeout(() => {
-          history.push(`/order/pay/${record.productId}?codeUrl=${record?.codeUrl?.trim()}&payType=${record?.payType?.trim()}`)
+          history.push(`/order/pay/${record.id}?codeUrl=${record?.codeUrl?.trim()}&payType=${record?.payType?.trim()}`)
         }, 800)
       }
     } else {
