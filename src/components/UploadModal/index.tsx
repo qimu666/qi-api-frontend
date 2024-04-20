@@ -71,10 +71,12 @@ const UploadModal: React.FC<Props> = (props) => {
     const fileType = unloadFileTypeList.includes(file.type)
     if (!fileType) {
       message.error('图片类型有误,请上传jpg/png/svg/jpeg/webp格式!');
+      return Upload.LIST_IGNORE
     }
     const isLt2M = file.size / 1024 / 1024 < 1;
     if (!isLt2M) {
       message.error('文件大小不能超过 1M !');
+      return Upload.LIST_IGNORE
     }
     if (!isLt2M && !fileType) {
       const updatedFileList = [...fileList];
@@ -87,7 +89,7 @@ const UploadModal: React.FC<Props> = (props) => {
         percent: 100
       }
       setFileList(updatedFileList);
-      return false
+      return Upload.LIST_IGNORE
     }
     return fileType && isLt2M;
   };
