@@ -156,7 +156,6 @@ const Welcome: React.FC = () => {
                 😀 作为用户您可以通过注册登录账户，获取接口调用权限，并根据自己的需求浏览和选择适合的接口。您可以在线进行接口调试，快速验证接口的功能和效果。
                 <br/>
                 💻 作为开发者 我们提供了
-                {/*todo 地址修改*/}
                 <a href="https://github.com/qimu666/qi-api-sdk" target="_blank" rel="noreferrer">
                   客户端SDK
                 </a>
