@@ -462,10 +462,10 @@ const UserInfo: React.FC = () => {
           title={<strong>开发者 SDK（快速接入API接口）</strong>}
           bordered
         >
-          <Button size={"large"} onClick={()=>{
+          <Button size={"large"} className={'flex justify-center items-center space-x-1'} onClick={()=>{
             window.open("https://github.com/qimu666/qi-api-sdk")
           }}>
-            <VerticalAlignBottomOutlined/> Java SDK
+            <VerticalAlignBottomOutlined/> <div>Java SDK</div>
           </Button>
         </ProCard>
       </ProCard>
