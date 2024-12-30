@@ -16,6 +16,7 @@ import LightColor from "@/components/Icon/LightColor";
 import {Docs, helloWord} from "@/components/RightContent";
 import SendGift from "@/components/Gift/SendGift";
 import NoFoundPage from "@/pages/404";
+import notLogin from "@/../public/assets/notLogin.png"
 
 const loginPath = '/user/login';
 const whiteList = [loginPath, "/", "/account/center"]
@@ -115,8 +116,7 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
         }></SendGift>
     </>,
     avatarProps: {
-      src: valueLength(initialState?.loginUser?.userAvatar) ? initialState?.loginUser?.userAvatar :
-        "https://img.qimuu.icu/typory/notLogin.png",
+      src: valueLength(initialState?.loginUser?.userAvatar) ? initialState?.loginUser?.userAvatar :notLogin,
       title: initialState?.loginUser ? <AvatarName/> : "游客",
       render: (_, avatarChildren) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>

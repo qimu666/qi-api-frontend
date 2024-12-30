@@ -26,8 +26,7 @@
     "start:dev": "cross-env REACT_APP_ENV=dev MOCK=none UMI_ENV=dev max dev umi",
     "start:no-mock": "cross-env MOCK=none UMI_ENV=dev max dev",
     "start:pre": "cross-env REACT_APP_ENV=pre UMI_ENV=dev max dev",
-    "tsc": "tsc --noEmit",
-    "baiduPush": "bash baiduPush.sh"
+    "tsc": "tsc --noEmit"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
