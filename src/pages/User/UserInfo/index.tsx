@@ -462,9 +462,10 @@ const UserInfo: React.FC = () => {
           title={<strong>开发者 SDK（快速接入API接口）</strong>}
           bordered
         >
-          <Button size={"large"}>
-            <a target={"_blank"} href={"https://github.com/qimu666/qi-api-sdk"}
-               rel="noreferrer"><VerticalAlignBottomOutlined/> Java SDK</a>
+          <Button size={"large"} onClick={()=>{
+            window.open("https://github.com/qimu666/qi-api-sdk")
+          }}>
+            <VerticalAlignBottomOutlined/> Java SDK
           </Button>
         </ProCard>
       </ProCard>

@@ -2,7 +2,7 @@ import React from "react";
 import ProCard from "@ant-design/pro-card";
 import {Button, Divider, Modal} from "antd";
 import {history} from '@umijs/max';
-
+import notLogin from "@/../public/assets/notLogin.png"
 export type Props = {
   open: boolean;
   onCancel: () => void;
@@ -11,7 +11,6 @@ export type Props = {
 
 const GetGiftModal: React.FC<Props> = (props) => {
   const {open, data, onCancel} = props;
-
   return (
     <Modal
       footer={null}
@@ -26,7 +25,7 @@ const GetGiftModal: React.FC<Props> = (props) => {
           <div style={{borderRadius: '50%', padding: '2px'}}>
             <img
               style={{width: 80, height: 80, borderRadius: '50%'}}
-              src={data?.userAvatar ?? "https://img.qimuu.icu/typory/notLogin.png"}
+              src={data?.userAvatar ?? notLogin}
               alt={data?.userName}
             />
           </div>
