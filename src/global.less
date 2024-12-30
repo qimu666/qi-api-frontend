@@ -1,3 +1,9 @@
+@import "https://cdn.bootcdn.net/ajax/libs/font-awesome/6.6.0/css/all.css";
+@import "//at.alicdn.com/t/c/font_4636297_c4l0jkq4f08.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
 body,
 #root {
@@ -10,6 +16,17 @@ body,
   'Noto Color Emoji';
 }
 
+
+.ant-pro-layout .ant-pro-layout-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: transparent;
+  position: relative;
+  padding-inline: 0;
+}
+
+
 .colorWeak {
   filter: invert(80%);
 }
@@ -21,6 +38,14 @@ body,
 .ant-pro-sider.ant-layout-sider.ant-pro-sider-fixed {
   left: unset;
 }
+
+@media (min-width: 1024px) {
+  .perspective-right {
+    -webkit-transform: scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg) rotate(2deg);
+    transform: scale(1) perspective(1040px) rotateY(-11deg) rotateX(2deg) rotate(2deg);
+  }
+}
+
 
 canvas {
   display: block;
