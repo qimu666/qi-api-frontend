@@ -75,7 +75,7 @@
 安装依赖：
 
 ```bash
-yarn or  npm install
+yarn or npm install
 ```
 
 启动：
@@ -92,20 +92,30 @@ yarn build or npm run build
 
 ### 后端
 
-执行sql目录下ddl.sql
+管理员初始账号密码：admin/12345678
 
+1. docker-compose容器编排一键启动
 
+  - 修改配置文件，修改配置部分已标记todo标签。无需特殊情况只需关注两个配置文件（已配置好不修改也可以直接运行）
 
-## 网站导航 🧭
+    1. backend配置文件
 
--  **[Qi-API-SDK](https://github.com/qimu666/qi-api-sdk)** 🛠
+    ![image-20241230195952155](https://img.qimuu.icu/typory/image-20241230195952155.png)
 
-- **[Qi-API 接口开放平台 🔗](https://api.qimuu.icu/)**
+    2.gateway网关配置文件
 
-- **[Qi-API-DOC 开发者文档 📖](https://doc.qimuu.icu/)**
-- **[Qi-API-SDK-demo ✔️](https://github.com/qimu666/qi-api-sdk-demo/blob/master/src/main/java/icu/qimuu/qiapisdkdemo/controller/InvokeController.java)**
+    ![image-20241230200102128](https://img.qimuu.icu/typory/image-20241230200102128.png)
 
+  -   本地maven构建jar包（跳过测试）
 
+  ![image-20241230200610985](https://img.qimuu.icu/typory/image-20241230200610985.png)
+
+  - 启动项目
+
+    1. 运行docker-compose.env.yml文件启动mysql、redis、nacos环境依赖
+    2. 运行docker-compose.service.yml文件启动后端服务
+
+2. 普通方式：执行sql目录下ddl.sql
 
 ## 项目选型 🎯
 
@@ -148,16 +158,15 @@ yarn build or npm run build
 
 |                          **功能**                           | 游客 | **普通用户** | **管理员** |
 | ----------------------------------------------------- |--------------|-----|-----|
-| [**Qi-API-SDK**](https://github.com/qimu666/qi-api-sdk)使用 | ✅ | ✅ |     ✅      |
 |        **[开发者API在线文档](http://doc.qimuu.icu)**        | ✅ | ✅ |     ✅      |
+|                 接口大厅搜索接口、浏览接口                  | ✅ | ✅ | ✅ |
+|                     邮箱验证码登录注册                      | ✅ | ✅ | ✅ |
+|    [**Qi-API-SDK**](https://github.com/qimu666/qi-api-sdk)使用 | ❌ | ✅ |     ✅      |
 |                     邀请好友注册得坤币                      | ❌ | ✅ |     ✅      |
-|                    切换主题、深色、暗色                     | ✅ | ✅ | ✅ |
 |                       微信支付宝付款                        | ❌ | ✅ | ✅ |
 |                        在线调试接口                         | ❌ | ✅ | ✅ |
 |                       每日签到得坤币                        | ❌ | ✅ | ✅ |
-|                 接口大厅搜索接口、浏览接口                  | ✅ | ❌ | ✅ |
-|                     邮箱验证码登录注册                      | ✅ | ✅ | ✅ |
-|                          钱包充值                           | ❌ | ❌ | ✅ |
+|                          钱包充值                           | ❌ | ✅ | ✅ |
 |                     支付成功邮箱通知(需要绑定邮箱)                     | ❌ | ✅ | ✅ |
 |                          更新头像                           | ❌ | ✅ | ✅ |
 |                    绑定、换绑、解绑邮箱                     | ❌ | ✅ | ✅ |
@@ -167,21 +176,40 @@ yarn build or npm run build
 |                接口管理、接口发布审核、下架                 | ❌ | ❌ | ✅ |
 |                            退款                             | ❌ | ❌| ❌ |
 
+## 新接口动态发布示例（只需两步即可发布）
+
+1. 在接口服务(interface)项目中开发新接口 （**接口服务可以是独立的项目，但需要在网关中配置路由**）
+
+   在接口服务开发一个测试接口：
+
+   ```java
+    @GetMapping("/test")
+       public String test(String text) {
+           return text;
+   }
+   ```
+
+   ![image-20241231114908610](https://img.qimuu.icu/typory/image-20241231114908610.png)
+
+2. 开发完成后重启接口项目后，在管理员后台发布接口，就可以在线调用了！！
+
+   ![image-20241231115154224](https://img.qimuu.icu/typory/image-20241231115154224.png)
+
+  3. 在接口大厅找到并请求接口
+
+     ![image-20241231115407585](https://img.qimuu.icu/typory/image-20241231115407585.png)
+
+  4. 恭喜发布成功！！
+
 ## 功能展示 ✨
 
 ### 首页
 
-![index](https://img.qimuu.icu/typory/index.png)
+![index](https://img.qimuu.icu/typory/image-20241230233443136.png)
 
 ### 接口广场
 
 ![interfaceSquare](https://img.qimuu.icu/typory/interfaceSquare.png)
-
-### 开发者在线文档
-
-![api](https://img.qimuu.icu/typory/api.png)
-
-![api2](https://img.qimuu.icu/typory/api2.png)
 
 ### 开发者在线文档
 
@@ -247,8 +275,3 @@ yarn build or npm run build
 - **我的订单**![orderinfo](https://img.qimuu.icu/typory/orderinfo.png)
 
 - **详细订单**![orderDetails](https://img.qimuu.icu/typory/orderDetails.png)
-### 主题切换
-
-#### 深色主题![darkTheme](https://img.qimuu.icu/typory/darkTheme.png)
-
-#### 浅色主题![index](https://img.qimuu.icu/typory/index.png)
