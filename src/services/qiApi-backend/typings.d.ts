@@ -459,6 +459,7 @@ declare namespace API {
 
   type RequestParamsField = {
     desc?: string;
+    value?: string;
     fieldName?: string;
     id?: string;
     required?: string;

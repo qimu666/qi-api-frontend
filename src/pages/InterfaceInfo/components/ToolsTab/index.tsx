@@ -17,7 +17,16 @@ export type Props = {
   resultLoading: boolean
 };
 const ToolsTab: React.FC<Props> = (props) => {
-  const {onSearch, data,form, temporaryParams, paramsTableChange, result, resultLoading, requestExampleActiveTabKey} = props;
+  const {
+    onSearch,
+    data,
+    form,
+    temporaryParams,
+    paramsTableChange,
+    result,
+    resultLoading,
+    requestExampleActiveTabKey
+  } = props;
   const selectAfter = (
     <Select
       disabled
@@ -36,6 +45,7 @@ const ToolsTab: React.FC<Props> = (props) => {
       form={form}
       className="form-input"
       onFinish={(values) => onSearch?.(values)}
+      initialValues={{"requestParams": data && data.requestParams ? JSON.parse(data.requestParams): []}}
       scrollToFirstError
       onReset={() => {
         form.resetFields(['requestParams']);

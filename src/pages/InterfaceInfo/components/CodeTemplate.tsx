@@ -62,7 +62,8 @@ export const requestParameters = [{
   fieldName: '无',
   type: "string",
   desc: "无",
-  required: '否'
+  required: '否',
+  value:"暂无"
 }]
 
 export const requestParam: ProColumns[] = [

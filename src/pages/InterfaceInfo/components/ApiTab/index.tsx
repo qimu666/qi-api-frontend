@@ -17,10 +17,19 @@ const ApiTab: React.FC<Props> = (props) => {
 
   return <>
     <p className="highlightLine" style={{marginTop: 15}}>请求参数说明：</p>
-    <Table dataSource={requestParams && requestParams.length > 0 ? requestParams : requestParameters}
+    <Table dataSource={requestParams && requestParams.length > 0 ? requestParams.map(r => {
+      if (!r.value) {
+        r.value = "暂无"
+      }
+      if (!r.desc) {
+        r.desc = "暂无"
+      }
+      return r;
+    }) : requestParameters}
            pagination={false}
            style={{maxWidth: 800}} size={"small"}>
       <Column title="参数名称" dataIndex="fieldName" key="fieldName"/>
+      <Column title="示例值" dataIndex="value" key="value"/>
       <Column title="必选" dataIndex="required" key="required"/>
       <Column title="类型" dataIndex="type" key="type"/>
       <Column title="描述" dataIndex="desc" key="desc"/>

@@ -32,6 +32,9 @@ export const requestParam: ProColumns[] = [
         },
       ],
     },
+  },{
+    title: '示例值',
+    dataIndex: 'value',
   },
   {
     title: '必填',
