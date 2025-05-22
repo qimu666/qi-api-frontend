@@ -4,8 +4,7 @@ import {Badge, Card, Image, List, Spin} from "antd";
 import Search from "antd/es/input/Search";
 import {history} from "@umijs/max";
 import {
-  listInterfaceInfoByPageUsingGET,
-  listInterfaceInfoBySearchTextPageUsingGET
+  listInterfaceInfoByPageUsingPOST, listInterfaceInfoBySearchTextPageUsingPOST,
 } from "@/services/qiApi-backend/interfaceInfoController";
 
 const InterfaceSquare: React.FC = () => {
@@ -17,7 +16,7 @@ const InterfaceSquare: React.FC = () => {
 
   const loadData = async (current = 1) => {
     setLoading(true)
-    const res = await listInterfaceInfoByPageUsingGET({
+    const res = await listInterfaceInfoByPageUsingPOST({
       current: current,
       name: searchText,
       pageSize: pageSize,
@@ -39,7 +38,7 @@ const InterfaceSquare: React.FC = () => {
   }, []);
 
   const onSearch = async () => {
-    const res = await listInterfaceInfoBySearchTextPageUsingGET({
+    const res = await listInterfaceInfoBySearchTextPageUsingPOST({
       current: 1,
       searchText: searchText,
     });

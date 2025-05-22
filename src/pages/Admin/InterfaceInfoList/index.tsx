@@ -2,7 +2,7 @@ import InterfaceInfoColumns, {InterfaceInfoModalFormColumns} from '@/pages/Admin
 import {
   addInterfaceInfoUsingPOST,
   deleteInterfaceInfoUsingPOST,
-  listInterfaceInfoByPageUsingGET,
+  listInterfaceInfoUsingPOST,
   offlineInterfaceInfoUsingPOST,
   onlineInterfaceInfoUsingPOST,
   updateInterfaceInfoAvatarUrlUsingPOST,
@@ -317,7 +317,7 @@ const InterfaceInfoList: React.FC = () => {
         pagination={{defaultPageSize: 10}}
         request={async (params) => {
           setLoading(true)
-          const res = await listInterfaceInfoByPageUsingGET({...params});
+          const res = await listInterfaceInfoUsingPOST({...params});
           if (res.data) {
             setLoading(false)
             return {

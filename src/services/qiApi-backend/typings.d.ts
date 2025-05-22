@@ -17,12 +17,6 @@ declare namespace API {
     message?: string;
   };
 
-  type BaseResponseListInterfaceInfo = {
-    code?: number;
-    data?: InterfaceInfo[];
-    message?: string;
-  };
-
   type BaseResponseListProductInfo = {
     code?: number;
     data?: ProductInfo[];
@@ -96,7 +90,7 @@ declare namespace API {
 
   type deleteProductOrderUsingPOSTParams = {
     /** id */
-    id?: number;
+    id?: string;
   };
 
   type DeleteRequest = {
@@ -185,6 +179,30 @@ declare namespace API {
     url?: string;
   };
 
+  type InterfaceInfoQueryRequest = {
+    current?: number;
+    description?: string;
+    method?: string;
+    name?: string;
+    pageSize?: number;
+    reduceScore?: number;
+    responseParams?: ResponseParamsField[];
+    returnFormat?: string;
+    sortField?: string;
+    sortOrder?: string;
+    status?: number;
+    url?: string;
+    userId?: number;
+  };
+
+  type InterfaceInfoSearchTextRequest = {
+    current?: number;
+    pageSize?: number;
+    searchText?: string;
+    sortField?: string;
+    sortOrder?: string;
+  };
+
   type InterfaceInfoUpdateAvatarRequest = {
     avatarUrl?: string;
     id?: number;
@@ -211,52 +229,6 @@ declare namespace API {
     id?: number;
     requestParams?: Field[];
     userRequestParams?: string;
-  };
-
-  type listInterfaceInfoByPageUsingGETParams = {
-    current?: number;
-    description?: string;
-    method?: string;
-    name?: string;
-    pageSize?: number;
-    reduceScore?: number;
-    'responseParams[0].desc'?: string;
-    'responseParams[0].fieldName'?: string;
-    'responseParams[0].id'?: string;
-    'responseParams[0].type'?: string;
-    returnFormat?: string;
-    sortField?: string;
-    sortOrder?: string;
-    status?: number;
-    url?: string;
-    userId?: number;
-  };
-
-  type listInterfaceInfoBySearchTextPageUsingGETParams = {
-    current?: number;
-    pageSize?: number;
-    searchText?: string;
-    sortField?: string;
-    sortOrder?: string;
-  };
-
-  type listInterfaceInfoUsingGETParams = {
-    current?: number;
-    description?: string;
-    method?: string;
-    name?: string;
-    pageSize?: number;
-    reduceScore?: number;
-    'responseParams[0].desc'?: string;
-    'responseParams[0].fieldName'?: string;
-    'responseParams[0].id'?: string;
-    'responseParams[0].type'?: string;
-    returnFormat?: string;
-    sortField?: string;
-    sortOrder?: string;
-    status?: number;
-    url?: string;
-    userId?: number;
   };
 
   type listProductInfoByPageUsingGETParams = {
@@ -459,7 +431,6 @@ declare namespace API {
 
   type RequestParamsField = {
     desc?: string;
-    value?: string;
     fieldName?: string;
     id?: string;
     required?: string;

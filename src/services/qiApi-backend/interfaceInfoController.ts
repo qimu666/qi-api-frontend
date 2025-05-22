@@ -47,17 +47,17 @@ export async function getInterfaceInfoByIdUsingGET(
   });
 }
 
-/** listInterfaceInfoBySearchTextPage GET /api/interfaceInfo/get/searchText */
-export async function listInterfaceInfoBySearchTextPageUsingGET(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.listInterfaceInfoBySearchTextPageUsingGETParams,
+/** listInterfaceInfoBySearchTextPage POST /api/interfaceInfo/get/searchText */
+export async function listInterfaceInfoBySearchTextPageUsingPOST(
+  body: API.InterfaceInfoSearchTextRequest,
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponsePageInterfaceInfo>('/api/interfaceInfo/get/searchText', {
-    method: 'GET',
-    params: {
-      ...params,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
+    data: body,
     ...(options || {}),
   });
 }
@@ -77,32 +77,32 @@ export async function invokeInterfaceUsingPOST(
   });
 }
 
-/** listInterfaceInfo GET /api/interfaceInfo/list */
-export async function listInterfaceInfoUsingGET(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.listInterfaceInfoUsingGETParams,
+/** listInterfaceInfo POST /api/interfaceInfo/list */
+export async function listInterfaceInfoUsingPOST(
+  body: API.InterfaceInfoQueryRequest,
   options?: { [key: string]: any },
 ) {
-  return request<API.BaseResponseListInterfaceInfo>('/api/interfaceInfo/list', {
-    method: 'GET',
-    params: {
-      ...params,
+  return request<API.BaseResponsePageInterfaceInfo>('/api/interfaceInfo/list', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
+    data: body,
     ...(options || {}),
   });
 }
 
-/** listInterfaceInfoByPage GET /api/interfaceInfo/list/page */
-export async function listInterfaceInfoByPageUsingGET(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.listInterfaceInfoByPageUsingGETParams,
+/** listInterfaceInfoByPage POST /api/interfaceInfo/list/page */
+export async function listInterfaceInfoByPageUsingPOST(
+  body: API.InterfaceInfoQueryRequest,
   options?: { [key: string]: any },
 ) {
   return request<API.BaseResponsePageInterfaceInfo>('/api/interfaceInfo/list/page', {
-    method: 'GET',
-    params: {
-      ...params,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
+    data: body,
     ...(options || {}),
   });
 }

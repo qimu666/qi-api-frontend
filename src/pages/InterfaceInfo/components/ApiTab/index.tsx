@@ -18,10 +18,14 @@ const ApiTab: React.FC<Props> = (props) => {
   return <>
     <p className="highlightLine" style={{marginTop: 15}}>请求参数说明：</p>
     <Table dataSource={requestParams && requestParams.length > 0 ? requestParams.map(r => {
+      // @ts-ignore
       if (!r.value) {
+        // @ts-ignore
         r.value = "暂无"
       }
+      // @ts-ignore
       if (!r.desc) {
+        // @ts-ignore
         r.desc = "暂无"
       }
       return r;
